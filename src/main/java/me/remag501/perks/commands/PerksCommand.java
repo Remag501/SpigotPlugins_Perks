@@ -1,27 +1,29 @@
-package me.remag501.perks.Commands;
+package me.remag501.perks.commands;
 
-import me.remag501.perks.Utils.PerkData;
+import me.remag501.perks.perkTypes.LongSwordPerk;
+import me.remag501.perks.perkTypes.Perk;
+import me.remag501.perks.perkTypes.PlayerPerks;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class PerksCommand implements CommandExecutor {
 
     private Plugin plugin;
     private Map<String, String> messages;
-    private Map<UUID, PerkData> playerPerks;
+    private Map<UUID, PlayerPerks> playerPerks;
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
@@ -68,7 +70,8 @@ public class PerksCommand implements CommandExecutor {
 //        for (Perk perk : data.getAvailablePerks()) {
         for (int i : testLoop) {
 //            ItemStack perkItem = createPerkItem(perk);
-            ItemStack perkItem = createPerkItem();
+            LongSwordPerk perk = new LongSwordPerk();
+            ItemStack perkItem = createPerkItem(perk);
             perkInventory.addItem(perkItem);
         }
 
@@ -77,19 +80,38 @@ public class PerksCommand implements CommandExecutor {
     }
 
 //    private ItemStack createPerkItem(Perk perk) {
-    private ItemStack createPerkItem() {
-        // Create an ItemStack to represent the perk
+    private ItemStack createPerkItem(Perk perk) {
+        // Returns an item depending on the perk name, Long Sword as placeholder
+        String perkName = perk.getName();
+
+        switch (perkName) {
+            case "Long Sword":
+                return createItem(Material.DIAMOND_SWORD, "Long Sword", true, "Here are some lores", "§4This is a powerful sword!");
+            default:
+                plugin.getLogger().info("Unknown perk: " + perkName);
+                return new ItemStack(Material.BEDROCK);
+        }
+
+    }
+
+    private ItemStack createItem(Material type, String name, boolean enchanted, String... lores) {
+        // Function to make creating items easier
+
         // Example uses an IRON_SWORD as a placeholder item
-        ItemStack item = new ItemStack(Material.IRON_SWORD);
+        ItemStack item = new ItemStack(type);
         ItemMeta meta = item.getItemMeta();
 
         // Set the item's name and lore to describe the perk
         if (meta != null) {
-            meta.setDisplayName(ChatColor.GREEN + "perk.getName()");
-            meta.setLore(Collections.singletonList(ChatColor.YELLOW + "perk.getDescription()"));
+            meta.setDisplayName(name);
+            ArrayList<String> loreList = new ArrayList<>(Arrays.asList(lores));
+            meta.setLore(loreList);
+            if (enchanted) {
+                meta.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
             item.setItemMeta(meta);
         }
-
         return item;
     }
 

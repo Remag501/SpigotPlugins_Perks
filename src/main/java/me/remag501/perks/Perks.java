@@ -1,6 +1,6 @@
 package me.remag501.perks;
 
-import me.remag501.perks.Commands.PerksCommand;
+import me.remag501.perks.commands.PerksCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Perks extends JavaPlugin {

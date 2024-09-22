@@ -1,8 +1,9 @@
-package me.remag501.perks.Utils;
+package me.remag501.perks.perkTypes;
 
 import java.util.List;
 
-public class PerkData {
+public class PlayerPerks {
+
     List<String> perkNames;
 
     public void loadDate() {
