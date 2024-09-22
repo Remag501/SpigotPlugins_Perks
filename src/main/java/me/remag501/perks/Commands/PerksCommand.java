@@ -28,7 +28,7 @@ public class PerksCommand implements CommandExecutor {
             sender.sendMessage("This command can only be executed by players.");
             return true;
         }
-        if (args.length == 1) {
+        if (args.length == 0) {
             openPerkUI(sender);
             return true;
         }
@@ -60,7 +60,7 @@ public class PerksCommand implements CommandExecutor {
         Inventory perkInventory = Bukkit.createInventory(null, 9, "Choose Your Perk");
 
         // Get the player's PerkData
-        PerkData data = playerPerks.get(player.getUniqueId());
+        // PerkData data = playerPerks.get(player.getUniqueId());
 
         // Add perk items to the inventory (example perks with placeholder items)
         // You'll replace the items with appropriate ones for each perk.
