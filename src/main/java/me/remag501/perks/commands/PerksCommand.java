@@ -59,23 +59,6 @@ public class PerksCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        // Create a custom inventory with 9 slots
-//        Inventory perkInventory = Bukkit.createInventory(null, 9, "Choose Your Perk");
-//
-//        // Get the player's PerkData
-//        // PerkData data = playerPerks.get(player.getUniqueId());
-//
-//        // Add perk items to the inventory (example perks with placeholder items)
-//        // You'll replace the items with appropriate ones for each perk.
-//        int testLoop[] = new int[3];
-////        for (Perk perk : data.getAvailablePerks()) {
-//        for (int i : testLoop) {
-////            ItemStack perkItem = createPerkItem(perk);
-//            LongSwordPerk perk = new LongSwordPerk();
-//            ItemStack perkItem = createPerkItem(perk);
-//            perkInventory.addItem(perkItem);
-//        }
-
         // Open the inventory for the player
         Inventory perkMenu = UI.getPerkMenu();
         player.openInventory(perkMenu);
