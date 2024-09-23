@@ -39,13 +39,13 @@ public class UI implements Listener {
         // Load active perks
         List<Perk> ownedPerks = perks.getOwnedPerks();
         int size = (ownedPerks == null) ? 0 : ownedPerks.size();
-        for (int i = 0; i < 5; i++, size++) {
+        for (int i = 0; i < 5; i++) {
             if (i < size) {
                 ItemStack perkItem = Items.createPerkItem(ownedPerks.get(i));
                 perkInventory.setItem(2 + i, perkItem);
             }
             else
-                perkInventory.setItem(i, new ItemStack(Material.AIR));
+                perkInventory.setItem(2 + i, new ItemStack(Material.AIR));
         }
     }
 
