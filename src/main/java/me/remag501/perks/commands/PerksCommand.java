@@ -60,7 +60,8 @@ public class PerksCommand implements CommandExecutor {
 
         Player player = (Player) sender;
         // Open the inventory for the player
-        Inventory perkMenu = UI.getPerkMenu();
+        PlayerPerks playerPerks = new PlayerPerks();
+        Inventory perkMenu = UI.getPerkMenu(playerPerks);
         player.openInventory(perkMenu);
     }
 
