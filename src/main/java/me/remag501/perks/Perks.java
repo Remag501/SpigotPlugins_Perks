@@ -13,7 +13,7 @@ public final class Perks extends JavaPlugin {
         getServer().getLogger().info("Perks has started up!");
         // Add commands to the plugin
         getCommand("perks").setExecutor(new PerksCommand(this));
-        Bukkit.getPluginManager().registerEvents(new UI(), this);
+        Bukkit.getPluginManager().registerEvents(new UI(null), this);
     }
 
     @Override

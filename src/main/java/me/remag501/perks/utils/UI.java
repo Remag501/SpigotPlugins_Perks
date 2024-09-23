@@ -20,8 +20,6 @@ public class UI implements Listener {
     private PlayerPerks perks;
     private Inventory perkInventory;
 
-    public UI() {}
-
     public UI(PlayerPerks perks) {
         this.perks = perks;
         perkInventory = Bukkit.createInventory(null, 54, "Choose Your Perk");
@@ -52,8 +50,8 @@ public class UI implements Listener {
             if (i % 9 == 0 || (i+1) % 9 == 0)
                 continue;
             perkInventory.setItem(i, Items.createItem(Material.PAPER, "Page " + i, true)); // Add pages
-
         }
+        perkInventory.setItem(19, PerkType.SWORD_PERK.getItem());
     }
 
     private void loadBackNextButton() {
@@ -74,13 +72,17 @@ public class UI implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
+        perks = PlayerPerks.getPlayerPerks(player.getUniqueId());
 
         // Check if the clicked inventory is the perk UI
         if (event.getView().getTitle().equals("Choose Your Perk")) {
             event.setCancelled(true); // Cancel the item removal
-            event.getCurrentItem().equals(PerkType.SWORD_PERK.getItem());
+            if(event.getCurrentItem().equals(PerkType.SWORD_PERK.getItem())) {
+                player.sendMessage("You clicked on the perk!");
+                perks.addPerk(new LongSwordPerk(player, PerkType.SWORD_PERK.getItem())); // Create perk with player
+            }
             // You can also send a message to the player if needed
-            player.sendMessage("You clicked on the menu!");
+//            player.sendMessage("You clicked on the menu!");
         }
     }
 

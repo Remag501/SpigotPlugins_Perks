@@ -14,16 +14,15 @@ public class Items {
 
     public static ItemStack createPerkItem(Perk perk) {
         // Returns an item depending on the perk name, Long Sword as placeholder
-        String perkName = perk.getName();
 
-        switch (perkName) {
-            case "Long Sword":
-                return createItem(Material.DIAMOND_SWORD, "Long Sword", true, "Here are some lores", "§4This is a powerful sword!");
-            default:
-//                plugin.getLogger().info("Unknown perk: " + perkName);
-                return new ItemStack(Material.BEDROCK);
-        }
-
+//        switch (perk) {
+//            case PerkType.:
+//                return createItem(Material.DIAMOND_SWORD, "Long Sword", true, "Here are some lores", "§4This is a powerful sword!");
+//            default:
+////                plugin.getLogger().info("Unknown perk: " + perkName);
+//                return new ItemStack(Material.BEDROCK);
+//        }
+        return perk.getItem();
     }
 
     public static ItemStack createItem(Material type, String name, boolean enchanted, String... lores) {
