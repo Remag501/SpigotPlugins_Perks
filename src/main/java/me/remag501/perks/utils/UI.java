@@ -16,18 +16,26 @@ import java.util.List;
 
 public class UI implements Listener {
 
-    // Takes PlayerPerks as argument
-    public static Inventory getPerkMenu(PlayerPerks perks) {
-        Inventory perkInventory = Bukkit.createInventory(null, 54, "Choose Your Perk");
+    private PlayerPerks perks;
+    private Inventory perkInventory;
 
-        loadActivePerks(perkInventory, perks);
-        loadAvailablePerks(perkInventory, 0); // Default page is 0
-        loadBackNextButton(perkInventory);
+    public UI() {}
+
+    public UI(PlayerPerks perks) {
+        this.perks = perks;
+        perkInventory = Bukkit.createInventory(null, 54, "Choose Your Perk");
+    }
+
+    // Takes PlayerPerks as argument
+    public Inventory getPerkMenu() {
+        loadActivePerks();
+        loadAvailablePerks( 0); // Default page is 0
+        loadBackNextButton();
 
         return perkInventory;
     }
 
-    private static void loadActivePerks(Inventory perkInventory, PlayerPerks perks) {
+    private void loadActivePerks() {
         // Load active perks
         List<Perk> ownedPerks = perks.getOwnedPerks();
         int size = (ownedPerks == null) ? 0 : ownedPerks.size();
@@ -37,7 +45,7 @@ public class UI implements Listener {
         }
     }
 
-    private static void loadAvailablePerks(Inventory perkInventory, int page) {
+    private void loadAvailablePerks(int page) {
         // Load active perks
         for (int i = 19; i < 35; i++) {
             if (i % 9 == 0 || (i+1) % 9 == 0)
@@ -47,10 +55,9 @@ public class UI implements Listener {
         }
     }
 
-    private static void loadBackNextButton(Inventory perkInventory) {
+    private void loadBackNextButton() {
         int page = 0, totalPages = 1;
 //        int totalPages = Perk.perkAmount / 36;
-        loadAvailablePerks(perkInventory, page);
 
         if (page == totalPages - 1) // Last page
             perkInventory.setItem(53, Items.createItem(Material.STONE, "Last Page", false)); // No button needed
