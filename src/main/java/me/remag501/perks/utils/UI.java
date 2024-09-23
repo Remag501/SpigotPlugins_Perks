@@ -2,6 +2,7 @@ package me.remag501.perks.utils;
 
 import me.remag501.perks.perkTypes.LongSwordPerk;
 import me.remag501.perks.perkTypes.Perk;
+import me.remag501.perks.perkTypes.PerkType;
 import me.remag501.perks.perkTypes.PlayerPerks;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -77,7 +78,7 @@ public class UI implements Listener {
         // Check if the clicked inventory is the perk UI
         if (event.getView().getTitle().equals("Choose Your Perk")) {
             event.setCancelled(true); // Cancel the item removal
-
+            event.getCurrentItem().equals(PerkType.SWORD_PERK.getItem());
             // You can also send a message to the player if needed
             player.sendMessage("You clicked on the menu!");
         }
