@@ -5,8 +5,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class LongSwordPerk extends Perk {
 
-    public LongSwordPerk(Player player, ItemStack perkItem) {
-        super(player, perkItem);
+    public LongSwordPerk(ItemStack perkItem) {
+        super(perkItem);
     }
 
     @Override
@@ -16,6 +16,6 @@ public class LongSwordPerk extends Perk {
 
     @Override
     public void onDisable(Player player) {
-
+        player.sendMessage("Your perk has been disabled!");
     }
 }

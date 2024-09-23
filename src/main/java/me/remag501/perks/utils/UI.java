@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -38,9 +39,13 @@ public class UI implements Listener {
         // Load active perks
         List<Perk> ownedPerks = perks.getOwnedPerks();
         int size = (ownedPerks == null) ? 0 : ownedPerks.size();
-        for (int i = 0; i < size; i++) {
-            ItemStack perkItem = Items.createPerkItem(ownedPerks.get(i));
-            perkInventory.setItem(2 + i, perkItem); // Need to change order of items
+        for (int i = 0; i < 5; i++, size++) {
+            if (i < size) {
+                ItemStack perkItem = Items.createPerkItem(ownedPerks.get(i));
+                perkInventory.setItem(2 + i, perkItem);
+            }
+            else
+                perkInventory.setItem(i, new ItemStack(Material.AIR));
         }
     }
 
@@ -79,7 +84,14 @@ public class UI implements Listener {
             event.setCancelled(true); // Cancel the item removal
             if(event.getCurrentItem().equals(PerkType.SWORD_PERK.getItem())) {
                 player.sendMessage("You clicked on the perk!");
-                perks.addPerk(new LongSwordPerk(player, PerkType.SWORD_PERK.getItem())); // Create perk with player
+
+                ClickType click = event.getClick();
+                if (click == ClickType.LEFT)
+                    perks.addPerk(PerkType.SWORD_PERK); // Create perk with player
+                 else if (click == ClickType.RIGHT)
+                    perks.removePerk(PerkType.SWORD_PERK); // Remove perk
+                perkInventory = event.getInventory();
+                loadActivePerks();
             }
             // You can also send a message to the player if needed
 //            player.sendMessage("You clicked on the menu!");

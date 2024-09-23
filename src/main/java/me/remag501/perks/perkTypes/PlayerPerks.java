@@ -12,12 +12,11 @@ public class PlayerPerks {
 
     private static HashMap<UUID, PlayerPerks> playerPerks = new HashMap<>();
     private UUID playerUUID;
+    private ArrayList<Perk> ownedPerks;
 
     public static PlayerPerks getPlayerPerks(UUID playerUUID) {
         return playerPerks.get(playerUUID);
     }
-
-    private ArrayList<Perk> ownedPerks;
 
     public ArrayList<Perk> getOwnedPerks() {
         return ownedPerks;
@@ -29,12 +28,20 @@ public class PlayerPerks {
         this.playerUUID = playerUUID;
     }
 
-    public void addPerk(Perk perk) {
-        ownedPerks.add(perk);
-        perk.onEnable(Bukkit.getPlayer(playerUUID));
+    public void removePerk(PerkType perkType) {
+        if (!ownedPerks.contains(perkType.getPerk()))
+            return;
+        // Disable the perk before removing it
+        Perk perk = perkType.getPerk();
+        ownedPerks.remove(perk);
+        perk.onDisable(Bukkit.getPlayer(playerUUID));
     }
 
-//    public void addPerk(PerkType perk) {
-//        ownedPerks.add(perk.getPerk());
-//    }
+    public void addPerk(PerkType perkType) {
+        if (ownedPerks.contains(perkType.getPerk()))
+            return;
+        // Enable the perk before adding it
+        ownedPerks.add(perkType.getPerk());
+        perkType.getPerk().onEnable(Bukkit.getPlayer(playerUUID));
+    }
 }

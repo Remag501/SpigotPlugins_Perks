@@ -7,11 +7,9 @@ import org.bukkit.inventory.ItemStack;
 
 public abstract class Perk {
     // Stores info about the perk
-    private Player player;
     private ItemStack perkItem;
 
-    public Perk(Player player, ItemStack perkItem) {
-        this.player = player;
+    public Perk(ItemStack perkItem) {
         this.perkItem = perkItem;
     }
 
