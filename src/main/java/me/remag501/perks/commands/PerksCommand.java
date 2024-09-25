@@ -2,6 +2,7 @@ package me.remag501.perks.commands;
 
 import me.remag501.perks.perkTypes.LongSwordPerk;
 import me.remag501.perks.perkTypes.Perk;
+import me.remag501.perks.perkTypes.PerkType;
 import me.remag501.perks.perkTypes.PlayerPerks;
 import me.remag501.perks.utils.UI;
 import org.bukkit.Bukkit;
@@ -40,11 +41,38 @@ public class PerksCommand implements CommandExecutor {
             case "reload":
                 reload();
                 return true;
+            case "add":
+                if (args.length == 1)
+                    sender.sendMessage("You need to specify a perk type");
+                else if (args.length > 2)
+                    sender.sendMessage("Too many arguments");
+                else
+                    addPerk(sender, args[1]);
+                return true;
             default:
                 sender.sendMessage("Usage: awsjkflasdjf");
                 return true;
         }
 
+    }
+
+    private void addPerk(CommandSender sender, String perkType) {
+        // Get perk from command arguments
+        PerkType perk;
+        try {
+            perk = PerkType.valueOf(perkType);
+        } catch (Exception e) {
+            sender.sendMessage("Invalid perk type: " + perkType);
+            return;
+        }
+        sender.sendMessage("Added perk: " + perkType);
+        // Gets object of PlayerPerks from UUID
+        PlayerPerks playerPerks = PlayerPerks.getPlayerPerks(((Player) sender).getUniqueId());
+        if (playerPerks == null) {
+            playerPerks = new PlayerPerks(((Player) sender).getUniqueId());
+        }
+        // Add perk to players owned perks list
+        playerPerks.addOwnedPerks(perk);
     }
 
     private void reload() {

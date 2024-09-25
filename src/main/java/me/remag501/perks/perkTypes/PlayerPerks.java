@@ -32,7 +32,7 @@ public class PlayerPerks {
         this.playerUUID = playerUUID;
     }
 
-    public void removePerk(PerkType perkType) {
+    public void removeEquippedPerk(PerkType perkType) {
         if (!equippedPerks.contains(perkType.getPerk()))
             return;
         // Disable the perk before removing it
@@ -41,11 +41,15 @@ public class PlayerPerks {
         perk.onDisable(Bukkit.getPlayer(playerUUID));
     }
 
-    public void addPerk(PerkType perkType) {
+    public void addEquippedPerk(PerkType perkType) {
         if (equippedPerks.contains(perkType.getPerk()))
             return;
         // Enable the perk before adding it
         equippedPerks.add(perkType.getPerk());
         perkType.getPerk().onEnable(Bukkit.getPlayer(playerUUID));
+    }
+
+    public void addOwnedPerks(PerkType perkType) {
+        ownedPerks.add(perkType.getPerk());
     }
 }

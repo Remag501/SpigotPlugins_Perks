@@ -12,9 +12,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UI implements Listener {
@@ -103,9 +101,9 @@ public class UI implements Listener {
 
                 ClickType click = event.getClick();
                 if (click == ClickType.LEFT)
-                    perks.addPerk(PerkType.SWORD_PERK); // Create perk with player
+                    perks.addEquippedPerk(PerkType.SWORD_PERK); // Create perk with player
                  else if (click == ClickType.RIGHT)
-                    perks.removePerk(PerkType.SWORD_PERK); // Remove perk
+                    perks.removeEquippedPerk(PerkType.SWORD_PERK); // Remove perk
                 perkInventory = event.getInventory();
                 loadActivePerks();
             }

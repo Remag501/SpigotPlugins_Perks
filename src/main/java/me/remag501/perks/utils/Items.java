@@ -111,11 +111,11 @@ public class Items {
             NamespacedKey key = new NamespacedKey(Bukkit.getPluginManager().getPlugin("Perks"), "unique_id");
             PersistentDataContainer data = meta.getPersistentDataContainer();
             data.remove(key);
-            return;
+        } else {
+            // Update the item's count based on the number of perks the player has1
+            meta.setLore(Arrays.asList("§7Perks: " + count + "/3"));
+            // Revisit to find a way to keep remaining lore
         }
-        // Update the item's count based on the number of perks the player has
-        meta.setLore(Arrays.asList("§7Perks: " + count + "/3"));
-        // Revisit to find a way to keep remaining lore
         item.setItemMeta(meta);
     }
 
