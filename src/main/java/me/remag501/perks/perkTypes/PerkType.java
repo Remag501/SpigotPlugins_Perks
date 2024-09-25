@@ -6,9 +6,9 @@ import org.bukkit.inventory.ItemStack;
 
 //new Perk("Sword Perk", Items.createItem(Material.DIAMOND_SWORD, "Sword Perk", false, "stuff")
 public enum PerkType {
-    SWORD_PERK(new LongSwordPerk(Items.createItem(Material.DIAMOND_SWORD, "Sword Perk", false, "stuff")));
-
-    final Perk perk;
+    SWORD_PERK(new LongSwordPerk(Items.createItem(Material.DIAMOND_SWORD, "Sword Perk", "SWORD_PERK", false, "stuff")));
+    private final Perk perk;
+//    public final static int size = 1;
 
     PerkType(Perk perk) {
         this.perk = perk;

@@ -1,6 +1,5 @@
 package me.remag501.perks.utils;
 
-import me.remag501.perks.perkTypes.LongSwordPerk;
 import me.remag501.perks.perkTypes.Perk;
 import me.remag501.perks.perkTypes.PerkType;
 import me.remag501.perks.perkTypes.PlayerPerks;
@@ -13,7 +12,9 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UI implements Listener {
@@ -37,11 +38,11 @@ public class UI implements Listener {
 
     private void loadActivePerks() {
         // Load active perks
-        List<Perk> ownedPerks = perks.getOwnedPerks();
-        int size = (ownedPerks == null) ? 0 : ownedPerks.size();
+        List<Perk> equippedPerks = perks.getEquippedPerks();
+        int size = (equippedPerks == null) ? 0 : equippedPerks.size();
         for (int i = 0; i < 5; i++) {
             if (i < size) {
-                ItemStack perkItem = Items.createPerkItem(ownedPerks.get(i));
+                ItemStack perkItem = Items.createPerkItem(equippedPerks.get(i));
                 perkInventory.setItem(2 + i, perkItem);
             }
             else
@@ -50,13 +51,26 @@ public class UI implements Listener {
     }
 
     private void loadAvailablePerks(int page) {
-        // Load active perks
-        for (int i = 19; i < 35; i++) {
+        // Load owned perks
+        List<Perk> ownedPerks = perks.getOwnedPerks();
+        for (int i = 19, size = PerkType.values().length, k = 0; i < 35; i++) {
             if (i % 9 == 0 || (i+1) % 9 == 0)
                 continue;
-            perkInventory.setItem(i, Items.createItem(Material.PAPER, "Page " + i, true)); // Add pages
+            if (k < size) {
+                ItemStack item = PerkType.values()[k].getItem().clone(); // Prevent mutilating enum object
+                Items.updateCount(item, ownedPerks);
+                perkInventory.setItem(i, item);
+                k++;
+            } else
+                perkInventory.setItem(i, Items.createItem(Material.BARRIER, "???", null, true));
         }
-        perkInventory.setItem(19, PerkType.SWORD_PERK.getItem());
+//        ItemStack perkItem = PerkType.SWORD_PERK.getItem().clone();
+//        ItemMeta meta = perkItem.getItemMeta().clone();
+//        ArrayList lore = new ArrayList();
+//        lore.add("x/3 owned");
+//        meta.setLore(lore);
+//        perkItem.setItemMeta(meta);
+//        perkInventory.setItem(19, perkItem);
     }
 
     private void loadBackNextButton() {
@@ -64,13 +78,13 @@ public class UI implements Listener {
 //        int totalPages = Perk.perkAmount / 36;
 
         if (page == totalPages - 1) // Last page
-            perkInventory.setItem(53, Items.createItem(Material.STONE, "Last Page", false)); // No button needed
+            perkInventory.setItem(53, Items.createItem(Material.STONE, "Last Page", null, false)); // No button needed
         else // Not last page
-            perkInventory.setItem(53, Items.createItem(Material.GREEN_TERRACOTTA, "Next", false)); // Add next button
+            perkInventory.setItem(53, Items.createItem(Material.GREEN_TERRACOTTA, "Next", null, false)); // Add next button
         if (page == 0) // First page
-            perkInventory.setItem(45, Items.createItem(Material.STONE, "First Page", false)); // No button needed
+            perkInventory.setItem(45, Items.createItem(Material.STONE, "First Page", null, false)); // No button needed
         else // Not first page
-            perkInventory.setItem(45, Items.createItem(Material.RED_TERRACOTTA, "Back", false)); // Add back button
+            perkInventory.setItem(45, Items.createItem(Material.RED_TERRACOTTA, "Back", null, false)); // Add back button
     }
 
     // Handle inventory clicks
@@ -82,7 +96,9 @@ public class UI implements Listener {
         // Check if the clicked inventory is the perk UI
         if (event.getView().getTitle().equals("Choose Your Perk")) {
             event.setCancelled(true); // Cancel the item removal
-            if(event.getCurrentItem().equals(PerkType.SWORD_PERK.getItem())) {
+
+//            if(event.getCurrentItem().equals(PerkType.SWORD_PERK.getItem())) { // Change to PersistentDataContainer object
+            if (Items.areItemsEqual(event.getCurrentItem(),PerkType.SWORD_PERK.getItem())) {
                 player.sendMessage("You clicked on the perk!");
 
                 ClickType click = event.getClick();

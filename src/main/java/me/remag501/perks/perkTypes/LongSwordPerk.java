@@ -16,7 +16,7 @@ public class LongSwordPerk extends Perk {
         player.sendMessage("Your perk has been activated!");
 
         // Grant the player a speed boost
-        PotionEffect speedBoost = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1); // Duration is very long, level 2 speed
+        PotionEffect speedBoost = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, true); // Duration is very long, level 2 speed
         player.addPotionEffect(speedBoost);
 
     }
