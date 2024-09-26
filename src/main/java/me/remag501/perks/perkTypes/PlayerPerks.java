@@ -3,6 +3,7 @@ package me.remag501.perks.perkTypes;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -49,11 +50,19 @@ public class PlayerPerks {
         perkType.getPerk().onEnable(Bukkit.getPlayer(playerUUID));
     }
 
-    public void addOwnedPerks(PerkType perkType) {
-        ownedPerks.add(perkType.getPerk());
+    public boolean addOwnedPerks(PerkType perkType) {
+        // O(n) complexity
+        int count = Collections.frequency(ownedPerks, perkType.getPerk());
+        if (count < 3) {
+            ownedPerks.add(perkType.getPerk());
+            return true;
+        }
+        return false;
     }
 
     public void removeOwnedPerk(PerkType perkType) {
+        // Doesnt need count checker since remove leaves array the same if the value is not found
+        // O(1) complexity
         if (!ownedPerks.contains(perkType.getPerk()))
             return;
         ownedPerks.remove(perkType.getPerk());

@@ -6,7 +6,8 @@ import org.bukkit.inventory.ItemStack;
 
 //new Perk("Sword Perk", Items.createItem(Material.DIAMOND_SWORD, "Sword Perk", false, "stuff")
 public enum PerkType {
-    SWORD_PERK(new LongSwordPerk(Items.createItem(Material.DIAMOND_SWORD, "Sword Perk", "SWORD_PERK", false, "stuff")));
+    SWORD_PERK(new LongSwordPerk(Items.createItem(Material.DIAMOND_SWORD, "Sword Perk", "SWORD_PERK", false, "stuff"))),
+    CREEPER_BRAWLER(new CreeperBrawler(Items.createItem(Material.CREEPER_HEAD, "Creeper Brawler Perk", "CREEPER_BRAWLER", false, "Creeper Brawler Perk")));
     private final Perk perk;
 //    public final static int size = 1;
 

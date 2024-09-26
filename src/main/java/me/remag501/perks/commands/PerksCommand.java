@@ -86,14 +86,16 @@ public class PerksCommand implements CommandExecutor {
             player.sendMessage("Invalid perk type: " + perkType);
             return;
         }
-        player.sendMessage("Added perk: " + perkType);
         // Gets object of PlayerPerks from UUID
         PlayerPerks playerPerks = PlayerPerks.getPlayerPerks(player.getUniqueId());
         if (playerPerks == null) {
             playerPerks = new PlayerPerks(((Player) player).getUniqueId());
         }
         // Add perk to players owned perks list
-        playerPerks.addOwnedPerks(perk);
+        if(playerPerks.addOwnedPerks(perk))
+            player.sendMessage("Added perk: " + perkType);
+        else
+            player.sendMessage("You have cannot have more than three perk cards");
     }
 
     private void addPerk(CommandSender sender, String playerName, String perkType) {
