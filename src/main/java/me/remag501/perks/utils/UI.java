@@ -51,11 +51,13 @@ public class UI implements Listener {
     private void loadAvailablePerks(int page) {
         // Load owned perks
         List<Perk> ownedPerks = perks.getOwnedPerks();
+        List<Perk> equippedPerks = perks.getEquippedPerks();
         for (int i = 19, size = PerkType.values().length, k = 0; i < 35; i++) {
             if (i % 9 == 0 || (i+1) % 9 == 0)
                 continue;
             if (k < size) {
                 ItemStack item = PerkType.values()[k].getItem().clone(); // Prevent mutilating enum object
+                Items.updateEquipStatus(item, equippedPerks);
                 Items.updateCount(item, ownedPerks);
                 perkInventory.setItem(i, item);
                 k++;
@@ -106,6 +108,7 @@ public class UI implements Listener {
                     perks.removeEquippedPerk(PerkType.SWORD_PERK); // Remove perk
                 perkInventory = event.getInventory();
                 loadActivePerks();
+                loadAvailablePerks(0);
             }
             // You can also send a message to the player if needed
 //            player.sendMessage("You clicked on the menu!");

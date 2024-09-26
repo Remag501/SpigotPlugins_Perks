@@ -112,9 +112,48 @@ public class Items {
             PersistentDataContainer data = meta.getPersistentDataContainer();
             data.remove(key);
         } else {
-            // Update the item's count based on the number of perks the player has1
-            meta.setLore(Arrays.asList("§7Perks: " + count + "/3"));
+            // Update the item's count based on the number of perks the player has
+            List<String> loreList = meta.getLore();
+            if (meta.hasEnchants()) // Checks if selected
+                loreList.add(1, "§7Perks: " + count + "/3");
+            else
+                loreList.add(0, "§7Perks: " + count + "/3");
+            meta.setLore(loreList);
             // Revisit to find a way to keep remaining lore
+        }
+        item.setItemMeta(meta);
+    }
+
+    public static void updateEquipStatus(ItemStack item, List<Perk> equippedPerks) {
+        // Check if perk is equipped
+        boolean equipped = false;
+        for (Perk perk: equippedPerks){
+            if (areItemsEqual(item, perk.getItem())) {
+                equipped = true;
+                break;
+            }
+        }
+        // Get the meta of the item
+        ItemMeta meta = item.getItemMeta();
+        // Enchant the item then add lore to show its equipped
+        if (equipped) {
+            // Enchant
+            meta.addEnchant(Enchantment.LUCK, 1, true);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            // Get previous lore
+            List<String> lore = meta.getLore();
+            if (lore == null)
+                lore = new ArrayList<String>();
+            lore.add(0, "§c§lEquipped");
+            meta.setLore(lore);
+        } else {
+            meta.removeEnchant(Enchantment.LUCK);
+            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            // Get previous lore
+            List<String> lore = meta.getLore();
+            if (lore != null)
+                lore.remove("§4Equipped");
+            meta.setLore(lore);
         }
         item.setItemMeta(meta);
     }
