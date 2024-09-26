@@ -52,4 +52,10 @@ public class PlayerPerks {
     public void addOwnedPerks(PerkType perkType) {
         ownedPerks.add(perkType.getPerk());
     }
+
+    public void removeOwnedPerk(PerkType perkType) {
+        if (!ownedPerks.contains(perkType.getPerk()))
+            return;
+        ownedPerks.remove(perkType.getPerk());
+    }
 }

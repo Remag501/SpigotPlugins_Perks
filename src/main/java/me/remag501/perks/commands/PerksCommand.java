@@ -43,20 +43,80 @@ public class PerksCommand implements CommandExecutor {
                 return true;
             case "add":
                 if (args.length == 1)
-                    sender.sendMessage("You need to specify a perk type");
-                else if (args.length > 2)
+                    printPerks(sender);
+                else if (args.length == 2)
+                    addPerk((Player) sender, args[1]);
+                else if (args.length == 3)
+                    addPerk(sender, args[1], args[2]);
+                else if (args.length > 3)
                     sender.sendMessage("Too many arguments");
-                else
-                    addPerk(sender, args[1]);
+                return true;
+            case "remove":
+                if (args.length == 1)
+                    printPerks(sender);
+                else if (args.length == 2)
+                    removePerk(sender, sender.getName(), args[1]);
+                else if (args.length == 3)
+                    removePerk(sender, args[1], args[2]);
+                else if (args.length > 3)
+                    sender.sendMessage("Too many arguments");
                 return true;
             default:
-                sender.sendMessage("Usage: awsjkflasdjf");
+                sender.sendMessage("Usage: reload/add/remove");
                 return true;
         }
 
     }
 
-    private void addPerk(CommandSender sender, String perkType) {
+    private void printPerks(CommandSender sender) {
+        sender.sendMessage("You need to specify a perk type");
+        String rv ="";
+        for (PerkType type: PerkType.values()) {
+            rv += String.valueOf(type) + " ";
+        }
+        sender.sendMessage(rv);
+    }
+
+    private void addPerk(Player player, String perkType) {
+        // Get perk from command arguments
+        PerkType perk;
+        try {
+            perk = PerkType.valueOf(perkType);
+        } catch (Exception e) {
+            player.sendMessage("Invalid perk type: " + perkType);
+            return;
+        }
+        player.sendMessage("Added perk: " + perkType);
+        // Gets object of PlayerPerks from UUID
+        PlayerPerks playerPerks = PlayerPerks.getPlayerPerks(player.getUniqueId());
+        if (playerPerks == null) {
+            playerPerks = new PlayerPerks(((Player) player).getUniqueId());
+        }
+        // Add perk to players owned perks list
+        playerPerks.addOwnedPerks(perk);
+    }
+
+    private void addPerk(CommandSender sender, String playerName, String perkType) {
+        Player player = Bukkit.getPlayer(playerName);
+        if (player == null) {
+            sender.sendMessage("Player not found: " + playerName);
+            return;
+        }
+        try {PerkType.valueOf(perkType);}
+        catch (Exception e) {
+            sender.sendMessage("Invalid perk type: " + perkType);
+            return;
+        }
+        addPerk(player, perkType);
+    }
+
+    private void removePerk(CommandSender sender, String playerName, String perkType) {
+        // Get player from player name
+        Player player = Bukkit.getPlayer(playerName);
+        if (player == null) {
+            sender.sendMessage("Player not found: " + playerName);
+            return;
+        }
         // Get perk from command arguments
         PerkType perk;
         try {
@@ -65,14 +125,14 @@ public class PerksCommand implements CommandExecutor {
             sender.sendMessage("Invalid perk type: " + perkType);
             return;
         }
-        sender.sendMessage("Added perk: " + perkType);
+        sender.sendMessage("Removed perk: " + perkType);
         // Gets object of PlayerPerks from UUID
-        PlayerPerks playerPerks = PlayerPerks.getPlayerPerks(((Player) sender).getUniqueId());
+        PlayerPerks playerPerks = PlayerPerks.getPlayerPerks(player.getUniqueId());
         if (playerPerks == null) {
-            playerPerks = new PlayerPerks(((Player) sender).getUniqueId());
+            playerPerks = new PlayerPerks(player.getUniqueId());
         }
-        // Add perk to players owned perks list
-        playerPerks.addOwnedPerks(perk);
+        // Remove perk from players owned perks list
+        playerPerks.removeOwnedPerk(perk);
     }
 
     private void reload() {
@@ -96,7 +156,6 @@ public class PerksCommand implements CommandExecutor {
         Inventory perkMenu = ui.getPerkMenu();
         player.openInventory(perkMenu);
     }
-
 
     public PerksCommand(Plugin plugin) {
         this.plugin = plugin;
