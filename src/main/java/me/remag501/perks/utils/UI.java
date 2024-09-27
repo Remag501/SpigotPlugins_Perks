@@ -98,20 +98,29 @@ public class UI implements Listener {
             event.setCancelled(true); // Cancel the item removal
 
 //            if(event.getCurrentItem().equals(PerkType.SWORD_PERK.getItem())) { // Change to PersistentDataContainer object
-            if (Items.areItemsEqual(event.getCurrentItem(),PerkType.SWORD_PERK.getItem())) {
-                player.sendMessage("You clicked on the perk!");
-
-                ClickType click = event.getClick();
-                if (click == ClickType.LEFT)
-                    perks.addEquippedPerk(PerkType.SWORD_PERK); // Create perk with player
-                 else if (click == ClickType.RIGHT)
-                    perks.removeEquippedPerk(PerkType.SWORD_PERK); // Remove perk
-                perkInventory = event.getInventory();
-                loadActivePerks();
-                loadAvailablePerks(0);
+//            if (Items.areItemsEqual(event.getCurrentItem(),PerkType.SWORD_PERK.getItem())) {
+//
+//                ClickType click = event.getClick();
+//                if (click == ClickType.LEFT)
+//                    perks.addEquippedPerk(PerkType.SWORD_PERK); // Create perk with player
+//                 else if (click == ClickType.RIGHT)
+//                    perks.removeEquippedPerk(PerkType.SWORD_PERK); // Remove perk
+//                perkInventory = event.getInventory();
+//                loadActivePerks();
+//                loadAvailablePerks(0);
+//            }
+            for (PerkType perkType: PerkType.values()) {
+                if (Items.areItemsEqual(event.getCurrentItem(),perkType.getItem())) {
+                    ClickType click = event.getClick();
+                    if (click == ClickType.LEFT)
+                        perks.addEquippedPerk(perkType);
+                    else if (click == ClickType.RIGHT)
+                        perks.removeEquippedPerk(perkType);
+                    perkInventory = event.getInventory();
+                    loadActivePerks();
+                    loadAvailablePerks(0);
+                }
             }
-            // You can also send a message to the player if needed
-//            player.sendMessage("You clicked on the menu!");
         }
     }
 
