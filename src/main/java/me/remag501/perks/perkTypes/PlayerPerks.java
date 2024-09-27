@@ -47,6 +47,9 @@ public class PlayerPerks {
             return;
         // Enable the perk before adding it
         equippedPerks.add(perkType.getPerk());
+        // Only enables if the player is not in spawn
+        if (Bukkit.getPlayer(playerUUID).getWorld().getName().equalsIgnoreCase("world"))
+            return;
         perkType.getPerk().onEnable(Bukkit.getPlayer(playerUUID));
     }
 

@@ -8,7 +8,8 @@ import org.bukkit.inventory.ItemStack;
 public enum PerkType {
     SWORD_PERK(new LongSwordPerk(Items.createItem(Material.DIAMOND_SWORD, "Sword Perk", "SWORD_PERK", false, "stuff"))),
     CREEPER_BRAWLER(new CreeperBrawler(Items.createItem(Material.CREEPER_HEAD, "Creeper Brawler Perk", "CREEPER_BRAWLER", false, "Creeper Brawler Perk"))),
-    HOT_HANDS(new HotHandsPerk(Items.createItem(Material.BAKED_POTATO, "Hot Hands", "HOT_HANDS", false, "Hot potato got a little too hot")));
+    HOT_HANDS(new HotHandsPerk(Items.createItem(Material.BAKED_POTATO, "Hot Hands", "HOT_HANDS", false, "Hot potato got a little too hot"))),
+    GOLDEN_EXPERIENCE(new GoldenExperiencePerk(Items.createItem(Material.GOLD_BLOCK, "Golden Experience", "GOLDEN_EXPERIENCE", false, "Muda")));
     private final Perk perk;
 //    public final static int size = 1;
 
