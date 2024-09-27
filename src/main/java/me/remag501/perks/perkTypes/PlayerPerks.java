@@ -63,6 +63,8 @@ public class PlayerPerks {
     public void removeOwnedPerk(PerkType perkType) {
         // Doesnt need count checker since remove leaves array the same if the value is not found
         // O(1) complexity
+//        Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(getEquippedPerks().toString());
+//        Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(getOwnedPerks().toString());
         if (!ownedPerks.contains(perkType.getPerk()))
             return;
         ownedPerks.remove(perkType.getPerk());

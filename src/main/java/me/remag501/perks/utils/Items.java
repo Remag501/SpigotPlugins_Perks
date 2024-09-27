@@ -86,6 +86,8 @@ public class Items {
             String id1 = data1.get(key, PersistentDataType.STRING);
             String id2 = data2.get(key, PersistentDataType.STRING);
 
+//
+
             // Compare the unique IDs
             return id1 != null && id1.equals(id2);
         }
@@ -111,6 +113,8 @@ public class Items {
             NamespacedKey key = new NamespacedKey(Bukkit.getPluginManager().getPlugin("Perks"), "unique_id");
             PersistentDataContainer data = meta.getPersistentDataContainer();
             data.remove(key);
+//            Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(data.get(key, PersistentDataType.STRING));
+
         } else {
             // Update the item's count based on the number of perks the player has
             List<String> loreList = meta.getLore();

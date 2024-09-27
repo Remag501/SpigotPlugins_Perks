@@ -5,6 +5,7 @@ import me.remag501.perks.perkTypes.PerkType;
 import me.remag501.perks.perkTypes.PlayerPerks;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
@@ -12,6 +13,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
 
@@ -109,8 +111,13 @@ public class UI implements Listener {
 //                loadActivePerks();
 //                loadAvailablePerks(0);
 //            }
+            NamespacedKey key = new NamespacedKey(Bukkit.getPluginManager().getPlugin("Perks"), "unique_id");
+//            Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(String.valueOf(event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.STRING)));
             for (PerkType perkType: PerkType.values()) {
                 if (Items.areItemsEqual(event.getCurrentItem(),perkType.getItem())) {
+
+                    Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(String.valueOf(perkType.getItem().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.STRING)));
+//                    perkType.getItem().getItemMeta().getPersistentDataContainer().has(key, PersistentDataType.STRING);
                     ClickType click = event.getClick();
                     if (click == ClickType.LEFT)
                         perks.addEquippedPerk(perkType);
