@@ -4,7 +4,8 @@ import me.remag501.perks.perkTypes.Perk;
 import me.remag501.perks.perkTypes.PlayerPerks;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -23,10 +24,7 @@ public class PerkWorldChangeListener implements Listener {
         this.disabledWorlds = disabledWorlds;
     }
 
-    @EventHandler
-    public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
-        Player player = event.getPlayer();
-        player.sendMessage("event triggered");
+    private void checkAllowedWorld(Player player) {
         String newWorld = player.getWorld().getName();
 
         // Check if the world allows perks
@@ -37,6 +35,37 @@ public class PerkWorldChangeListener implements Listener {
             // Re-enable player's perks
             enablePlayerPerks(player);
         }
+    }
+
+    @EventHandler
+    public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
+        Player player = event.getPlayer();
+        checkAllowedWorld(player);
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        // Turn off perk
+        disablePlayerPerks(event.getEntity());
+        // Player loses on perk at random
+        // If the player died at combat the killers gets the perk
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        checkAllowedWorld(player);
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        checkAllowedWorld(player);
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        disablePlayerPerks(event.getPlayer());
     }
 
     private void disablePlayerPerks(Player player) {

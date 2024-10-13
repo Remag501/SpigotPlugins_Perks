@@ -82,11 +82,11 @@ public class UI implements Listener {
         if (page == totalPages - 1) // Last page
             perkInventory.setItem(53, Items.createItem(Material.STONE, "Last Page", null, false)); // No button needed
         else // Not last page
-            perkInventory.setItem(53, Items.createItem(Material.GREEN_TERRACOTTA, "Next", null, false)); // Add next button
+            perkInventory.setItem(53, Items.createItem(Material.GREEN_CONCRETE, "Next", null, false)); // Add next button
         if (page == 0) // First page
             perkInventory.setItem(45, Items.createItem(Material.STONE, "First Page", null, false)); // No button needed
         else // Not first page
-            perkInventory.setItem(45, Items.createItem(Material.RED_TERRACOTTA, "Back", null, false)); // Add back button
+            perkInventory.setItem(45, Items.createItem(Material.RED_CONCRETE, "Back", null, false)); // Add back button
     }
 
     // Handle inventory clicks
