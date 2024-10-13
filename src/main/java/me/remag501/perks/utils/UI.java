@@ -42,7 +42,8 @@ public class UI implements Listener {
         int size = (equippedPerks == null) ? 0 : equippedPerks.size();
         for (int i = 0; i < 5; i++) {
             if (i < size) {
-                ItemStack perkItem = Items.createPerkItem(equippedPerks.get(i));
+//                ItemStack perkItem = Items.createPerkItem(equippedPerks.get(i));
+                ItemStack perkItem = equippedPerks.get(i).getItem();
                 perkInventory.setItem(2 + i, perkItem);
             }
             else

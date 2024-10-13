@@ -11,16 +11,16 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PerkWorldChangeListener implements Listener {
+public class PerkChangeListener implements Listener {
 
     private List<String> disabledWorlds;
 
-    public PerkWorldChangeListener() {
+    public PerkChangeListener() {
         disabledWorlds = new ArrayList<String>();
         disabledWorlds.add("world");
     }
 
-    public PerkWorldChangeListener(List<String> disabledWorlds) {
+    public PerkChangeListener(List<String> disabledWorlds) {
         this.disabledWorlds = disabledWorlds;
     }
 

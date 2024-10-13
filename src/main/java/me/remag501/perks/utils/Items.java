@@ -17,18 +17,37 @@ import java.util.List;
 
 public class Items {
 
-    public static ItemStack createPerkItem(Perk perk) {
-        // Returns an item depending on the perk name, Long Sword as placeholder
 
-//        switch (perk) {
-//            case PerkType.:
-//                return createItem(Material.DIAMOND_SWORD, "Long Sword", true, "Here are some lores", "§4This is a powerful sword!");
-//            default:
-////                plugin.getLogger().info("Unknown perk: " + perkName);
-//                return new ItemStack(Material.BEDROCK);
-//        }
-        return perk.getItem();
+    public static ItemStack createPerkItem(Material type, String name, String id, int rarity, String... lores) {
+        String rarityStr;
+        switch (rarity) {
+            case 0:
+                rarityStr = "§f§lCommon";
+                break;
+            case 1:
+                rarityStr = "§a§lUncommon";
+                break;
+            case 2:
+                rarityStr = "§1§lRare";
+                break;
+            case 3:
+                rarityStr = "§6§lLegendary";
+                break;
+            case 4:
+                rarityStr = "§8§lHidden";
+                break;
+            default:
+                rarityStr = "§7Unknown";
+                break;
+        }
+        // Prepend the lores with rarityStr
+//        List<String> loreList = new ArrayList<>(List.of(rarityStr));
+//        loreList.addAll(Arrays.asList(lores));
+        ArrayList<String> loreList = new ArrayList<>(Arrays.asList(lores));
+        loreList.add(0, rarityStr);
+        return Items.createItem(type, name, id, false, loreList.toArray(new String[loreList.size()]));
     }
+
     // Add identifier to this function arguments
     public static ItemStack createItem(Material type, String name, String id, boolean enchanted, String... lores) {
         // Function to make creating items easier
