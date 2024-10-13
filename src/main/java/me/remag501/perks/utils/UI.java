@@ -88,6 +88,7 @@ public class UI implements Listener {
             perkInventory.setItem(45, Items.createItem(Material.STONE, "First Page", null, false)); // No button needed
         else // Not first page
             perkInventory.setItem(45, Items.createItem(Material.RED_CONCRETE, "Back", null, false)); // Add back button
+
     }
 
     // Handle inventory clicks

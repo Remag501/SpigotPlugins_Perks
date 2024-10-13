@@ -8,12 +8,19 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
 
+import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class Items {
 
@@ -46,6 +53,26 @@ public class Items {
         ArrayList<String> loreList = new ArrayList<>(Arrays.asList(lores));
         loreList.add(0, rarityStr);
         return Items.createItem(type, name, id, false, loreList.toArray(new String[loreList.size()]));
+    }
+
+    public static ItemStack createPerkSkull(String texture, String name, String id, int rarity, String... lores) {
+        ItemStack head = createPerkItem(Material.PLAYER_HEAD, name, id, rarity, lores);
+        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+        // Set the custom texture
+        PlayerProfile profile = Bukkit.createPlayerProfile(UUID.randomUUID().toString());
+        PlayerTextures playerTexture = profile.getTextures();
+        try {
+            URL url = new URL(texture);
+            playerTexture.setSkin(url);
+            profile.setTextures(playerTexture);
+            skullMeta.setOwnerProfile(profile);
+        } catch (MalformedURLException e) {
+            Bukkit.getLogger().severe("Invalid skin URL: " + texture);
+            e.printStackTrace();
+        }
+        head.setItemMeta(skullMeta);
+
+        return head;
     }
 
     // Add identifier to this function arguments
