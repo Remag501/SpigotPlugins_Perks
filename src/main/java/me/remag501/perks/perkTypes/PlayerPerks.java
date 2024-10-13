@@ -71,5 +71,8 @@ public class PlayerPerks {
         if (!ownedPerks.contains(perkType.getPerk()))
             return;
         ownedPerks.remove(perkType.getPerk());
+        // Checks if the owned perks are zero, if so unequips
+        if (!ownedPerks.contains(perkType.getPerk()))
+            removeEquippedPerk(perkType);
     }
 }
