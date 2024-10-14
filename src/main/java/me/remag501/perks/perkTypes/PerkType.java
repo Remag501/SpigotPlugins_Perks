@@ -12,7 +12,6 @@ public enum PerkType {
     GOLDEN_EXPERIENCE(new GoldenExperiencePerk(Items.createPerkSkull("http://textures.minecraft.net/texture/a5e048e5e94b945d161f0f3df83cc6f61985d5974c7ad9595197a50dc00edc0b",
             "Golden Experience", "GOLDEN_EXPERIENCE", 4, "Muda Muda Muda")));
     private final Perk perk;
-//    public final static int size = 1;
 
     PerkType(Perk perk) {
         this.perk = perk;

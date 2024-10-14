@@ -7,4 +7,3 @@ Implement:
 - Add sound effects for selecting ui items
 - Add dependencies that perks can have on each other
 - Make perks drop on death and go to the killer
-- **Add hidden perk ui**

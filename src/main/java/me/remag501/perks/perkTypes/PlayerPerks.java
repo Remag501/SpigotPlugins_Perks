@@ -1,11 +1,9 @@
 package me.remag501.perks.perkTypes;
 
+import me.remag501.perks.utils.ConfigUtil;
 import org.bukkit.Bukkit;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerPerks {
 
@@ -16,6 +14,17 @@ public class PlayerPerks {
 
     public static PlayerPerks getPlayerPerks(UUID playerUUID) {
         return playerPerks.get(playerUUID);
+    }
+
+    public void loadPerks(String player) {
+        ConfigUtil perkConfig = new ConfigUtil(Bukkit.getPluginManager().getPlugin("Perks"), "perks.yml");
+        List<String> equippedPerks = perkConfig.getConfig().getStringList(player + "_equipped");
+        List<String> ownedPerks = perkConfig.getConfig().getStringList(player + "_owned");
+        // Convert to Perk ArrayList and set this update this instance to existing perks
+        for (String perk: equippedPerks)
+            this.equippedPerks.add(PerkType.valueOf(perk).getPerk());
+        for (String perk: ownedPerks)
+            this.ownedPerks.add(PerkType.valueOf(perk).getPerk());
     }
 
     public ArrayList<Perk> getEquippedPerks() {
@@ -31,7 +40,10 @@ public class PlayerPerks {
         ownedPerks = new ArrayList<Perk>();
         playerPerks.put(playerUUID, this);
         this.playerUUID = playerUUID;
+        if (playerUUID != null)
+            loadPerks(Bukkit.getPlayer(playerUUID).getName());
     }
+
 
     public void removeEquippedPerk(PerkType perkType) {
         if (!equippedPerks.contains(perkType.getPerk()))
