@@ -52,7 +52,16 @@ public class Items {
 //        loreList.addAll(Arrays.asList(lores));
         ArrayList<String> loreList = new ArrayList<>(Arrays.asList(lores));
         loreList.add(0, rarityStr);
-        return Items.createItem(type, name, id, false, loreList.toArray(new String[loreList.size()]));
+        ItemStack item = Items.createItem(type, name, id, false, loreList.toArray(new String[loreList.size()]));
+        // Add tag for hidden rarity
+        if (rarityStr.equals("§8§lHidden")) {
+            ItemMeta meta = item.getItemMeta();
+            NamespacedKey key = new NamespacedKey(Bukkit.getPluginManager().getPlugin("Perks"), "rarity");
+            PersistentDataContainer data = meta.getPersistentDataContainer();
+            data.set(key, PersistentDataType.STRING, "HIDDEN");
+            item.setItemMeta(meta);
+        }
+        return item;
     }
 
     public static ItemStack createPerkSkull(String texture, String name, String id, int rarity, String... lores) {
@@ -139,6 +148,16 @@ public class Items {
         }
 
         return false; // The custom data isn't present or doesn't match
+    }
+
+    // Function to check if ItemStack contains hidden rarity key
+    public static boolean hiddenItem(ItemStack item) {
+        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+        NamespacedKey key = new NamespacedKey(Bukkit.getPluginManager().getPlugin("Perks"), "rarity");
+        String id = container.get(key, PersistentDataType.STRING);
+        if (id == null)
+            return false; // No custom data is present or the custom data isn't a hidden rarity key
+        return id.equals("HIDDEN");
     }
 
     public static void updateCount(ItemStack item, List<Perk> perks) {

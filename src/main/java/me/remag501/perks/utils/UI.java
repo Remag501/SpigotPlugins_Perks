@@ -21,8 +21,10 @@ public class UI implements Listener {
 
     private PlayerPerks perks;
     private Inventory perkInventory;
+    private boolean hiddenMenu;
 
-    public UI(PlayerPerks perks) {
+    public UI(PlayerPerks perks, boolean hiddenMenu) {
+        this.hiddenMenu = hiddenMenu;
         this.perks = perks;
         perkInventory = Bukkit.createInventory(null, 54, "Choose Your Perk");
     }
@@ -30,7 +32,7 @@ public class UI implements Listener {
     // Takes PlayerPerks as argument
     public Inventory getPerkMenu() {
         loadActivePerks();
-        loadAvailablePerks( 0); // Default page is 0
+        loadAvailablePerks(0); // Default page is 0
         loadBackNextButton();
 
         return perkInventory;
@@ -45,8 +47,7 @@ public class UI implements Listener {
 //                ItemStack perkItem = Items.createPerkItem(equippedPerks.get(i));
                 ItemStack perkItem = equippedPerks.get(i).getItem();
                 perkInventory.setItem(2 + i, perkItem);
-            }
-            else
+            } else
                 perkInventory.setItem(2 + i, new ItemStack(Material.AIR));
         }
     }
@@ -56,14 +57,20 @@ public class UI implements Listener {
         List<Perk> ownedPerks = perks.getOwnedPerks();
         List<Perk> equippedPerks = perks.getEquippedPerks();
         for (int i = 19, size = PerkType.values().length, k = 0; i < 35; i++) {
-            if (i % 9 == 0 || (i+1) % 9 == 0)
+            if (i % 9 == 0 || (i + 1) % 9 == 0)
                 continue;
             if (k < size) {
                 ItemStack item = PerkType.values()[k].getItem().clone(); // Prevent mutilating enum object
+                k++;
+                // Checks if the item is hidden
+                if (Items.hiddenItem(item) && !hiddenMenu) {
+                    i--; // Don't move to next UI slot
+                    continue;
+                }
+                // Display the perk item
                 Items.updateEquipStatus(item, equippedPerks);
                 Items.updateCount(item, ownedPerks);
                 perkInventory.setItem(i, item);
-                k++;
             } else
                 perkInventory.setItem(i, Items.createItem(Material.BARRIER, "???", null, true));
         }
@@ -101,25 +108,14 @@ public class UI implements Listener {
         if (event.getView().getTitle().equals("Choose Your Perk")) {
             event.setCancelled(true); // Cancel the item removal
 
-//            if(event.getCurrentItem().equals(PerkType.SWORD_PERK.getItem())) { // Change to PersistentDataContainer object
-//            if (Items.areItemsEqual(event.getCurrentItem(),PerkType.SWORD_PERK.getItem())) {
-//
-//                ClickType click = event.getClick();
-//                if (click == ClickType.LEFT)
-//                    perks.addEquippedPerk(PerkType.SWORD_PERK); // Create perk with player
-//                 else if (click == ClickType.RIGHT)
-//                    perks.removeEquippedPerk(PerkType.SWORD_PERK); // Remove perk
-//                perkInventory = event.getInventory();
-//                loadActivePerks();
-//                loadAvailablePerks(0);
-//            }
             NamespacedKey key = new NamespacedKey(Bukkit.getPluginManager().getPlugin("Perks"), "unique_id");
-//            Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(String.valueOf(event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.STRING)));
-            for (PerkType perkType: PerkType.values()) {
-                if (Items.areItemsEqual(event.getCurrentItem(),perkType.getItem())) {
-
-                    Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(String.valueOf(perkType.getItem().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.STRING)));
-//                    perkType.getItem().getItemMeta().getPersistentDataContainer().has(key, PersistentDataType.STRING);
+            for (PerkType perkType : PerkType.values()) {
+                if (Items.areItemsEqual(event.getCurrentItem(), perkType.getItem())) {
+                    // Check if the perk event is triggered by hidden item, if so make this object have hidden perks
+                    if (Items.hiddenItem(event.getCurrentItem()))
+                        hiddenMenu = true;
+//                    Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(String.valueOf(perkType.getItem().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.STRING)));
+                    // Add or remove the perk from player's equipped perks based on the click type (left or right)'
                     ClickType click = event.getClick();
                     if (click == ClickType.LEFT)
                         perks.addEquippedPerk(perkType);

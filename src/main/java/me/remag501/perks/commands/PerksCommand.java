@@ -33,7 +33,7 @@ public class PerksCommand implements CommandExecutor {
             return true;
         }
         if (args.length == 0) {
-            openPerkUI(sender);
+            openPerkUI(sender, false);
             return true;
         }
 
@@ -60,6 +60,9 @@ public class PerksCommand implements CommandExecutor {
                     removePerk(sender, args[1], args[2]);
                 else if (args.length > 3)
                     sender.sendMessage("Too many arguments");
+                return true;
+            case "hiddenui":
+                openPerkUI(sender, true);
                 return true;
             default:
                 sender.sendMessage("Usage: reload/add/remove");
@@ -142,7 +145,7 @@ public class PerksCommand implements CommandExecutor {
         // Perk data class describes what perks each player has available
     }
 
-    private void openPerkUI(CommandSender sender) {
+    private void openPerkUI(CommandSender sender, boolean hiddenMenu) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("Only players can use this command!");
             return;
@@ -154,7 +157,7 @@ public class PerksCommand implements CommandExecutor {
         if (perks == null) {
             perks = new PlayerPerks(player.getUniqueId());
         }
-        UI ui = new UI(PlayerPerks.getPlayerPerks(player.getUniqueId()));
+        UI ui = new UI(PlayerPerks.getPlayerPerks(player.getUniqueId()), hiddenMenu);
         Inventory perkMenu = ui.getPerkMenu();
         player.openInventory(perkMenu);
     }
