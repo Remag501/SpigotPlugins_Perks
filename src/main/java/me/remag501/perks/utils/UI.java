@@ -6,6 +6,7 @@ import me.remag501.perks.perkTypes.PlayerPerks;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
@@ -117,14 +118,23 @@ public class UI implements Listener {
 //                    Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(String.valueOf(perkType.getItem().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.STRING)));
                     // Add or remove the perk from player's equipped perks based on the click type (left or right)'
                     ClickType click = event.getClick();
-                    if (click == ClickType.LEFT)
+                    if (click == ClickType.LEFT) {
                         perks.addEquippedPerk(perkType);
-                    else if (click == ClickType.RIGHT)
+                        player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 10, 2);
+                    }
+                    else if (click == ClickType.RIGHT) {
                         perks.removeEquippedPerk(perkType);
+                        player.playSound(player, Sound.UI_BUTTON_CLICK, 10, 2);
+                    }
                     perkInventory = event.getInventory();
                     loadActivePerks();
                     loadAvailablePerks(0);
                 }
+            }
+
+            if (event.getCurrentItem().getType() == Material.BEDROCK) {
+                player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 10, 0);
+                player.sendMessage("§cYou don't have that perk available");
             }
         }
     }
