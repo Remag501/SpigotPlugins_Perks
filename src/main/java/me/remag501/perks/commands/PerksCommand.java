@@ -143,6 +143,7 @@ public class PerksCommand implements CommandExecutor {
     private void reload() {
         // Load from config file and player data
         // Perk data class describes what perks each player has available
+        PlayerPerks.savePerks();
     }
 
     private void openPerkUI(CommandSender sender, boolean hiddenMenu) {

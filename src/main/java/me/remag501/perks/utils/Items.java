@@ -84,6 +84,7 @@ public class Items {
         return head;
     }
 
+
     // Add identifier to this function arguments
     public static ItemStack createItem(Material type, String name, String id, boolean enchanted, String... lores) {
         // Function to make creating items easier
@@ -113,6 +114,13 @@ public class Items {
             item.setItemMeta(meta);
         }
         return item;
+    }
+
+    public static String getPerkID(ItemStack item) {
+        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+        NamespacedKey key = new NamespacedKey(Bukkit.getPluginManager().getPlugin("Perks"), "unique_id");
+        String id = container.get(key, PersistentDataType.STRING);
+        return id;
     }
 
     // Function to check if two ItemStacks are equal based on their PersistentDataContainer

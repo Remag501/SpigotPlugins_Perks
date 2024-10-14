@@ -1,19 +1,21 @@
 package me.remag501.perks.perkTypes;
 
 import me.remag501.perks.utils.ConfigUtil;
+import me.remag501.perks.utils.Items;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
 
 public class PlayerPerks {
 
-    private static HashMap<UUID, PlayerPerks> playerPerks = new HashMap<>();
+    private static HashMap<UUID, PlayerPerks> playersPerks = new HashMap<>();
     private UUID playerUUID;
-    private ArrayList<Perk> equippedPerks;
-    private ArrayList<Perk> ownedPerks;
+    private List<Perk> equippedPerks;
+    private List<Perk> ownedPerks;
 
     public static PlayerPerks getPlayerPerks(UUID playerUUID) {
-        return playerPerks.get(playerUUID);
+        return playersPerks.get(playerUUID);
     }
 
     public void loadPerks(String player) {
@@ -27,18 +29,40 @@ public class PlayerPerks {
             this.ownedPerks.add(PerkType.valueOf(perk).getPerk());
     }
 
-    public ArrayList<Perk> getEquippedPerks() {
+    public static void savePerks() {
+        ConfigUtil perkConfigUtil = new ConfigUtil(Bukkit.getPluginManager().getPlugin("Perks"), "perks.yml");
+        FileConfiguration perkConfig = perkConfigUtil.getConfig();
+        // Iterate through set of perks for each player
+        for (UUID playerID: playersPerks.keySet()) {
+            PlayerPerks playerPerk = playersPerks.get(playerID);
+            String playerName = Bukkit.getPlayer(playerID).getName();
+            // Convert to list to set in the config file
+            List<String> save = new ArrayList<>();
+            for (Perk perk: playerPerk.equippedPerks)
+                save.add(Items.getPerkID(perk.getItem()));
+            perkConfig.set(playerName + "_equipped", save);
+            // Add owned perks to config
+            save.clear();
+            for (Perk perk: playerPerk.ownedPerks)
+                save.add(Items.getPerkID(perk.getItem()));
+            perkConfig.set(playerName + "_owned", save);
+        }
+        // Save the config to the file
+        perkConfigUtil.save();
+    }
+
+    public List<Perk> getEquippedPerks() {
         return equippedPerks;
     }
 
-    public ArrayList<Perk> getOwnedPerks() {
+    public List<Perk> getOwnedPerks() {
         return ownedPerks;
     }
 
     public PlayerPerks(UUID playerUUID) {
         equippedPerks = new ArrayList<Perk>();
         ownedPerks = new ArrayList<Perk>();
-        playerPerks.put(playerUUID, this);
+        playersPerks.put(playerUUID, this);
         this.playerUUID = playerUUID;
         if (playerUUID != null)
             loadPerks(Bukkit.getPlayer(playerUUID).getName());

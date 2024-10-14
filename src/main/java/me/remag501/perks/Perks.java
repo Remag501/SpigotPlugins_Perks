@@ -24,6 +24,7 @@ public final class Perks extends JavaPlugin {
     @Override
     public void onDisable() {
         // Disable all perks enabled for every player
+        PlayerPerks.savePerks();
         for (Player player : Bukkit.getOnlinePlayers()) {
             for (Perk perk : PlayerPerks.getPlayerPerks(player.getUniqueId()).getEquippedPerks()) {
                 perk.onDisable(player);
