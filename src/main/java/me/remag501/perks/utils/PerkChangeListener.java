@@ -59,7 +59,11 @@ public class PerkChangeListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        // Check if player has perks loaded
         Player player = event.getPlayer();
+        PlayerPerks playerPerks = PlayerPerks.getPlayerPerks(player.getUniqueId());
+        playerPerks = new PlayerPerks(((Player) player).getUniqueId());
+        // Check if player can enable their perks
         checkAllowedWorld(player);
     }
 

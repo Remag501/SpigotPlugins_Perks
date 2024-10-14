@@ -38,11 +38,12 @@ public class PlayerPerks {
             String playerName = Bukkit.getPlayer(playerID).getName();
             // Convert to list to set in the config file
             List<String> save = new ArrayList<>();
-            for (Perk perk: playerPerk.equippedPerks)
+            for (Perk perk: playerPerk.equippedPerks) {
                 save.add(Items.getPerkID(perk.getItem()));
+            }
             perkConfig.set(playerName + "_equipped", save);
             // Add owned perks to config
-            save.clear();
+            save = new ArrayList<>();
             for (Perk perk: playerPerk.ownedPerks)
                 save.add(Items.getPerkID(perk.getItem()));
             perkConfig.set(playerName + "_owned", save);
