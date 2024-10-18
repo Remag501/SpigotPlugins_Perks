@@ -20,14 +20,14 @@ public class HotHandsPerk extends Perk implements Listener {
 
     @Override
     public void onEnable(Player player) {
-        player.sendMessage("Hot Hands perk activated!");
+//        player.sendMessage("Hot Hands perk activated!");
         // Register the perk's event listener
         player.getServer().getPluginManager().registerEvents(this, player.getServer().getPluginManager().getPlugin("Perks"));
     }
 
     @Override
     public void onDisable(Player player) {
-        player.sendMessage("Hot Hands perk disabled!");
+//        player.sendMessage("Hot Hands perk disabled!");
         // Unregister the perk's event listener
         HandlerList.unregisterAll(this);
     }
@@ -46,7 +46,7 @@ public class HotHandsPerk extends Perk implements Listener {
                 Entity entity = event.getEntity();
                 // Set the entity on fire for 5 seconds
                 entity.setFireTicks(100); // 20 ticks = 1 second, so 100 ticks = 5 seconds
-                player.sendMessage("Hot Hands activated! You've set " + entity.getName() + " on fire!");
+//                player.sendMessage("Hot Hands activated! You've set " + entity.getName() + " on fire!");
             }
         }
     }

@@ -2,6 +2,7 @@ package me.remag501.perks.perkTypes;
 
 import me.remag501.perks.utils.ConfigUtil;
 import me.remag501.perks.utils.Items;
+import me.remag501.perks.utils.PerkChangeListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -76,6 +77,10 @@ public class PlayerPerks {
         // Disable the perk before removing it
         Perk perk = perkType.getPerk();
         equippedPerks.remove(perk);
+        for (String world: PerkChangeListener.enabledWorlds) {
+            if (!Bukkit.getPlayer(playerUUID).getWorld().getName().equalsIgnoreCase(world))
+                return;
+        }
         perk.onDisable(Bukkit.getPlayer(playerUUID));
     }
 
@@ -85,8 +90,10 @@ public class PlayerPerks {
         // Enable the perk before adding it
         equippedPerks.add(perkType.getPerk());
         // Only enables if the player is not in spawn
-        if (Bukkit.getPlayer(playerUUID).getWorld().getName().equalsIgnoreCase("world"))
-            return;
+        for (String world: PerkChangeListener.enabledWorlds) {
+            if (!Bukkit.getPlayer(playerUUID).getWorld().getName().equalsIgnoreCase(world))
+                return;
+        }
         perkType.getPerk().onEnable(Bukkit.getPlayer(playerUUID));
     }
 

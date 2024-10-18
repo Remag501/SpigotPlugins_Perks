@@ -13,22 +13,21 @@ import java.util.List;
 
 public class PerkChangeListener implements Listener {
 
-    private List<String> disabledWorlds;
+    public static List<String> enabledWorlds = new ArrayList<String>();
 
     public PerkChangeListener() {
-        disabledWorlds = new ArrayList<String>();
-        disabledWorlds.add("world");
+
     }
 
     public PerkChangeListener(List<String> disabledWorlds) {
-        this.disabledWorlds = disabledWorlds;
+        this.enabledWorlds = disabledWorlds;
     }
 
     private void checkAllowedWorld(Player player) {
         String newWorld = player.getWorld().getName();
 
-        // Check if the world allows perks
-        if (disabledWorlds.contains(newWorld)) {
+        // Check does not allow the world allows perks
+        if (!enabledWorlds.contains(newWorld)) {
             // Disable player's perks
             disablePlayerPerks(player);
         } else {

@@ -114,7 +114,13 @@ public class UI implements Listener {
                 if (Items.areItemsEqual(event.getCurrentItem(), perkType.getItem())) {
                     // Check if the perk event is triggered by hidden item, if so make this object have hidden perks
                     if (Items.hiddenItem(event.getCurrentItem()))
+                    {
                         hiddenMenu = true;
+                        player.sendMessage("You clicked on a hidden item");
+                    } else
+                        hiddenMenu = false;
+                    // Check if the player already has this perk equipped
+
 //                    Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(String.valueOf(perkType.getItem().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.STRING)));
                     // Add or remove the perk from player's equipped perks based on the click type (left or right)'
                     ClickType click = event.getClick();
@@ -132,7 +138,7 @@ public class UI implements Listener {
                 }
             }
 
-            if (event.getCurrentItem().getType() == Material.BEDROCK) {
+            if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.BEDROCK) {
                 player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 10, 0);
                 player.sendMessage("§cYou don't have that perk available");
             }

@@ -19,6 +19,8 @@ public final class Perks extends JavaPlugin {
         getCommand("perks").setExecutor(new PerksCommand(this));
         Bukkit.getPluginManager().registerEvents(new UI(null, false), this);
         Bukkit.getPluginManager().registerEvents(new PerkChangeListener(), this);
+        // Enable worlds for the plugin
+        PerkChangeListener.enabledWorlds.add("world");
     }
 
     @Override
