@@ -108,7 +108,12 @@ public class UI implements Listener {
         // Check if the clicked inventory is the perk UI
         if (event.getView().getTitle().equals("Choose Your Perk")) {
             event.setCancelled(true); // Cancel the item removal
-
+            // Check if the player is clicks bedrock
+            if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.BEDROCK) {
+                player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 10, 0);
+                player.sendMessage("§cYou don't have that perk available");
+            }
+            // Check if the player clicks on a perk
             NamespacedKey key = new NamespacedKey(Bukkit.getPluginManager().getPlugin("Perks"), "unique_id");
             for (PerkType perkType : PerkType.values()) {
                 if (Items.areItemsEqual(event.getCurrentItem(), perkType.getItem())) {
@@ -116,32 +121,31 @@ public class UI implements Listener {
                     if (Items.hiddenItem(event.getCurrentItem()))
                     {
                         hiddenMenu = true;
-                        player.sendMessage("You clicked on a hidden item");
+//                        player.sendMessage("You clicked on a hidden item");
                     } else
                         hiddenMenu = false;
                     // Check if the player already has this perk equipped
-
-//                    Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(String.valueOf(perkType.getItem().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.STRING)));
                     // Add or remove the perk from player's equipped perks based on the click type (left or right)'
                     ClickType click = event.getClick();
                     if (click == ClickType.LEFT) {
-                        perks.addEquippedPerk(perkType);
-                        player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 10, 2);
+                        if (perks.addEquippedPerk(perkType))
+                            player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 10, 2);
+                        else
+                            player.playSound(player, Sound.ENTITY_VILLAGER_NO, 10, 1);
+                        break; // Technically unneeded since itwDem is s.tatic,
                     }
                     else if (click == ClickType.RIGHT) {
-                        perks.removeEquippedPerk(perkType);
-                        player.playSound(player, Sound.UI_BUTTON_CLICK, 10, 2);
+                        if (perks.removeEquippedPerk(perkType))
+                            player.playSound(player, Sound.UI_BUTTON_CLICK, 10, 2);
+                        else
+                            player.playSound(player, Sound.ENTITY_VILLAGER_NO, 10, 1);
+                        break; // Prevent other items from being scanned and removed
                     }
-                    perkInventory = event.getInventory();
-                    loadActivePerks();
-                    loadAvailablePerks(0);
                 }
             }
-
-            if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.BEDROCK) {
-                player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 10, 0);
-                player.sendMessage("§cYou don't have that perk available");
-            }
+            perkInventory = event.getInventory();
+            loadActivePerks();
+            loadAvailablePerks(0);
         }
     }
 

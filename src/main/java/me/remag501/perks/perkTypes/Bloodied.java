@@ -18,7 +18,7 @@ public class Bloodied extends Perk {
 
     @Override
     public void onEnable(Player player) {
-        player.sendMessage("Bloodied Perk activated!");
+//        player.sendMessage("Bloodied Perk activated!");
 
         // Schedule a repeating task to check the player's health periodically
         healthCheckTask = Bukkit.getScheduler().runTaskTimer(
@@ -30,7 +30,7 @@ public class Bloodied extends Perk {
 
     @Override
     public void onDisable(Player player) {
-        player.sendMessage("Bloodied Perk deactivated!");
+//        player.sendMessage("Bloodied Perk deactivated!");
 
         // Cancel the repeating task when the perk is disabled
         if (healthCheckTask != null) {

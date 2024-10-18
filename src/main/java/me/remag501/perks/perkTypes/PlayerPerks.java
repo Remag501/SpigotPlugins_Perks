@@ -5,6 +5,7 @@ import me.remag501.perks.utils.Items;
 import me.remag501.perks.utils.PerkChangeListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -71,30 +72,38 @@ public class PlayerPerks {
     }
 
 
-    public void removeEquippedPerk(PerkType perkType) {
+    public boolean removeEquippedPerk(PerkType perkType) {
         if (!equippedPerks.contains(perkType.getPerk()))
-            return;
+            return false;
         // Disable the perk before removing it
         Perk perk = perkType.getPerk();
         equippedPerks.remove(perk);
         for (String world: PerkChangeListener.enabledWorlds) {
             if (!Bukkit.getPlayer(playerUUID).getWorld().getName().equalsIgnoreCase(world))
-                return;
+                return true;
         }
-        perk.onDisable(Bukkit.getPlayer(playerUUID));
+        Player player = Bukkit.getPlayer(playerUUID);
+        perk.onDisable(player);
+        player.sendMessage("§cYou have deequipped the perk " + perkType.getItem().getItemMeta().getDisplayName());
+        return true;
     }
 
-    public void addEquippedPerk(PerkType perkType) {
+    public boolean addEquippedPerk(PerkType perkType) {
         if (equippedPerks.contains(perkType.getPerk()))
-            return;
+            return false;
+        if (equippedPerks.size() >= 5)
+            return false;
         // Enable the perk before adding it
         equippedPerks.add(perkType.getPerk());
         // Only enables if the player is not in spawn
         for (String world: PerkChangeListener.enabledWorlds) {
             if (!Bukkit.getPlayer(playerUUID).getWorld().getName().equalsIgnoreCase(world))
-                return;
+                return true;
         }
-        perkType.getPerk().onEnable(Bukkit.getPlayer(playerUUID));
+        Player player = Bukkit.getPlayer(playerUUID);
+        perkType.getPerk().onEnable(player);
+        player.sendMessage("§2You have equipped the perk " + perkType.getItem().getItemMeta().getDisplayName());
+        return true;
     }
 
     public boolean addOwnedPerks(PerkType perkType) {
