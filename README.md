@@ -28,7 +28,6 @@ Current Perks (Not Hidden):
 
 Future Plans:
 - **Fix bug with creeper brawler**
-- Save with UUID instead of playername
 - Add dependencies that perks can have on each other (Perk Extensions)
 - Add Star Perks functionality to abstract class
 - Make perks drop on death and go to the killer

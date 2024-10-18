@@ -1,6 +1,7 @@
 package me.remag501.perks.perkTypes;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -63,6 +64,9 @@ public class Kangaroo extends Perk implements Listener {
             player.setVelocity(jumpVelocity);
             player.sendMessage("You used your double jump!");
 
+            // Play particle effect around the player when double jump is used
+            playDoubleJumpParticles(player);
+
             // Start cooldown for 30 seconds
             startCooldown(player);
         } else if (hasCooldown(player)) {
@@ -70,6 +74,12 @@ public class Kangaroo extends Perk implements Listener {
         }
 
         event.setCancelled(true); // Prevent normal flight toggling
+    }
+
+    // Play particle effect around the player
+    private void playDoubleJumpParticles(Player player) {
+        // Spawn particles at the player's location
+        player.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 20, 0.5, 0.5, 0.5, 0.1);
     }
 
     // Check if the player is still on cooldown

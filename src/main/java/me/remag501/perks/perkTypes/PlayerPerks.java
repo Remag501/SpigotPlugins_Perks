@@ -20,10 +20,10 @@ public class PlayerPerks {
         return playersPerks.get(playerUUID);
     }
 
-    public void loadPerks(String player) {
+    public void loadPerks(String playerID) {
         ConfigUtil perkConfig = new ConfigUtil(Bukkit.getPluginManager().getPlugin("Perks"), "perks.yml");
-        List<String> equippedPerks = perkConfig.getConfig().getStringList(player + "_equipped");
-        List<String> ownedPerks = perkConfig.getConfig().getStringList(player + "_owned");
+        List<String> equippedPerks = perkConfig.getConfig().getStringList(playerID + "_equipped");
+        List<String> ownedPerks = perkConfig.getConfig().getStringList(playerID + "_owned");
         // Convert to Perk ArrayList and set this update this instance to existing perks
         for (String perk: equippedPerks)
             this.equippedPerks.add(PerkType.valueOf(perk).getPerk());
@@ -37,18 +37,18 @@ public class PlayerPerks {
         // Iterate through set of perks for each player
         for (UUID playerID: playersPerks.keySet()) {
             PlayerPerks playerPerk = playersPerks.get(playerID);
-            String playerName = Bukkit.getPlayer(playerID).getName();
+            String playerIDString = playerID.toString();
             // Convert to list to set in the config file
             List<String> save = new ArrayList<>();
             for (Perk perk: playerPerk.equippedPerks) {
                 save.add(Items.getPerkID(perk.getItem()));
             }
-            perkConfig.set(playerName + "_equipped", save);
+            perkConfig.set(playerIDString + "_equipped", save);
             // Add owned perks to config
             save = new ArrayList<>();
             for (Perk perk: playerPerk.ownedPerks)
                 save.add(Items.getPerkID(perk.getItem()));
-            perkConfig.set(playerName + "_owned", save);
+            perkConfig.set(playerIDString + "_owned", save);
         }
         // Save the config to the file
         perkConfigUtil.save();
@@ -68,7 +68,7 @@ public class PlayerPerks {
         playersPerks.put(playerUUID, this);
         this.playerUUID = playerUUID;
         if (playerUUID != null)
-            loadPerks(Bukkit.getPlayer(playerUUID).getName());
+            loadPerks(Bukkit.getPlayer(playerUUID).getUniqueId().toString());
     }
 
 

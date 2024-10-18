@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Collections;
+
 public final class Perks extends JavaPlugin {
 
     @Override
@@ -20,7 +22,11 @@ public final class Perks extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new UI(null, false), this);
         Bukkit.getPluginManager().registerEvents(new PerkChangeListener(), this);
         // Enable worlds for the plugin
-        PerkChangeListener.enabledWorlds.add("world");
+        PerkChangeListener.enabledWorlds.add("Sahara");
+        PerkChangeListener.enabledWorlds.add("Icycaverns");
+        PerkChangeListener.enabledWorlds.add("Kuroko");
+        PerkChangeListener.enabledWorlds.add("Musicland");
+        PerkChangeListener.enabledWorlds.add("Thundra");
     }
 
     @Override
