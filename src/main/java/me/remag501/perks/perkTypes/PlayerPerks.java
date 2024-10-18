@@ -78,10 +78,15 @@ public class PlayerPerks {
         // Disable the perk before removing it
         Perk perk = perkType.getPerk();
         equippedPerks.remove(perk);
+        boolean inWorld = false;
         for (String world: PerkChangeListener.enabledWorlds) {
-            if (!Bukkit.getPlayer(playerUUID).getWorld().getName().equalsIgnoreCase(world))
-                return true;
+            if (Bukkit.getPlayer(playerUUID).getWorld().getName().equalsIgnoreCase(world)) {
+                inWorld = true;
+                break;
+            }
         }
+        if (!inWorld)
+            return true;
         Player player = Bukkit.getPlayer(playerUUID);
         perk.onDisable(player);
         player.sendMessage("§cYou have deequipped the perk " + perkType.getItem().getItemMeta().getDisplayName());
@@ -96,10 +101,15 @@ public class PlayerPerks {
         // Enable the perk before adding it
         equippedPerks.add(perkType.getPerk());
         // Only enables if the player is not in spawn
+        boolean inWorld = false;
         for (String world: PerkChangeListener.enabledWorlds) {
-            if (!Bukkit.getPlayer(playerUUID).getWorld().getName().equalsIgnoreCase(world))
-                return true;
+            if (Bukkit.getPlayer(playerUUID).getWorld().getName().equalsIgnoreCase(world)) {
+                inWorld = true;
+                break;
+            }
         }
+        if (!inWorld)
+            return true;
         Player player = Bukkit.getPlayer(playerUUID);
         perkType.getPerk().onEnable(player);
         player.sendMessage("§2You have equipped the perk " + perkType.getItem().getItemMeta().getDisplayName());
