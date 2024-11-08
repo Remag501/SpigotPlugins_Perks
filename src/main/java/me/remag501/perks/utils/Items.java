@@ -129,6 +129,10 @@ public class Items {
             return false; // One of the items is null, so they're not equal
         }
 
+        if (item1.getType() == Material.BEDROCK || item2.getType() == Material.BEDROCK) {
+            return false; // Prevent any comparison with unavailable perks
+        }
+
         // Get the ItemMeta for both items
         ItemMeta meta1 = item1.getItemMeta();
         ItemMeta meta2 = item2.getItemMeta();
@@ -145,10 +149,10 @@ public class Items {
         PersistentDataContainer data2 = meta2.getPersistentDataContainer();
 
         // Check if both items have the custom key in their PersistentDataContainer
+//        Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(data1.get(key, PersistentDataType.STRING) + " " + data2.get(key, PersistentDataType.STRING));
         if (data1.has(key, PersistentDataType.STRING) && data2.has(key, PersistentDataType.STRING)) {
             String id1 = data1.get(key, PersistentDataType.STRING);
             String id2 = data2.get(key, PersistentDataType.STRING);
-
 //
 
             // Compare the unique IDs
@@ -184,7 +188,7 @@ public class Items {
             item.setType(Material.BEDROCK);
             // Update meta data identifier
             NamespacedKey key = new NamespacedKey(Bukkit.getPluginManager().getPlugin("Perks"), "unique_id");
-            PersistentDataContainer data = meta.getPersistentDataContainer();
+            PersistentDataContainer data = meta.getPersistentDataContainer();;
             data.remove(key);
 //            Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(data.get(key, PersistentDataType.STRING));
 

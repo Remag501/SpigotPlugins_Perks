@@ -112,9 +112,9 @@ public class UI implements Listener {
             if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.BEDROCK) {
                 player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 10, 0);
                 player.sendMessage("§cYou don't have that perk available");
+                return;
             }
             // Check if the player clicks on a perk
-            NamespacedKey key = new NamespacedKey(Bukkit.getPluginManager().getPlugin("Perks"), "unique_id");
             for (PerkType perkType : PerkType.values()) {
                 if (Items.areItemsEqual(event.getCurrentItem(), perkType.getItem())) {
                     // Check if the perk event is triggered by hidden item, if so make this object have hidden perks
