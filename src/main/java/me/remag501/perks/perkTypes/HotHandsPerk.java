@@ -2,7 +2,9 @@ package me.remag501.perks.perkTypes;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,16 +38,17 @@ public class HotHandsPerk extends Perk implements Listener {
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         // Check if the damager is a player
-        if (event.getDamager() instanceof Player) {
+        if (event.getDamager() instanceof Player && event.getEntity() instanceof LivingEntity entity) {
+            if (entity instanceof ArmorStand)
+                return; // Ignore damage to armor stands
             Player player = (Player) event.getDamager();
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
             // Check if the player is punching with an empty hand (no item)
             if (itemInHand == null || itemInHand.getType() == Material.AIR) {
                 // Get the entity that was hit
-                Entity entity = event.getEntity();
                 // Set the entity on fire for 5 seconds
-                entity.setFireTicks(100); // 20 ticks = 1 second, so 100 ticks = 5 seconds
+                entity.setFireTicks(50); // 2.5 seconds
 //                player.sendMessage("Hot Hands activated! You've set " + entity.getName() + " on fire!");
             }
         }

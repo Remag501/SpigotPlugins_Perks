@@ -1,6 +1,7 @@
 package me.remag501.perks.perkTypes;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,7 +43,7 @@ public class Kangaroo extends Perk implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (player.isOnGround()) {
+        if (player.isOnGround() && !hasCooldown(player)) {
             player.setAllowFlight(true); // Allow flight while on the ground
         }
     }
@@ -55,8 +56,10 @@ public class Kangaroo extends Perk implements Listener {
         // Check if player is in air and hasn't hit cooldown
         if (!player.isOnGround() && !hasCooldown(player)) {
             // Disable the player's flight and apply upward velocity for double jump
-            player.setFlying(false);
-            player.setAllowFlight(false);
+            if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
+                player.setFlying(false);
+                player.setAllowFlight(false);
+            }
             Vector jumpVelocity = player.getVelocity();
             jumpVelocity.normalize(); // Normalize the jump velocity to a unit vector
             jumpVelocity.multiply(1.5); // Increase the jump speed
@@ -72,14 +75,15 @@ public class Kangaroo extends Perk implements Listener {
         } else if (hasCooldown(player)) {
             player.sendMessage("Double jump is on cooldown! Wait a bit longer.");
         }
-
-        event.setCancelled(true); // Prevent normal flight toggling
+        if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)
+            event.setCancelled(true); // Prevent normal flight toggling
     }
 
     // Play particle effect around the player
     private void playDoubleJumpParticles(Player player) {
         // Spawn particles at the player's location
         player.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 20, 0.5, 0.5, 0.5, 0.1);
+//        player.getWorld().spawnParticle(Particle.SONIC_BOOM, player.getLocation(), 10, 0.1, 0.1, 0.1, 100);
     }
 
     // Check if the player is still on cooldown

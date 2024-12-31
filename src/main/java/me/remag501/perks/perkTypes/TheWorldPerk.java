@@ -75,8 +75,18 @@ public class TheWorldPerk extends Perk implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {
         if (!timeStopped)
             return;
+        if (event.getEntity() instanceof LivingEntity livingEntity) {
+            // Check if the entity will "die" from this damage
+            if (livingEntity.getHealth() - event.getFinalDamage() <= 0) {
+                // Prevent entity from dying
+                event.setCancelled(true);
+                livingEntity.setInvulnerable(true); // Prevent further hits
+                delayedDeaths.add(livingEntity); // Store the entity for delayed death
+            }
+        }
+
         if (event instanceof EntityDamageByEntityEvent damageByEntityEvent) {
-            if (!damageByEntityEvent.getDamager().equals(player)) {
+            if (!damageByEntityEvent.getDamager().equals(player)) { // Should not happen, but just in case
                 event.setCancelled(true);
                 return;
             }
@@ -99,16 +109,6 @@ public class TheWorldPerk extends Perk implements Listener {
             }
         } else {
             event.setCancelled(true);
-            return;
-        }
-        if (event.getEntity() instanceof LivingEntity livingEntity) {
-            // Check if the entity will "die" from this damage
-            if (livingEntity.getHealth() - event.getFinalDamage() <= 0) {
-                    // Prevent entity from dying
-                    event.setCancelled(true);
-                    livingEntity.setInvulnerable(true); // Prevent further hits
-                    delayedDeaths.add(livingEntity); // Store the entity for delayed death
-            }
         }
     }
 

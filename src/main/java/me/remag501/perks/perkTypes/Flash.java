@@ -10,7 +10,7 @@ import org.bukkit.scheduler.BukkitTask;
 public class Flash extends Perk {
 
     private BukkitTask weaknessTask;
-
+    private boolean isEnabled;
     public Flash(ItemStack perkItem) {
         super(perkItem);
     }
@@ -18,7 +18,7 @@ public class Flash extends Perk {
     @Override
     public void onEnable(Player player) {
 //        player.sendMessage("Flash Perk activated!");
-
+        isEnabled = true;
         // Apply Speed I effect when the perk is enabled
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0)); // Speed I
 
@@ -33,7 +33,7 @@ public class Flash extends Perk {
     @Override
     public void onDisable(Player player) {
 //        player.sendMessage("Flash Perk deactivated!");
-
+        isEnabled = false;
         // Remove Speed and cancel the weakness task when the perk is disabled
         player.removePotionEffect(PotionEffectType.SPEED);
 
@@ -44,7 +44,8 @@ public class Flash extends Perk {
 
     // Method to apply Weakness for 4 seconds (80 ticks)
     private void applyWeakness(Player player) {
-        if (player.isOnline()) {
+        player.sendMessage("Reaced");
+        if (isEnabled) {
             player.sendMessage("You feel weak from running too fast!");
             player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 80, 0)); // Weakness I for 4 seconds
         }
