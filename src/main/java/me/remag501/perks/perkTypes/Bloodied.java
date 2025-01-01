@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
@@ -63,8 +64,14 @@ public class Bloodied extends Perk implements Listener {
         // If the player's health is 25% or below, give them Strength I
         if (currentHealth > 0 && currentHealth / maxHealth <= HEALTH_THRESHOLD) {
             if (!isBloodied) { // Prevents double messages
+                PotionEffect effect = player.getPotionEffect(PotionEffectType.INCREASE_DAMAGE);
+                duration = 0;
+                if (effect!= null) {
+                    if (effect.getAmplifier() > 0)
+                        return; // Don't apply bloodied effects if user has strength
+                    duration = effect.getDuration();
+                }
                 isBloodied = true;
-                duration = player.getPotionEffect(PotionEffectType.INCREASE_DAMAGE).getDuration();
                 player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0)); // Strength I for 2 seconds (40 ticks)
                 player.sendMessage("You feel the strength of bloodied rage!");
             }
@@ -97,5 +104,14 @@ public class Bloodied extends Perk implements Listener {
             return;
         }
         checkHealthAndApplyEffect((Player) event.getEntity());
+    }
+
+    @EventHandler
+    public void onPlayerLoseEffect(EntityPotionEffectEvent event) {
+        if (!(event.getEntity() instanceof Player))
+            return;
+
+        if (event.getAction() == EntityPotionEffectEvent.Action.REMOVED && event.getModifiedType() == PotionEffectType.INCREASE_DAMAGE)
+            checkHealthAndApplyEffect((Player) event.getEntity());
     }
 }
