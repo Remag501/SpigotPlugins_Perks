@@ -91,9 +91,9 @@ public class PerksCommand implements CommandExecutor {
         }
         // Gets object of PlayerPerks from UUID
         PlayerPerks playerPerks = PlayerPerks.getPlayerPerks(player.getUniqueId());
-        if (playerPerks == null) {
-            playerPerks = new PlayerPerks(((Player) player).getUniqueId());
-        }
+//        if (playerPerks == null) {
+//            playerPerks = new PlayerPerks(((Player) player).getUniqueId());
+//        } Add perks should not instantinate PlayerPerks
         // Add perk to players owned perks list
         if(playerPerks.addOwnedPerks(perk))
             player.sendMessage("Added perk: " + perkType);

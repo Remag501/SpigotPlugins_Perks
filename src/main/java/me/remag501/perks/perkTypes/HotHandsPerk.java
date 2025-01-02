@@ -13,7 +13,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.event.HandlerList;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class HotHandsPerk extends Perk implements Listener {
+
+    // Track players who have the perk enabled
+    private static final Set<Player> activePlayers = new HashSet<>();
+    private String testName;
 
     public HotHandsPerk(ItemStack perkItem) {
         super(perkItem);
@@ -24,24 +31,29 @@ public class HotHandsPerk extends Perk implements Listener {
     public void onEnable(Player player) {
 //        player.sendMessage("Hot Hands perk activated!");
         // Register the perk's event listener
-        player.getServer().getPluginManager().registerEvents(this, player.getServer().getPluginManager().getPlugin("Perks"));
+        testName = player.getName();
+        activePlayers.add(player);
+//        player.getServer().getPluginManager().registerEvents(this, player.getServer().getPluginManager().getPlugin("Perks"));
     }
 
     @Override
     public void onDisable(Player player) {
 //        player.sendMessage("Hot Hands perk disabled!");
         // Unregister the perk's event listener
-        HandlerList.unregisterAll(this);
+//        HandlerList.unregisterAll(this);
+        activePlayers.remove(player);
     }
 
     // Event listener to set entity on fire when punched with an empty hand
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         // Check if the damager is a player
-        if (event.getDamager() instanceof Player && event.getEntity() instanceof LivingEntity entity) {
+        if (event.getDamager() instanceof Player player && event.getEntity() instanceof LivingEntity entity) {
+            // Check if the player has the perk enabled
+            if (!activePlayers.contains(player)) return;
             if (entity instanceof ArmorStand)
                 return; // Ignore damage to armor stands
-            Player player = (Player) event.getDamager();
+            player.sendMessage("Test name var: " + testName);
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
             // Check if the player is punching with an empty hand (no item)

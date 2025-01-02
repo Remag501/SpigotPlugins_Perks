@@ -3,6 +3,7 @@ package me.remag501.perks.perkTypes;
 import me.remag501.perks.utils.Items;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;

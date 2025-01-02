@@ -27,7 +27,6 @@ Current Perks (Not Hidden):
 - Resistant
 
 Future Plans:
-- **Fix bug with creeper brawler**
 - Add dependencies that perks can have on each other (Perk Extensions)
 - Add Star Perks functionality to abstract class
 - Make perks drop on death and go to the killer
@@ -35,7 +34,7 @@ Future Plans:
 
 Recent Fixes:
 - Bloodied and Resistant perks activates on hp changes, rather than periodically checking hp.
-- Flask perk will no longer activates weakness after uneqipping perk
+- Flask perk will no longer activates weakness after uneqipping perk?
 - Hot hands can no longer set items or armor stands on fire
 - Kangaroo will no longer allow players to abuse no flight mode
 - Fixed null pointer bug that occurs when players are not in the perk file
