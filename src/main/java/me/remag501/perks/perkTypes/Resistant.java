@@ -24,7 +24,7 @@ public class Resistant extends Perk implements Listener {
     }
 
     @Override
-    public void onEnable(Player player) {
+    public void onEnable() {
         // Schedule a repeating task to check the player's health periodically
         healthCheckTask = Bukkit.getScheduler().runTaskTimer(
                 player.getServer().getPluginManager().getPlugin("Perks"),
@@ -37,7 +37,7 @@ public class Resistant extends Perk implements Listener {
     }
 
     @Override
-    public void onDisable(Player player) {
+    public void onDisable() {
         // Cancel the repeating task when the perk is disabled
         if (healthCheckTask != null) {
             healthCheckTask.cancel();

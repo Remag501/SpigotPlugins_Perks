@@ -15,7 +15,7 @@ public class Flash extends Perk {
     }
 
     @Override
-    public void onEnable(Player player) {
+    public void onEnable() {
 //        player.sendMessage("Flash Perk activated!");
         // Apply Speed I effect when the perk is enabled
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0)); // Speed I
@@ -29,7 +29,7 @@ public class Flash extends Perk {
     }
 
     @Override
-    public void onDisable(Player player) {
+    public void onDisable() {
 //        player.sendMessage("Flash Perk deactivated!");
         // Remove Speed and cancel the weakness task when the perk is disabled
         player.removePotionEffect(PotionEffectType.SPEED);

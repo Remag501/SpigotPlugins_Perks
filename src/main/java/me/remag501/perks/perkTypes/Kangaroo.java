@@ -25,14 +25,14 @@ public class Kangaroo extends Perk implements Listener {
     }
 
     @Override
-    public void onEnable(Player player) {
+    public void onEnable() {
 //        player.sendMessage("Kangaroo Perk activated!");
         // Register event listeners for the player's server
         player.getServer().getPluginManager().registerEvents(this, player.getServer().getPluginManager().getPlugin("Perks"));
     }
 
     @Override
-    public void onDisable(Player player) {
+    public void onDisable() {
 //        player.sendMessage("Kangaroo Perk deactivated!");
         // Unregister listeners when disabling the perk
         PlayerToggleFlightEvent.getHandlerList().unregister(this);

@@ -12,7 +12,7 @@ public class LongSwordPerk extends Perk {
     }
 
     @Override
-    public void onEnable(Player player) {
+    public void onEnable() {
         player.sendMessage("Your perk has been activated!");
 
         // Grant the player a speed boost
@@ -22,7 +22,7 @@ public class LongSwordPerk extends Perk {
     }
 
     @Override
-    public void onDisable(Player player) {
+    public void onDisable() {
         player.sendMessage("Your perk has been disabled!");
 
         // Remove the speed boost effect

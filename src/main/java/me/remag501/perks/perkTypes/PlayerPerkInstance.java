@@ -20,10 +20,10 @@ public class PlayerPerkInstance {
     }
 
     public void onEnable() {
-        perkType.getPerk().onEnable(player);
+        perkType.getPerk().onEnable();
     }
 
     public void onDisable() {
-        perkType.getPerk().onDisable(player);
+        perkType.getPerk().onDisable();
     }
 }

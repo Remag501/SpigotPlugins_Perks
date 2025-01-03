@@ -39,7 +39,7 @@ public final class Perks extends JavaPlugin {
         PlayerPerks.savePerks();
         for (Player player : Bukkit.getOnlinePlayers()) {
             for (Perk perk : PlayerPerks.getPlayerPerks(player.getUniqueId()).getEquippedPerks()) {
-                perk.onDisable(player);
+                perk.onDisable();
             }
         }
     }

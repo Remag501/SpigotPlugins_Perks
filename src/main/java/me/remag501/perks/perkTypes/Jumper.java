@@ -16,7 +16,7 @@ public class Jumper extends Perk {
     }
 
     @Override
-    public void onEnable(Player player) {
+    public void onEnable() {
 //        player.sendMessage("Jumper Perk activated!");
 
         // Apply Jump Boost I effect when the perk is enabled
@@ -31,7 +31,7 @@ public class Jumper extends Perk {
     }
 
     @Override
-    public void onDisable(Player player) {
+    public void onDisable() {
 //        player.sendMessage("Jumper Perk deactivated!");
 
         // Remove Jump Boost and cancel the slowness task when the perk is disabled

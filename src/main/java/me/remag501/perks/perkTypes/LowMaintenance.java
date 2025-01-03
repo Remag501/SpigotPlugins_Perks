@@ -18,7 +18,7 @@ public class LowMaintenance extends Perk implements Listener {
     }
 
     @Override
-    public void onEnable(Player player) {
+    public void onEnable() {
 //        player.sendMessage("Low Maintenance Perk activated!");
 
         // Start a repeating task that applies Saturation I every 2 minutes (2400 ticks)
@@ -31,7 +31,7 @@ public class LowMaintenance extends Perk implements Listener {
     }
 
     @Override
-    public void onDisable(Player player) {
+    public void onDisable() {
 //        player.sendMessage("Low Maintenance Perk deactivated!");
 
         // Cancel the saturation task when the perk is disabled

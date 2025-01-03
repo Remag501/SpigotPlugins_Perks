@@ -43,7 +43,7 @@ public class TheWorldPerk extends Perk implements Listener {
     }
 
     @Override
-    public void onEnable(Player player) {
+    public void onEnable() {
         this.player = player;
         this.plugin = Bukkit.getPluginManager().getPlugin("Perks");
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -51,7 +51,7 @@ public class TheWorldPerk extends Perk implements Listener {
     }
 
     @Override
-    public void onDisable(Player player) {
+    public void onDisable() {
         player.sendMessage(ChatColor.YELLOW + "「The World!」perk deactivated.");
         resumeTime();
         frozenEntities.clear();

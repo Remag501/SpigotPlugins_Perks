@@ -13,13 +13,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.event.HandlerList;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class HotHandsPerk extends Perk implements Listener {
 
     // Track players who have the perk enabled
-    private static final Set<Player> activePlayers = new HashSet<>();
+    private static final Map<Player, HotHandsPerk> activePerks = new HashMap<>();
     private String testName;
 
     public HotHandsPerk(ItemStack perkItem) {
@@ -28,41 +30,46 @@ public class HotHandsPerk extends Perk implements Listener {
     }
 
     @Override
-    public void onEnable(Player player) {
+    public void onEnable() {
 //        player.sendMessage("Hot Hands perk activated!");
         // Register the perk's event listener
         testName = player.getName();
-        activePlayers.add(player);
+        activePerks.put(player, this);
 //        player.getServer().getPluginManager().registerEvents(this, player.getServer().getPluginManager().getPlugin("Perks"));
     }
 
     @Override
-    public void onDisable(Player player) {
+    public void onDisable() {
 //        player.sendMessage("Hot Hands perk disabled!");
         // Unregister the perk's event listener
 //        HandlerList.unregisterAll(this);
-        activePlayers.remove(player);
+        activePerks.remove(player);
+    }
+
+    // New encapsulated method to handle the perk effect
+    private void handleHotHandsEffect(LivingEntity entity) {
+        player.sendMessage("Test name var: " + testName); // Use instance variable internally
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+
+        if (itemInHand.getType() == Material.AIR) {
+            entity.setFireTicks(50); // 2.5 seconds
+        }
     }
 
     // Event listener to set entity on fire when punched with an empty hand
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         // Check if the damager is a player
-        if (event.getDamager() instanceof Player player && event.getEntity() instanceof LivingEntity entity) {
-            // Check if the player has the perk enabled
-            if (!activePlayers.contains(player)) return;
+        if (event.getDamager() instanceof Player damager && event.getEntity() instanceof LivingEntity entity) {
             if (entity instanceof ArmorStand)
                 return; // Ignore damage to armor stands
-            player.sendMessage("Test name var: " + testName);
-            ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
-            // Check if the player is punching with an empty hand (no item)
-            if (itemInHand == null || itemInHand.getType() == Material.AIR) {
-                // Get the entity that was hit
-                // Set the entity on fire for 5 seconds
-                entity.setFireTicks(50); // 2.5 seconds
-//                player.sendMessage("Hot Hands activated! You've set " + entity.getName() + " on fire!");
-            }
+            // Check if the player has the perk enabled
+            HotHandsPerk perk = activePerks.get(damager);
+            if (perk == null) return; // Player does not have the perk enabled
+
+            // Delegate behavior to the perk instance
+            perk.handleHotHandsEffect(entity);
         }
     }
 }

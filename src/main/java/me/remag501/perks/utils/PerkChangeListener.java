@@ -76,7 +76,7 @@ public class PerkChangeListener implements Listener {
         player.sendMessage("Perks are disabled in this world.");
         // Loop through the player's active perks and disable them
         for (Perk perk : getPlayerActivePerks(player)) {
-            perk.onDisable(player);
+            perk.onDisable();
         }
     }
 
@@ -84,7 +84,7 @@ public class PerkChangeListener implements Listener {
         player.sendMessage("Perks are enabled in this world.");
         // Loop through the player's active perks and enable them
         for (Perk perk : getPlayerActivePerks(player)) {
-            perk.onEnable(player);
+            perk.onEnable();
         }
     }
 

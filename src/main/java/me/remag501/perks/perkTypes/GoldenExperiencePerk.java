@@ -34,7 +34,7 @@ public class GoldenExperiencePerk extends Perk implements Listener {
     private Plugin plugin;
 
     @Override
-    public void onEnable(Player player) {
+    public void onEnable() {
         player.sendMessage("Golden Experience perk activated! Summon frogs to fight for you.");
         // Register event listeners
         this.player = player;
@@ -44,7 +44,7 @@ public class GoldenExperiencePerk extends Perk implements Listener {
     }
 
     @Override
-    public void onDisable(Player player) {
+    public void onDisable() {
         player.sendMessage("Golden Experience perk deactivated.");
         // Unregister event listeners
         BlockBreakEvent.getHandlerList().unregister(this);

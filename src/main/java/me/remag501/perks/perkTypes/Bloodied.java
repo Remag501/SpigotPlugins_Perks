@@ -24,7 +24,7 @@ public class Bloodied extends Perk implements Listener {
     }
 
     @Override
-    public void onEnable(Player player) {
+    public void onEnable() {
 //        player.sendMessage("Bloodied Perk activated!");
 
         // Schedule a repeating task to check the player's health periodically
@@ -39,7 +39,7 @@ public class Bloodied extends Perk implements Listener {
     }
 
     @Override
-    public void onDisable(Player player) {
+    public void onDisable() {
 //        player.sendMessage("Bloodied Perk deactivated!");
 
         // Cancel the repeating task when the perk is disabled
