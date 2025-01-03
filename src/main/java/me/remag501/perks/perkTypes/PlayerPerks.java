@@ -128,6 +128,7 @@ public class PlayerPerks {
         if (!inWorld)
             return true; // Equipped but not enabled
         perkInstance.onEnable();
+        player.sendMessage("Reached in the correct world! " + perkInstance.toString());
         return true;
     }
 

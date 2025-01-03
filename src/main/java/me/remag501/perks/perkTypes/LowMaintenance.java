@@ -9,9 +9,14 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LowMaintenance extends Perk implements Listener {
 
-    private BukkitTask saturationTask;
+    private static final int SATURATION_DURATION = 300; // 15 seconds (300 ticks)
+    private static final long TASK_INTERVAL = 2400L; // 2 minutes (2400 ticks)
+    private static final Map<Player, BukkitTask> activeTasks = new HashMap<>();
 
     public LowMaintenance(ItemStack perkItem) {
         super(perkItem);
@@ -19,30 +24,45 @@ public class LowMaintenance extends Perk implements Listener {
 
     @Override
     public void onEnable() {
-//        player.sendMessage("Low Maintenance Perk activated!");
+        if (!activeTasks.containsKey(player)) {
+            BukkitTask task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    applySaturation(player);
+                }
+            }.runTaskTimer(Bukkit.getPluginManager().getPlugin("Perks"), 0L, TASK_INTERVAL);
 
-        // Start a repeating task that applies Saturation I every 2 minutes (2400 ticks)
-        saturationTask = new BukkitRunnable() {
-            @Override
-            public void run() {
-                applySaturation(player);
-            }
-        }.runTaskTimer(player.getServer().getPluginManager().getPlugin("Perks"), 0L, 2400L); // 2400 ticks = 2 minutes
+            activeTasks.put(player, task);
+            player.sendMessage("Low Maintenance Perk activated! You will periodically gain Saturation.");
+        }
     }
 
     @Override
     public void onDisable() {
-//        player.sendMessage("Low Maintenance Perk deactivated!");
-
-        // Cancel the saturation task when the perk is disabled
-        if (saturationTask != null) {
-            saturationTask.cancel();
+        if (activeTasks.containsKey(player)) {
+            activeTasks.get(player).cancel();
+            activeTasks.remove(player);
+            player.sendMessage("Low Maintenance Perk deactivated! No more periodic Saturation.");
         }
     }
 
-    // Method to apply Saturation I for 15 seconds (300 ticks)
+    /**
+     * Applies a Saturation effect to the player.
+     */
     private void applySaturation(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 300, 0)); // Saturation I for 15 seconds
-        player.sendMessage("You feel well-fed with Low Maintenance.");
+        if (player != null && player.isOnline()) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, SATURATION_DURATION, 0)); // Saturation I for 15s
+            player.sendMessage("You feel well-fed thanks to Low Maintenance!");
+        }
+    }
+
+    /**
+     * Static method to handle cleanup when a player leaves or the perk needs to be disabled externally.
+     */
+    public static void handlePlayerDisable(Player player) {
+        if (activeTasks.containsKey(player)) {
+            activeTasks.get(player).cancel();
+            activeTasks.remove(player);
+        }
     }
 }

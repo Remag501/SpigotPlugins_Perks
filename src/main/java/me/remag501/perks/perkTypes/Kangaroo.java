@@ -12,13 +12,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class Kangaroo extends Perk implements Listener {
 
-    private final HashMap<UUID, Long> cooldowns = new HashMap<>();
     private static final long COOLDOWN_TIME = 30 * 1000; // 30 seconds in milliseconds
+    private static final Map<Player, Kangaroo> activePerks = new HashMap<>();
+    private final Map<UUID, Long> cooldowns = new HashMap<>();
 
     public Kangaroo(ItemStack perkItem) {
         super(perkItem);
@@ -26,83 +26,104 @@ public class Kangaroo extends Perk implements Listener {
 
     @Override
     public void onEnable() {
-//        player.sendMessage("Kangaroo Perk activated!");
-        // Register event listeners for the player's server
-        player.getServer().getPluginManager().registerEvents(this, player.getServer().getPluginManager().getPlugin("Perks"));
+        activePerks.put(player, this);
+//        player.getServer().getPluginManager().registerEvents(this, Bukkit.getPluginManager().getPlugin("Perks"));
     }
 
     @Override
     public void onDisable() {
-//        player.sendMessage("Kangaroo Perk deactivated!");
-        // Unregister listeners when disabling the perk
-        PlayerToggleFlightEvent.getHandlerList().unregister(this);
-        PlayerMoveEvent.getHandlerList().unregister(this);
+        activePerks.remove(player);
+//        PlayerToggleFlightEvent.getHandlerList().unregister(this);
+//        PlayerMoveEvent.getHandlerList().unregister(this);
     }
 
-    // Allow double jump only when the player is airborne and reset flight status on the ground
+    /**
+     * Handles resetting flight capability when the player lands on the ground.
+     */
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-        if (player.isOnGround() && !hasCooldown(player)) {
-            player.setAllowFlight(true); // Allow flight while on the ground
+        Player eventPlayer = event.getPlayer();
+        if (!isActive(eventPlayer)) return;
+
+        if (eventPlayer.isOnGround() && !hasCooldown(eventPlayer)) {
+            eventPlayer.setAllowFlight(true); // Allow flight while on the ground
         }
     }
 
-    // Handle double jump and apply cooldown
+    /**
+     * Handles the double-jump mechanic and cooldown application.
+     */
     @EventHandler
     public void onPlayerToggleFlight(PlayerToggleFlightEvent event) {
-        Player player = event.getPlayer();
+        Player eventPlayer = event.getPlayer();
+        if (!isActive(eventPlayer)) return;
 
-        // Check if player is in air and hasn't hit cooldown
-        if (!player.isOnGround() && !hasCooldown(player)) {
-            // Disable the player's flight and apply upward velocity for double jump
-            if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
-                player.setFlying(false);
-                player.setAllowFlight(false);
+        if (!eventPlayer.isOnGround() && !hasCooldown(eventPlayer)) {
+            if (eventPlayer.getGameMode() == GameMode.SURVIVAL || eventPlayer.getGameMode() == GameMode.ADVENTURE) {
+                eventPlayer.setFlying(false);
+                eventPlayer.setAllowFlight(false);
             }
-            Vector jumpVelocity = player.getVelocity();
-            jumpVelocity.normalize(); // Normalize the jump velocity to a unit vector
-            jumpVelocity.multiply(1.5); // Increase the jump speed
-            jumpVelocity.setY(1.0); //Adjust the upward velocity for double jump
-            player.setVelocity(jumpVelocity);
-            player.sendMessage("You used your double jump!");
 
-            // Play particle effect around the player when double jump is used
-            playDoubleJumpParticles(player);
+            Vector jumpVelocity = eventPlayer.getVelocity();
+            jumpVelocity.normalize();
+            jumpVelocity.multiply(1.5); // Adjust forward velocity
+            jumpVelocity.setY(1.0); // Adjust upward velocity
+            eventPlayer.setVelocity(jumpVelocity);
 
-            // Start cooldown for 30 seconds
-            startCooldown(player);
-        } else if (hasCooldown(player)) {
-            player.sendMessage("Double jump is on cooldown! Wait a bit longer.");
+            eventPlayer.sendMessage("You used your double jump!");
+            playDoubleJumpParticles(eventPlayer);
+            startCooldown(eventPlayer);
+        } else if (hasCooldown(eventPlayer)) {
+            eventPlayer.sendMessage("Double jump is on cooldown! Wait a bit longer.");
         }
-        if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)
-            event.setCancelled(true); // Prevent normal flight toggling
+
+        if (eventPlayer.getGameMode() == GameMode.SURVIVAL || eventPlayer.getGameMode() == GameMode.ADVENTURE) {
+            event.setCancelled(true); // Prevent default flight behavior
+        }
     }
 
-    // Play particle effect around the player
+    /**
+     * Plays a particle effect to signify double jump.
+     */
     private void playDoubleJumpParticles(Player player) {
-        // Spawn particles at the player's location
         player.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 20, 0.5, 0.5, 0.5, 0.1);
-//        player.getWorld().spawnParticle(Particle.SONIC_BOOM, player.getLocation(), 10, 0.1, 0.1, 0.1, 100);
     }
 
-    // Check if the player is still on cooldown
+    /**
+     * Checks if the player is on cooldown.
+     */
     private boolean hasCooldown(Player player) {
-        if (cooldowns.containsKey(player.getUniqueId())) {
-            long timeLeft = System.currentTimeMillis() - cooldowns.get(player.getUniqueId());
-            return timeLeft < COOLDOWN_TIME;
-        }
-        return false;
+        return cooldowns.containsKey(player.getUniqueId()) &&
+                (System.currentTimeMillis() - cooldowns.get(player.getUniqueId()) < COOLDOWN_TIME);
     }
 
-    // Start the cooldown for the player
+    /**
+     * Starts the cooldown for the player.
+     */
     private void startCooldown(Player player) {
         cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
         new BukkitRunnable() {
             @Override
             public void run() {
+                if (activePerks.get(player) == null) return;
                 player.sendMessage("Double jump is ready to use again!");
             }
-        }.runTaskLater(player.getServer().getPluginManager().getPlugin("Perks"), 600L); // 600 ticks = 30 seconds
+        }.runTaskLater(Bukkit.getPluginManager().getPlugin("Perks"), 600L); // 600 ticks = 30 seconds
+    }
+
+    /**
+     * Handles cleanup for when a perk is forcefully disabled or the player leaves.
+     */
+    public static void handlePlayerDisable(Player player) {
+        if (activePerks.containsKey(player)) {
+            activePerks.get(player).onDisable();
+        }
+    }
+
+    /**
+     * Checks if the perk is active for a given player.
+     */
+    public static boolean isActive(Player player) {
+        return activePerks.containsKey(player);
     }
 }

@@ -31,6 +31,9 @@ public final class Perks extends JavaPlugin {
         PerkChangeListener.enabledWorlds.add("Thundra");
 
         getServer().getPluginManager().registerEvents((Listener) PerkType.HOT_HANDS.getPerk(), this);
+        getServer().getPluginManager().registerEvents((Listener) PerkType.BLOODIED.getPerk(), this);
+        getServer().getPluginManager().registerEvents((Listener) PerkType.KANGAROO.getPerk(), this);
+        getServer().getPluginManager().registerEvents((Listener) PerkType.RESISTANT.getPerk(), this);
     }
 
     @Override
