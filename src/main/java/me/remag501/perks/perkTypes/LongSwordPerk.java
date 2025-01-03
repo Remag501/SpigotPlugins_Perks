@@ -13,19 +13,19 @@ public class LongSwordPerk extends Perk {
 
     @Override
     public void onEnable() {
-        player.sendMessage("Your perk has been activated!");
+//        player.sendMessage("Your perk has been activated!");
 
         // Grant the player a speed boost
-        PotionEffect speedBoost = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, true); // Duration is very long, level 2 speed
-        player.addPotionEffect(speedBoost);
+//        PotionEffect speedBoost = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, true); // Duration is very long, level 2 speed
+//        player.addPotionEffect(speedBoost);
 
     }
 
     @Override
     public void onDisable() {
-        player.sendMessage("Your perk has been disabled!");
-
-        // Remove the speed boost effect
-        player.removePotionEffect(PotionEffectType.SPEED);
+//        player.sendMessage("Your perk has been disabled!");
+//
+//        // Remove the speed boost effect
+//        player.removePotionEffect(PotionEffectType.SPEED);
     }
 }

@@ -14,11 +14,12 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Bloodied extends Perk implements Listener {
 
     private static final double HEALTH_THRESHOLD = 0.25; // 25% health
-    private static final Map<Player, Bloodied> activePerks = new HashMap<>();
+    private static final Map<UUID, Bloodied> activePerks = new HashMap<>();
 
     private BukkitTask healthCheckTask;
     private boolean isBloodied;
@@ -30,7 +31,8 @@ public class Bloodied extends Perk implements Listener {
 
     @Override
     public void onEnable() {
-        activePerks.put(player, this);
+        Player player = Bukkit.getPlayer(this.player);
+        activePerks.put(this.player, this);
 
         // Schedule a repeating task to check the player's health periodically
         healthCheckTask = Bukkit.getScheduler().runTaskTimer(
@@ -47,7 +49,8 @@ public class Bloodied extends Perk implements Listener {
 
     @Override
     public void onDisable() {
-        activePerks.remove(player);
+        Player player = Bukkit.getPlayer(this.player);
+        activePerks.remove(this.player);
 
         if (healthCheckTask != null) {
             healthCheckTask.cancel();
@@ -104,50 +107,47 @@ public class Bloodied extends Perk implements Listener {
 
     // Static method to handle external disable calls
     public static void handlePlayerDisable(Player player) {
-        Bloodied perk = activePerks.get(player);
+        Bloodied perk = activePerks.get(player.getUniqueId());
         if (perk != null) {
             perk.onDisable();
         }
     }
 
     public static boolean isActive(Player player) {
-        return activePerks.containsKey(player);
+        return activePerks.containsKey(player.getUniqueId());
     }
 
     // Event Handlers
     @EventHandler
     public void onPlayerDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+        if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getEntity();
         if (isActive(player)) {
-            activePerks.get(player).checkHealthAndApplyEffect(player);
+            activePerks.get(player.getUniqueId()).checkHealthAndApplyEffect(player);
         }
     }
 
     @EventHandler
     public void onPlayerHeal(EntityRegainHealthEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+        if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getEntity();
         if (isActive(player)) {
-            activePerks.get(player).checkHealthAndApplyEffect(player);
+            activePerks.get(player.getUniqueId()).checkHealthAndApplyEffect(player);
         }
     }
 
     @EventHandler
     public void onPlayerLoseEffect(EntityPotionEffectEvent event) {
-        if (!(event.getEntity() instanceof Player))
+        if (!(event.getEntity() instanceof Player player))
             return;
 
-        Player player = (Player) event.getEntity();
         // Doesnt make sense, since they can gain regen and effect healing
 //        if (event.getAction() == EntityPotionEffectEvent.Action.REMOVED
 //                && event.getModifiedType() == PotionEffectType.INCREASE_DAMAGE) {
             if (isActive(player)) {
-                activePerks.get(player).checkHealthAndApplyEffect(player);
+                activePerks.get(player.getUniqueId()).checkHealthAndApplyEffect(player);
             }
 //        }
     }

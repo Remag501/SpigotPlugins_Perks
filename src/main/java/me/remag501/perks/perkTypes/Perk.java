@@ -7,11 +7,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.UUID;
 
 public abstract class Perk implements Cloneable{
     // Stores info about the perk
     private ItemStack perkItem;
-    protected Player player;
+    protected UUID player;
     private int quantity;
 
     public Perk(ItemStack perkItem) {
@@ -20,14 +21,14 @@ public abstract class Perk implements Cloneable{
         quantity = 1;
     }
 
-    public Perk(PerkType perkType, Player player) {
-        this.perkItem = perkType.getItem();
-        this.player = player;
-        quantity = 1;
-    }
+//    public Perk(PerkType perkType, UUID player) {
+//        this.perkItem = perkType.getItem();
+//        this.player = player;
+//        quantity = 1;
+//    }
 
     public void setPlayer(Player player) {
-        this.player = player;
+        this.player = player.getUniqueId();
     }
 
     public boolean addCount() {

@@ -22,13 +22,13 @@ public class FlatDamagePerk extends Perk implements Listener {
     @Override
     public void onEnable() {
         // Register the event listener when the perk is enabled
-        player.getServer().getPluginManager().registerEvents(this, player.getServer().getPluginManager().getPlugin("Perks"));
+//        player.getServer().getPluginManager().registerEvents(this, player.getServer().getPluginManager().getPlugin("Perks"));
     }
 
     @Override
     public void onDisable() {
         // Unregister the event listener when the perk is disabled
-        HandlerList.unregisterAll(this);
+//        HandlerList.unregisterAll(this);
     }
 
     @EventHandler

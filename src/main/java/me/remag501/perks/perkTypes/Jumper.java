@@ -9,10 +9,11 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Jumper extends Perk {
 
-    private static final Map<Player, Jumper> activePerks = new HashMap<>();
+    private static final Map<UUID, Jumper> activePerks = new HashMap<>();
     private BukkitTask slownessTask;
 
     public Jumper(ItemStack perkItem) {
@@ -21,8 +22,10 @@ public class Jumper extends Perk {
 
     @Override
     public void onEnable() {
-        activePerks.put(player, this);
+        Player player = Bukkit.getPlayer(this.player);
+        activePerks.put(this.player, this);
         // Apply Jump Boost I effect when the perk is enabled
+
         player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 0)); // Jump Boost I
 
         // Schedule a repeating task that applies Slowness every 1.5 minutes (1800 ticks)
@@ -35,7 +38,8 @@ public class Jumper extends Perk {
 
     @Override
     public void onDisable() {
-        activePerks.remove(player);
+        Player player = Bukkit.getPlayer(this.player);
+        activePerks.remove(this.player);
 
         // Remove Jump Boost and cancel the slowness task when the perk is disabled
         player.removePotionEffect(PotionEffectType.JUMP);

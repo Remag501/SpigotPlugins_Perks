@@ -16,16 +16,16 @@ public class CreeperBrawler extends Perk implements Listener {
 
     @Override
     public void onEnable() {
-        player.sendMessage("Creeper Damage Perk activated!");
-        // You may want to register the event listener here
-        player.getServer().getPluginManager().registerEvents(this, player.getServer().getPluginManager().getPlugin("Perks"));
+//        player.sendMessage("Creeper Damage Perk activated!");
+//        // You may want to register the event listener here
+//        player.getServer().getPluginManager().registerEvents(this, player.getServer().getPluginManager().getPlugin("Perks"));
     }
 
     @Override
     public void onDisable() {
-        player.sendMessage("Creeper Damage Perk deactivated!");
-        // Deregister the event listener when the perk is disabled
-        HandlerList.unregisterAll(this);
+//        player.sendMessage("Creeper Damage Perk deactivated!");
+//        // Deregister the event listener when the perk is disabled
+//        HandlerList.unregisterAll(this);
     }
 
     // Example event handler for the perk

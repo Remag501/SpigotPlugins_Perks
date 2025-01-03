@@ -17,8 +17,9 @@ import java.util.*;
 public class Kangaroo extends Perk implements Listener {
 
     private static final long COOLDOWN_TIME = 30 * 1000; // 30 seconds in milliseconds
-    private static final Map<Player, Kangaroo> activePerks = new HashMap<>();
-    private final Map<UUID, Long> cooldowns = new HashMap<>();
+    private static final Map<UUID, Kangaroo> activePerks = new HashMap<>();
+//    private final Map<UUID, Long> cooldowns = new HashMap<>();
+    private long cooldowns;
 
     public Kangaroo(ItemStack perkItem) {
         super(perkItem);
@@ -32,7 +33,8 @@ public class Kangaroo extends Perk implements Listener {
 
     @Override
     public void onDisable() {
-        activePerks.remove(player);
+        Player player = Bukkit.getPlayer(this.player);
+        activePerks.remove(this.player);
 //        PlayerToggleFlightEvent.getHandlerList().unregister(this);
 //        PlayerMoveEvent.getHandlerList().unregister(this);
     }
@@ -93,19 +95,22 @@ public class Kangaroo extends Perk implements Listener {
      * Checks if the player is on cooldown.
      */
     private boolean hasCooldown(Player player) {
-        return cooldowns.containsKey(player.getUniqueId()) &&
-                (System.currentTimeMillis() - cooldowns.get(player.getUniqueId()) < COOLDOWN_TIME);
+//        return cooldowns.containsKey(player.getUniqueId()) &&
+//                (System.currentTimeMillis() - cooldowns.get(player.getUniqueId()) < COOLDOWN_TIME);
+        if (activePerks.containsKey(player.getUniqueId())) return false;
+        return (System.currentTimeMillis() - cooldowns < COOLDOWN_TIME);
     }
 
     /**
      * Starts the cooldown for the player.
      */
     private void startCooldown(Player player) {
-        cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
+//        cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
+        cooldowns = System.currentTimeMillis();
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (activePerks.get(player) == null) return;
+                if (activePerks.get(player.getUniqueId()) == null) return;
                 player.sendMessage("Double jump is ready to use again!");
             }
         }.runTaskLater(Bukkit.getPluginManager().getPlugin("Perks"), 600L); // 600 ticks = 30 seconds
@@ -115,8 +120,8 @@ public class Kangaroo extends Perk implements Listener {
      * Handles cleanup for when a perk is forcefully disabled or the player leaves.
      */
     public static void handlePlayerDisable(Player player) {
-        if (activePerks.containsKey(player)) {
-            activePerks.get(player).onDisable();
+        if (activePerks.containsKey(player.getUniqueId())) {
+            activePerks.get(player.getUniqueId()).onDisable();
         }
     }
 
@@ -124,6 +129,6 @@ public class Kangaroo extends Perk implements Listener {
      * Checks if the perk is active for a given player.
      */
     public static boolean isActive(Player player) {
-        return activePerks.containsKey(player);
+        return activePerks.containsKey(player.getUniqueId());
     }
 }

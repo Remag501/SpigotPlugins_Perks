@@ -9,11 +9,12 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Flash extends Perk {
 
     // Static map to track active perks per player
-    private static final Map<Player, Flash> activePerks = new HashMap<>();
+    private static final Map<UUID, Flash> activePerks = new HashMap<>();
 
     private BukkitTask weaknessTask;
 
@@ -24,7 +25,8 @@ public class Flash extends Perk {
     @Override
     public void onEnable() {
         // Ensure only one instance per player is active
-        activePerks.put(player, this);
+        Player player = Bukkit.getPlayer(this.player);
+        activePerks.put(this.player, this);
 
         // Apply Speed I effect when the perk is enabled
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0)); // Speed I
@@ -39,8 +41,9 @@ public class Flash extends Perk {
 
     @Override
     public void onDisable() {
+        Player player = Bukkit.getPlayer(this.player);
         // Remove the player from the active perks map
-        activePerks.remove(player);
+        activePerks.remove(player.getUniqueId());
 
         // Remove Speed and cancel the weakness task when the perk is disabled
         player.removePotionEffect(PotionEffectType.SPEED);

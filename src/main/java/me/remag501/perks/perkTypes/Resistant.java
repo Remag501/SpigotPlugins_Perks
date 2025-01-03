@@ -14,11 +14,12 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Resistant extends Perk implements Listener {
 
     private static final double HEALTH_THRESHOLD = 0.25; // 25% health
-    private static final Map<Player, Resistant> activePerks = new HashMap<>();
+    private static final Map<UUID, Resistant> activePerks = new HashMap<>();
 
     private BukkitTask healthCheckTask;
     private boolean isResistant;
@@ -30,7 +31,8 @@ public class Resistant extends Perk implements Listener {
 
     @Override
     public void onEnable() {
-        activePerks.put(player, this);
+        Player player = Bukkit.getPlayer(this.player);
+        activePerks.put(this.player, this);
 
         healthCheckTask = Bukkit.getScheduler().runTaskTimer(
                 player.getServer().getPluginManager().getPlugin("Perks"),
@@ -44,7 +46,8 @@ public class Resistant extends Perk implements Listener {
 
     @Override
     public void onDisable() {
-        activePerks.remove(player);
+        Player player = Bukkit.getPlayer(this.player);
+        activePerks.remove(this.player);
 
         if (healthCheckTask != null) {
             healthCheckTask.cancel();
@@ -110,34 +113,31 @@ public class Resistant extends Perk implements Listener {
     // Event Handlers
     @EventHandler
     public void onPlayerDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+        if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getEntity();
         if (isActive(player)) {
-            activePerks.get(player).checkHealthAndApplyEffect(player);
+            activePerks.get(player.getUniqueId()).checkHealthAndApplyEffect(player);
         }
     }
 
     @EventHandler
     public void onPlayerHeal(EntityRegainHealthEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+        if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getEntity();
         if (isActive(player)) {
-            activePerks.get(player).checkHealthAndApplyEffect(player);
+            activePerks.get(player.getUniqueId()).checkHealthAndApplyEffect(player);
         }
     }
 
     @EventHandler
     public void onPlayerLoseEffect(EntityPotionEffectEvent event) {
-        if (!(event.getEntity() instanceof Player))
+        if (!(event.getEntity() instanceof Player player))
             return;
 
-        Player player = (Player) event.getEntity();
         if (isActive(player)) {
-            activePerks.get(player).checkHealthAndApplyEffect(player);
+            activePerks.get(player.getUniqueId()).checkHealthAndApplyEffect(player);
         }
     }
 }
