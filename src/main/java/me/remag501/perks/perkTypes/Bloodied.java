@@ -18,7 +18,8 @@ import java.util.UUID;
 
 public class Bloodied extends Perk implements Listener {
 
-    private static final double HEALTH_THRESHOLD = 0.25; // 25% health
+    private double healthThreshold; // Varies by stars acquired
+    private int amplifier;
     private static final Map<UUID, Bloodied> activePerks = new HashMap<>();
 
     private BukkitTask healthCheckTask;
@@ -44,7 +45,21 @@ public class Bloodied extends Perk implements Listener {
         isBloodied = false;
         duration = 0;
 
-//        Bukkit.getPluginManager().registerEvents(this, player.getServer().getPluginManager().getPlugin("Perks"));
+        switch(super.getQuantity()) {
+            case 1:
+                healthThreshold = 0.25;
+                amplifier = 0;
+                break;
+            case 2:
+                healthThreshold = 0.5;
+                amplifier = 0;
+                break;
+            case 3:
+                healthThreshold = 0.5;
+                amplifier = 1;
+                break;
+
+        }
     }
 
     @Override
@@ -60,33 +75,30 @@ public class Bloodied extends Perk implements Listener {
         PotionEffectType potion = PotionEffectType.INCREASE_DAMAGE;
 
         if (player.isOnline() && player.hasPotionEffect(potion)
-                && player.getPotionEffect(potion).getAmplifier() == 0
+                && player.getPotionEffect(potion).getAmplifier() == amplifier
                 && player.getPotionEffect(potion).getDuration() > 500) {
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
         }
 
-//        EntityDamageEvent.getHandlerList().unregister(this);
-//        EntityRegainHealthEvent.getHandlerList().unregister(this);
-//        EntityPotionEffectEvent.getHandlerList().unregister(this);
     }
 
     private void checkHealthAndApplyEffect(Player player) {
         double currentHealth = player.getHealth();
         double maxHealth = player.getMaxHealth();
 
-        if (currentHealth > 0 && currentHealth / maxHealth <= HEALTH_THRESHOLD) {
+        if (currentHealth > 0 && currentHealth / maxHealth <= healthThreshold) {
             if (!isBloodied) {
                 PotionEffect effect = player.getPotionEffect(PotionEffectType.INCREASE_DAMAGE);
                 duration = 0;
 
                 if (effect != null) {
-                    if (effect.getAmplifier() > 0)
+                    if (effect.getAmplifier() > amplifier)
                         return; // Don't apply bloodied effects if the user already has strength
                     duration = effect.getDuration();
                 }
 
                 isBloodied = true;
-                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0)); // Strength I
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, amplifier)); // Strength I
                 player.sendMessage("You feel the strength of bloodied rage!");
             }
         } else {
@@ -96,7 +108,7 @@ public class Bloodied extends Perk implements Listener {
 
                 if (player.getPotionEffect(potion).getAmplifier() == 0 && player.getPotionEffect(potion).getDuration() > 500) {
                     player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, duration, 0));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, duration, amplifier));
                     duration = 0;
                 }
 
