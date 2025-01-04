@@ -34,6 +34,7 @@ public final class Perks extends JavaPlugin {
         getServer().getPluginManager().registerEvents((Listener) PerkType.BLOODIED.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.KANGAROO.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.RESISTANT.getPerk(), this);
+        getServer().getPluginManager().registerEvents((Listener) PerkType.THE_WORLD.getPerk(), this);
     }
 
     @Override

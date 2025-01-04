@@ -1,11 +1,13 @@
 package me.remag501.perks.perkTypes;
 
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
@@ -20,23 +22,26 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.util.*;
 
 public class TheWorldPerk extends Perk implements Listener {
 
+    private static Map<UUID, TheWorldPerk> activePerks = new HashMap<>();
+
     private Player player;
-    private Plugin plugin;
-    private boolean timeStopped = false;
-    private List<Entity> frozenEntities = new ArrayList<>();
-    private Set<LivingEntity> delayedDeaths = new HashSet<>();
-    private Map<Entity, Vector> entityVelocities = new HashMap<>();
-    List<Creeper> creepers = new ArrayList<>();
-    Map<TNTPrimed, Integer> frozenTNT = new HashMap<>();
-    private Boolean[] rules = new Boolean[5];
-    private int stopTimeTaskId = -1;
-    private int tickSpeed = 0;
+    private static Plugin plugin = Bukkit.getPluginManager().getPlugin("Perks");
+    private static boolean timeStopped = false;
+    private static List<Entity> frozenEntities = new ArrayList<>();
+    private static Set<LivingEntity> delayedDeaths = new HashSet<>();
+    private static Map<Entity, Vector> entityVelocities = new HashMap<>();
+    private static List<Creeper> creepers = new ArrayList<>();
+    private static Map<TNTPrimed, Integer> frozenTNT = new HashMap<>();
+    private static Boolean[] rules = new Boolean[5];
+    private static int stopTimeTaskId = -1; // Can be changed to instance in future
+    private static int tickSpeed = 0;
 
     public TheWorldPerk(ItemStack item) {
         super(item);
@@ -44,29 +49,32 @@ public class TheWorldPerk extends Perk implements Listener {
 
     @Override
     public void onEnable() {
-        this.player = player;
-        this.plugin = Bukkit.getPluginManager().getPlugin("Perks");
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+        activePerks.put(super.player, this);
+        this.player = Bukkit.getPlayer(super.player);
+//        Bukkit.getPluginManager().registerEvents(this, plugin);
         player.sendMessage(ChatColor.YELLOW + "「The World!」perk activated. Type 'ZA WARUDO' to stop time.");
     }
 
     @Override
     public void onDisable() {
+        activePerks.remove(super.player);
         player.sendMessage(ChatColor.YELLOW + "「The World!」perk deactivated.");
-        resumeTime();
+        resumeTime(player);
         frozenEntities.clear();
-        AsyncPlayerChatEvent.getHandlerList().unregister(this);
+//        AsyncPlayerChatEvent.getHandlerList().unregister(this);
     }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        if (!event.getPlayer().equals(this.player)) return;
-
+        event.getPlayer().sendMessage("Perks: " + activePerks);
+        TheWorldPerk perk = activePerks.get(event.getPlayer().getUniqueId());
+        if (perk == null) return;
+        // The player chatting has the world perk active
         String message = event.getMessage();
         if (message.equalsIgnoreCase("ZA WARUDO") && !timeStopped) {
             // Schedule a synchronous task to interact with the world
             // Call your world-interacting logic here
-            Bukkit.getScheduler().runTask(plugin, this::stopTime);
+            Bukkit.getScheduler().runTask(plugin, () -> stopTime(event.getPlayer()));
             event.setCancelled(true);
         }
     }
@@ -86,7 +94,7 @@ public class TheWorldPerk extends Perk implements Listener {
         }
 
         if (event instanceof EntityDamageByEntityEvent damageByEntityEvent) {
-            if (!damageByEntityEvent.getDamager().equals(player)) { // Should not happen, but just in case
+            if (!activePerks.containsKey(damageByEntityEvent.getDamager().getUniqueId())) { // Should not happen, but just in case
                 event.setCancelled(true);
                 return;
             }
@@ -112,6 +120,10 @@ public class TheWorldPerk extends Perk implements Listener {
         }
     }
 
+    private void handleEntityDamage(EntityDamageEvent event) {
+
+    }
+
     @EventHandler
     public void onExplosionPrime(ExplosionPrimeEvent event) {
         if (event.getEntity() instanceof Creeper creeper && timeStopped) {
@@ -133,8 +145,9 @@ public class TheWorldPerk extends Perk implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         if (timeStopped) {
             Player movingPlayer = event.getPlayer();
+            TheWorldPerk perk = activePerks.get(movingPlayer.getUniqueId());
             // If the moving player is not the player who activated the perk
-            if (!movingPlayer.equals(player)) {
+            if (perk == null) {
                 // Set the new location to the old one to prevent movement
                 event.setTo(event.getFrom());
             }
@@ -143,28 +156,28 @@ public class TheWorldPerk extends Perk implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (timeStopped && !event.getPlayer().equals(player)) {
+        if (timeStopped && !activePerks.containsKey(event.getPlayer().getUniqueId())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (timeStopped && event.getWhoClicked() instanceof Player p && !p.equals(player)) {
+        if (timeStopped && event.getWhoClicked() instanceof Player player && !activePerks.containsKey(player.getUniqueId())) {
             event.setCancelled(true); // Cancel inventory interaction
         }
     }
 
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
-        if (timeStopped && !event.getPlayer().equals(player)) {
+        if (timeStopped && !activePerks.containsKey(event.getPlayer().getUniqueId())) {
             event.setCancelled(true); // Prevent opening the inventory
         }
     }
 
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-        if (timeStopped && !event.getPlayer().equals(player)) {
+        if (timeStopped && !activePerks.containsKey(event.getPlayer().getUniqueId())) {
             event.setCancelled(true); // Prevent commands
             event.getPlayer().sendMessage(ChatColor.RED + "You cannot use commands while time is stopped!");
         }
@@ -172,13 +185,22 @@ public class TheWorldPerk extends Perk implements Listener {
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
-        if (timeStopped && !event.getPlayer().equals(player)) {
+        if (timeStopped && !activePerks.containsKey(event.getPlayer().getUniqueId())) {
             event.setCancelled(true); // Prevent the player from dropping items
             event.getPlayer().sendMessage(ChatColor.RED + "You cannot drop items while time is stopped!");
         }
     }
 
-    private void stopTime() {
+    @EventHandler
+    public void onRedstoneSignal(BlockRedstoneEvent event) {
+        if (timeStopped) {
+            // Freeze redstone by forcing the old current state
+            event.setNewCurrent(event.getOldCurrent());
+        }
+    }
+
+
+    private void stopTime(Player player) {
         timeStopped = true;
 //        player.setGravity(false);
         if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
@@ -213,7 +235,7 @@ public class TheWorldPerk extends Perk implements Listener {
         // Schedule a repeating task every 10 ticks to check for new entities
         stopTimeTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             if (timeStopped) {
-                freezeEntitiesInWorld(player.getWorld());
+                freezeEntitiesInWorld(player.getWorld(), player);
             }
         }, 0L, 2L); // Repeats every 1 ticks (0L delay to start immediately)
 
@@ -221,13 +243,13 @@ public class TheWorldPerk extends Perk implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                resumeTime();
+                resumeTime(player);
                 player.sendMessage(ChatColor.YELLOW + "Time resumes!");
             }
         }.runTaskLater(plugin, 100L); // 5 seconds (100 ticks)
     }
 
-    private void resumeTime() {
+    private void resumeTime(Player player) {
         // Cancel the repeating task to freeze new entities
         if (stopTimeTaskId != -1) {
             Bukkit.getScheduler().cancelTask(stopTimeTaskId);
@@ -249,10 +271,10 @@ public class TheWorldPerk extends Perk implements Listener {
             // Allow entities to move
             entity.setGravity(true);
             // Restore flight abilities before velocity
-            if (entity instanceof Player player) {
-                player.setAllowFlight(player.getGameMode() == GameMode.CREATIVE);
-                player.setFlying(player.getGameMode() == GameMode.CREATIVE);
-                player.removePotionEffect(PotionEffectType.BLINDNESS);
+            if (entity instanceof Player enemy) {
+                enemy.setAllowFlight(player.getGameMode() == GameMode.CREATIVE);
+                enemy.setFlying(player.getGameMode() == GameMode.CREATIVE);
+                enemy.removePotionEffect(PotionEffectType.BLINDNESS);
             }
             // Restore the original velocity from the map
             Vector originalVelocity = entityVelocities.get(entity);
@@ -291,7 +313,7 @@ public class TheWorldPerk extends Perk implements Listener {
         }
     }
 
-    private void freezeEntitiesInWorld(World world) {
+    private void freezeEntitiesInWorld(World world, Player player) {
         List<Entity> worldEntities = player.getWorld().getEntities();
         // Iterate over all entities in the player's world including new ones
         for (Entity entity : worldEntities) {
@@ -304,10 +326,10 @@ public class TheWorldPerk extends Perk implements Listener {
             entity.setGravity(false);
             entity.setVelocity(new Vector(0, 0, 0)); // Stop entity movement
             // Handle other players
-            if (entity instanceof Player player) {
-                player.setAllowFlight(true);
-                player.setFlying(true);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 0, true, false));
+            if (entity instanceof Player enemy) {
+                enemy.setAllowFlight(true);
+                enemy.setFlying(true);
+                enemy.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 0, true, false));
             }
             frozenEntities.add(entity);
             // Check if primed tnt exists
