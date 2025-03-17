@@ -175,9 +175,12 @@ public class Items {
     public static void updateCount(ItemStack item, List<Perk> perks) {
         // Update the item's count based on the number of perks the player has
         int count = 0;
+        boolean starPerk = false;
         for (Perk perk : perks) {
-            if (areItemsEqual(item, perk.getItem()))
+            if (areItemsEqual(item, perk.getItem())) {
                 count++;
+                starPerk = perk.isStarPerk();
+            }
         }
         // Check if meta is null
         ItemMeta meta = item.getItemMeta();
@@ -192,6 +195,22 @@ public class Items {
             data.remove(key);
 //            Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(data.get(key, PersistentDataType.STRING));
 
+        }
+        else if (starPerk) {
+            // Update the item's stars
+            List<String> loreList = meta.getLore();
+            StringBuilder starStr = new StringBuilder();
+            for (int i = 0; i < 3; i++) {
+                if (i <= count-1)
+                    starStr.append("★");
+                else
+                    starStr.append("☆");
+            }
+            if (meta.hasEnchants()) // Checks if selected
+                loreList.add(1, String.valueOf(starStr));
+            else
+                loreList.add(0, String.valueOf(starStr));
+            meta.setLore(loreList);
         } else {
             // Update the item's count based on the number of perks the player has
             List<String> loreList = meta.getLore();
@@ -200,7 +219,6 @@ public class Items {
             else
                 loreList.add(0, "§7Perks: " + count + "/3");
             meta.setLore(loreList);
-            // Revisit to find a way to keep remaining lore
         }
         item.setItemMeta(meta);
     }
@@ -238,5 +256,6 @@ public class Items {
         }
         item.setItemMeta(meta);
     }
+
 
 }

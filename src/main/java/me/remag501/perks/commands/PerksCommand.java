@@ -73,11 +73,11 @@ public class PerksCommand implements CommandExecutor {
 
     private void printPerks(CommandSender sender) {
         sender.sendMessage("You need to specify a perk type");
-        String rv ="";
+        StringBuilder rv = new StringBuilder();
         for (PerkType type: PerkType.values()) {
-            rv += String.valueOf(type) + " ";
+            rv.append(String.valueOf(type)).append(" ");
         }
-        sender.sendMessage(rv);
+        sender.sendMessage(rv.toString());
     }
 
     private void addPerk(Player player, String perkType) {

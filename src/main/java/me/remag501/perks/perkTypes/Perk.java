@@ -9,16 +9,25 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class Perk implements Cloneable{
+public abstract class Perk implements Cloneable {
     // Stores info about the perk
     private ItemStack perkItem;
     protected UUID player;
     private int quantity;
+    private boolean starPerk;
+
+    public Perk(ItemStack perkItem, boolean starPerk) {
+        this.perkItem = perkItem;
+        player = null;
+        quantity = 1;
+        this.starPerk = starPerk;
+    }
 
     public Perk(ItemStack perkItem) {
         this.perkItem = perkItem;
         player = null;
         quantity = 1;
+        this.starPerk = false;
     }
 
 //    public Perk(PerkType perkType, UUID player) {
@@ -49,6 +58,10 @@ public abstract class Perk implements Cloneable{
 
     public ItemStack getItem() {
         return perkItem;
+    }
+
+    public boolean isStarPerk() {
+        return starPerk;
     }
 
     @Override

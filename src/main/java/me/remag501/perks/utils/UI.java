@@ -70,7 +70,7 @@ public class UI implements Listener {
                 }
                 // Display the perk item
                 Items.updateEquipStatus(item, equippedPerks);
-                Items.updateCount(item, ownedPerks);
+                Items.updateCount(item, ownedPerks); // Stars are updated with updateCount
                 perkInventory.setItem(i, item);
             } else
                 perkInventory.setItem(i, Items.createItem(Material.BARRIER, "???", null, true));

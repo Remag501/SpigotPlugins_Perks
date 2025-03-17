@@ -52,7 +52,7 @@ public class TheWorldPerk extends Perk implements Listener {
         activePerks.put(super.player, this);
         this.player = Bukkit.getPlayer(super.player);
 //        Bukkit.getPluginManager().registerEvents(this, plugin);
-        player.sendMessage(ChatColor.YELLOW + "「The World!」perk activated. Type 'ZA WARUDO' to stop time.");
+        player.sendMessage(ChatColor.YELLOW + "「The World!」perk activated.");
     }
 
     @Override
@@ -66,7 +66,7 @@ public class TheWorldPerk extends Perk implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        event.getPlayer().sendMessage("Perks: " + activePerks);
+//        event.getPlayer().sendMessage("Perks: " + activePerks);
         TheWorldPerk perk = activePerks.get(event.getPlayer().getUniqueId());
         if (perk == null) return;
         // The player chatting has the world perk active
