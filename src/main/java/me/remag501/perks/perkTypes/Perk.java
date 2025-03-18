@@ -1,6 +1,7 @@
 package me.remag501.perks.perkTypes;
 
 import me.remag501.perks.utils.Items;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -15,12 +16,14 @@ public abstract class Perk implements Cloneable {
     protected UUID player;
     private int quantity;
     private boolean starPerk;
+    private int stars;
 
     public Perk(ItemStack perkItem, boolean starPerk) {
         this.perkItem = perkItem;
         player = null;
         quantity = 1;
         this.starPerk = starPerk;
+        stars = 1;
     }
 
     public Perk(ItemStack perkItem) {
@@ -28,6 +31,20 @@ public abstract class Perk implements Cloneable {
         player = null;
         quantity = 1;
         this.starPerk = false;
+    }
+
+    public void increaseStar() {
+        stars++;
+        Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(stars + "");
+    }
+
+    public void decreaseStar() {
+        stars--;
+        Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(stars + "");
+    }
+
+    public int getStars() {
+        return stars;
     }
 
 //    public Perk(PerkType perkType, UUID player) {

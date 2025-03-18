@@ -25,6 +25,7 @@ public class Bloodied extends Perk implements Listener {
     private BukkitTask healthCheckTask;
     private boolean isBloodied;
     private int duration;
+    private int kit_amplifier;
 
     public Bloodied(ItemStack perkItem, boolean starPerk) {
         super(perkItem, starPerk);
@@ -44,8 +45,8 @@ public class Bloodied extends Perk implements Listener {
 
         isBloodied = false;
         duration = 0;
-
-        switch(super.getQuantity()) {
+        kit_amplifier = 0;
+        switch(super.getStars()) {
             case 1:
                 healthThreshold = 0.25;
                 amplifier = 0;
@@ -66,12 +67,9 @@ public class Bloodied extends Perk implements Listener {
     public void onDisable() {
         Player player = Bukkit.getPlayer(this.player);
         activePerks.remove(this.player);
-
         if (healthCheckTask != null) {
             healthCheckTask.cancel();
         }
-
-        isBloodied = false;
         PotionEffectType potion = PotionEffectType.INCREASE_DAMAGE;
 
         if (player.isOnline() && player.hasPotionEffect(potion)
@@ -95,6 +93,7 @@ public class Bloodied extends Perk implements Listener {
                     if (effect.getAmplifier() > amplifier)
                         return; // Don't apply bloodied effects if the user already has strength
                     duration = effect.getDuration();
+                    kit_amplifier = effect.getAmplifier();
                 }
 
                 isBloodied = true;
@@ -105,10 +104,10 @@ public class Bloodied extends Perk implements Listener {
             if (isBloodied) {
                 isBloodied = false;
                 PotionEffectType potion = PotionEffectType.INCREASE_DAMAGE;
-
-                if (player.getPotionEffect(potion).getAmplifier() == 0 && player.getPotionEffect(potion).getDuration() > 500) {
+                player.sendMessage(kit_amplifier + " " + duration);
+                if (player.getPotionEffect(potion).getAmplifier() == amplifier && player.getPotionEffect(potion).getDuration() > 500) {
                     player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, duration, amplifier));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, duration, kit_amplifier));
                     duration = 0;
                 }
 

@@ -85,8 +85,14 @@ public class PlayerPerks {
     public boolean removeEquippedPerk(PerkType perkType) {
         Perk perk = equippedPerks.get(perkType); // Check if perk is equipped
         if (perk == null) return false;
-        // Disable the perk before removing it
-        equippedPerks.remove(perkType);
+        // If star perk with more than 1 star, just remove one star
+        if (perk.getStars() > 1) {
+            perk.decreaseStar();
+            // Re instantiate the perk with new stars
+        } else {
+            // Disable the perk before removing it
+            equippedPerks.remove(perkType);
+        }
         // Message the player
         Player player = Bukkit.getPlayer(playerUUID);
         player.sendMessage("§cYou have deequipped the perk " + perkType.getItem().getItemMeta().getDisplayName());
@@ -101,6 +107,8 @@ public class PlayerPerks {
         if (!inWorld)
             return true;
         perk.onDisable();
+        if (perk.isStarPerk() == true && perk.getStars() > 0)
+            perk.onEnable();
         return true;
     }
 
@@ -109,8 +117,12 @@ public class PlayerPerks {
         if (equippedPerks.size() >= 5)
             return false;
         Perk perkInstance = equippedPerks.get(perkType);
+        // Check if star perk
+        if (perkInstance != null && perkInstance.isStarPerk() && perkInstance.getStars() < 3) {
+            perkInstance.increaseStar();
+        }
         // Check if perk is already equipped
-        if (perkInstance != null)
+        else if (perkInstance != null)
             return false;
         // Add perks to set
         perkInstance = ownedPerks.get(perkType);
@@ -128,7 +140,8 @@ public class PlayerPerks {
         if (!inWorld)
             return true; // Equipped but not enabled
         perkInstance.onEnable();
-        player.sendMessage("Reached in the correct world! " + perkInstance.toString());
+//        player.sendMessage("Reached in the correct world! " + perkInstance.toString());
+//        player.sendMessage(equippedPerks.toString());
         return true;
     }
 
