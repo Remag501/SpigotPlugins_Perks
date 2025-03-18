@@ -33,14 +33,20 @@ public abstract class Perk implements Cloneable {
         this.starPerk = false;
     }
 
-    public void increaseStar() {
-        stars++;
-        Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(stars + "");
+    public boolean increaseStar() {
+        if (stars < quantity)
+            stars++;
+        else
+            return false;
+        return true;
     }
 
-    public void decreaseStar() {
-        stars--;
-        Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(stars + "");
+    public boolean decreaseStar() {
+        if (stars > 0)
+            stars--;
+        else
+            return false;
+        return true;
     }
 
     public int getStars() {

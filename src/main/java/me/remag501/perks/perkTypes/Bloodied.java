@@ -104,7 +104,7 @@ public class Bloodied extends Perk implements Listener {
             if (isBloodied) {
                 isBloodied = false;
                 PotionEffectType potion = PotionEffectType.INCREASE_DAMAGE;
-                player.sendMessage(kit_amplifier + " " + duration);
+//                player.sendMessage(kit_amplifier + " " + duration);
                 if (player.getPotionEffect(potion).getAmplifier() == amplifier && player.getPotionEffect(potion).getDuration() > 500) {
                     player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, duration, kit_amplifier));

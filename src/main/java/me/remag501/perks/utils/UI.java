@@ -46,7 +46,9 @@ public class UI implements Listener {
         for (int i = 0; i < 5; i++) {
             if (i < size) {
 //                ItemStack perkItem = Items.createPerkItem(equippedPerks.get(i));
-                ItemStack perkItem = equippedPerks.get(i).getItem();
+//                ItemStack perkItem = equippedPerks.get(i).getItem();
+                ItemStack perkItem = equippedPerks.get(i).getItem().clone(); // Prevent mutilating enum object
+                Items.updateStarCount(perkItem, equippedPerks); // Display star lore
                 perkInventory.setItem(2 + i, perkItem);
             } else
                 perkInventory.setItem(2 + i, new ItemStack(Material.AIR));

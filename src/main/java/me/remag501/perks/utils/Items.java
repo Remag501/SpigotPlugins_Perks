@@ -196,22 +196,23 @@ public class Items {
 //            Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(data.get(key, PersistentDataType.STRING));
 
         }
-        else if (starPerk) {
-            // Update the item's stars
-            List<String> loreList = meta.getLore();
-            StringBuilder starStr = new StringBuilder();
-            for (int i = 0; i < 3; i++) {
-                if (i <= count-1)
-                    starStr.append("★");
-                else
-                    starStr.append("☆");
-            }
-            if (meta.hasEnchants()) // Checks if selected
-                loreList.add(1, String.valueOf(starStr));
-            else
-                loreList.add(0, String.valueOf(starStr));
-            meta.setLore(loreList);
-        } else {
+//        else if (starPerk) {
+//            // Update the item's stars
+//            List<String> loreList = meta.getLore();
+//            StringBuilder starStr = new StringBuilder();
+//            for (int i = 0; i < 3; i++) {
+//                if (i <= count-1)
+//                    starStr.append("★");
+//                else
+//                    starStr.append("☆");
+//            }
+//            if (meta.hasEnchants()) // Checks if selected
+//                loreList.add(1, String.valueOf(starStr));
+//            else
+//                loreList.add(0, String.valueOf(starStr));
+//            meta.setLore(loreList);
+//        }
+        else {
             // Update the item's count based on the number of perks the player has
             List<String> loreList = meta.getLore();
             if (meta.hasEnchants()) // Checks if selected
@@ -220,6 +221,35 @@ public class Items {
                 loreList.add(0, "§7Perks: " + count + "/3");
             meta.setLore(loreList);
         }
+        item.setItemMeta(meta);
+    }
+
+    public static void updateStarCount(ItemStack item, List<Perk> equippedPerks) {
+        int stars = 0;
+        for (Perk perk: equippedPerks) {
+            if (perk.getItem().equals(item) && perk.isStarPerk()) {
+                stars = perk.getStars();
+                break;
+            }
+        }
+        if (stars == 0)
+            return; // Perk is not equipped or a star perk
+        // Get item meta
+        ItemMeta meta = item.getItemMeta();
+        // Build a star string
+        List<String> loreList = meta.getLore();
+        StringBuilder starStr = new StringBuilder();
+        for (int i = 0; i < 3; i++) {
+            if (i <= stars-1)
+                starStr.append("★");
+            else
+                starStr.append("☆");
+        }
+        if (meta.hasEnchants()) // Checks if selected
+            loreList.add(1, String.valueOf(starStr));
+        else
+            loreList.add(0, String.valueOf(starStr));
+        meta.setLore(loreList);
         item.setItemMeta(meta);
     }
 

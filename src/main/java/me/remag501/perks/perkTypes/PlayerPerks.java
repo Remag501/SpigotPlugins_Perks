@@ -87,7 +87,8 @@ public class PlayerPerks {
         if (perk == null) return false;
         // If star perk with more than 1 star, just remove one star
         if (perk.getStars() > 1) {
-            perk.decreaseStar();
+            if (!perk.decreaseStar())
+                return false; // Increase star fails
             // Re instantiate the perk with new stars
         } else {
             // Disable the perk before removing it
@@ -107,7 +108,7 @@ public class PlayerPerks {
         if (!inWorld)
             return true;
         perk.onDisable();
-        if (perk.isStarPerk() == true && perk.getStars() > 0)
+        if (perk.isStarPerk() == true && perk.getStars() > 1)
             perk.onEnable();
         return true;
     }
@@ -119,7 +120,8 @@ public class PlayerPerks {
         Perk perkInstance = equippedPerks.get(perkType);
         // Check if star perk
         if (perkInstance != null && perkInstance.isStarPerk() && perkInstance.getStars() < 3) {
-            perkInstance.increaseStar();
+            if (!perkInstance.increaseStar())
+                return false; // Increase star fails
         }
         // Check if perk is already equipped
         else if (perkInstance != null)
