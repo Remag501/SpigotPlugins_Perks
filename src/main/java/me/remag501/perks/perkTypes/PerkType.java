@@ -37,4 +37,13 @@ public enum PerkType {
         return perk.getItem();
     }
 
+    public static PerkType getPerkType(Perk perk) {
+        for (PerkType type : PerkType.values()) {
+            if (type.getPerk().getItem().equals(perk.getItem())) {
+                return type;
+            }
+        }
+        return null; // Return null if no match is found
+    }
+
 }

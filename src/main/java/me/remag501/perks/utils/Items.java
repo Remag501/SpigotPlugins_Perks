@@ -1,12 +1,15 @@
 package me.remag501.perks.utils;
 
 import me.remag501.perks.perkTypes.Perk;
+import me.remag501.perks.perkTypes.PerkType;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -115,6 +118,62 @@ public class Items {
         }
         return item;
     }
+
+    public static ItemStack getPerkCard(ItemStack item) {
+        // Clone the original item to avoid modifying the base item
+        ItemStack perkCard = item.clone();
+        perkCard.setType(Material.PAPER);
+        ItemMeta meta = perkCard.getItemMeta();
+
+        if (meta != null) {
+            // Get the rarity color from previous item
+            ItemMeta itemMeta = item.getItemMeta();
+            String firstLine = itemMeta.getLore().get(0);
+            char colorCode = firstLine.charAt(1);
+            // Update the display name to represent the card
+            meta.setDisplayName("§" + colorCode + "§l" + itemMeta.getDisplayName());
+
+            // Add lore for clarity
+            List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.RED + "You will obtain this perk when you extract!");
+            meta.setLore(lore);
+
+            // Store the perk type in the item's PersistentDataContainer (might already exist from being a clone)
+//            NamespacedKey key = new NamespacedKey(Bukkit.getPluginManager().getPlugin("Perks"), "unique_id");
+//            meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, item.getType().toString());
+
+            perkCard.setItemMeta(meta);
+        }
+
+        return perkCard;
+    }
+
+    public static List<PerkType> itemsToPerks(PlayerInventory inventory) {
+        List<PerkType> perkTypes = new ArrayList<>();
+        List<ItemStack> perkCards = new ArrayList<>();
+
+        for (ItemStack item : inventory.getContents()) {
+            if (item == null) continue;
+
+            for (PerkType type : PerkType.values()) {
+                ItemStack perkItem = type.getPerk().getItem();
+                if (areItemsEqual(item, perkItem)) {
+                    for (int i = 0; i < item.getAmount(); i++) {
+                        perkTypes.add(type);
+                        inventory.remove(item);
+//                        perkCards.add(item); // Save to remove later
+                    }
+                    break;
+                }
+            }
+        }
+
+//        for (ItemStack item: perkCards) // Remove perk cards from inventory
+//            inventory.remove(item);
+
+        return perkTypes;
+    }
+
 
     public static String getPerkID(ItemStack item) {
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();

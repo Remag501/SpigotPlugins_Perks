@@ -45,7 +45,11 @@ public class PlayerPerks {
             // Convert to list to set in the config file
             List<String> save = new ArrayList<>();
             for (Perk perk: playerPerk.getEquippedPerks()) {
-                save.add(Items.getPerkID(perk.getItem()));
+                if (perk.isStarPerk()) {
+                    for (int i = 0; i < perk.getStars(); i++)
+                        save.add(Items.getPerkID(perk.getItem()));
+                } else
+                    save.add(Items.getPerkID(perk.getItem()));
             }
             perkConfig.set(playerIDString + "_equipped", save);
             // Add owned perks to config
@@ -168,9 +172,12 @@ public class PlayerPerks {
         // O(1) complexity
         if (ownedPerks.get(perkType) == null)
             return; // No perk found
-        Perk perkInstance = ownedPerks.get(perkType);
-        if (perkInstance.getQuantity() > 1)
-            perkInstance.lowerCount();
+        Perk perk = ownedPerks.get(perkType);
+        if (perk.getQuantity() > 1) {
+            perk.lowerCount();
+            if (perk.getStars() > perk.getQuantity())
+                removeEquippedPerk(perkType);
+        }
         else { // Removes from HashMap and unequips
             ownedPerks.remove(perkType);
             removeEquippedPerk(perkType);
