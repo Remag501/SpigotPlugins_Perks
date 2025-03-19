@@ -97,8 +97,8 @@ public class PerksCommand implements CommandExecutor {
         // Add perk to players owned perks list
         if(playerPerks.addOwnedPerks(perk))
             player.sendMessage("Added perk: " + perkType);
-        else
-            player.sendMessage("You have cannot have more than three perk cards");
+//        else
+//            player.sendMessage("You have cannot have more than three perk cards");
     }
 
     private void addPerk(CommandSender sender, String playerName, String perkType) {

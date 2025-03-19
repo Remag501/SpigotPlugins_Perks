@@ -18,6 +18,7 @@ public class PlayerPerks {
 //    private List<Perk> ownedPerks;
     private Map<PerkType, Perk> equippedPerks;
     private Map<PerkType, Perk> ownedPerks;
+    private int perkPoints;
 
     public static PlayerPerks getPlayerPerks(UUID playerUUID) {
         return playersPerks.get(playerUUID);
@@ -33,6 +34,7 @@ public class PlayerPerks {
             this.addOwnedPerks(PerkType.valueOf(perk));
         for (String perk: equippedPerks)
             this.addEquippedPerk(PerkType.valueOf(perk));
+        this.perkPoints = 0;
     }
 
     public static void savePerks() {
@@ -156,10 +158,32 @@ public class PlayerPerks {
         Player player = Bukkit.getPlayer(playerUUID);
         Perk perkInstance = ownedPerks.get(perkType);
         if (perkInstance != null) { // Perk already owned
-            return perkInstance.addCount();
+            boolean rv = perkInstance.addCount();
+            if (rv == false) {// Perk deck is full, replace to perk points
+                int perkAdd = 0;
+                switch (Items.getRarity(PerkType.getPerkType(perkInstance))) {
+                    case 0:
+                        perkAdd = 1;
+                        break;
+                    case 1:
+                        perkAdd = 2;
+                        break;
+                    case 2:
+                        perkAdd = 3;
+                        break;
+                    case 3:
+                        perkAdd = 5;
+                        break;
+                    default:
+                        break;
+                }
+                perkPoints += perkAdd;
+                player.sendMessage("You do not have enough storage for this perk so it was automatically converted to " + perkAdd + " perk points.");
+            }
+            return rv;
         }
         else {
-            Bukkit.getPluginManager().getPlugin("Perks").getLogger().info("Reached, Player object is " + player.toString());
+//            Bukkit.getPluginManager().getPlugin("Perks").getLogger().info("Reached, Player object is " + player.toString());
             perkInstance = perkType.getPerk().clone();
             perkInstance.setPlayer(player);
             ownedPerks.put(perkType, perkInstance);
@@ -182,5 +206,21 @@ public class PlayerPerks {
             ownedPerks.remove(perkType);
             removeEquippedPerk(perkType);
         }
+    }
+
+    public int getPerkPoints() {
+        return perkPoints;
+    }
+
+    public UUID getPlayerUUID() {
+        return playerUUID;
+    }
+
+    public boolean decreasePerkPoints(int points) {
+        if (perkPoints >= points)
+            perkPoints -= points;
+        else
+            return false;
+        return true;
     }
 }

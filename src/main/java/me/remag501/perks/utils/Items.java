@@ -67,6 +67,22 @@ public class Items {
         return item;
     }
 
+    public static int getRarity(PerkType perkType) {
+        switch(perkType.getItem().getItemMeta().getLore().get(0).charAt(1)) {
+            case 'f':
+                return 0;
+            case 'a':
+                return 1;
+            case '1':
+                return 2;
+            case '6':
+                return 3;
+            default:
+                break;
+        }
+        return -1;
+    }
+
     public static ItemStack createPerkSkull(String texture, String name, String id, int rarity, String... lores) {
         ItemStack head = createPerkItem(Material.PLAYER_HEAD, name, id, rarity, lores);
         SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
@@ -87,6 +103,22 @@ public class Items {
         return head;
     }
 
+    public static ItemStack createPerkSkull(UUID uuid, String name, String id, String... lores) {
+        ItemStack head = createPerkItem(Material.PLAYER_HEAD, name, id, 0, lores);
+        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+
+        // Remove the rarity lore
+        skullMeta.setLore(new ArrayList<>());
+
+        // Set the custom player texture using UUID
+//        PlayerProfile profile = Bukkit.createPlayerProfile(uuid);
+//        skullMeta.setOwnerProfile(profile);
+        skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
+
+        head.setItemMeta(skullMeta);
+
+        return head;
+    }
 
     // Add identifier to this function arguments
     public static ItemStack createItem(Material type, String name, String id, boolean enchanted, String... lores) {

@@ -23,20 +23,34 @@ public class UI implements Listener {
     private PlayerPerks perks;
     private Inventory perkInventory;
     private boolean hiddenMenu;
+//    private int perkPoints;
 
     public UI(PlayerPerks perks, boolean hiddenMenu) {
         this.hiddenMenu = hiddenMenu;
         this.perks = perks;
+//        this.perkPoints = perks.getPerkPoints(); // Hit with null
         perkInventory = Bukkit.createInventory(null, 54, "Choose Your Perk");
     }
 
     // Takes PlayerPerks as argument
     public Inventory getPerkMenu() {
+        loadHeader();
         loadActivePerks();
         loadAvailablePerks(0); // Default page is 0
         loadBackNextButton();
 
         return perkInventory;
+    }
+
+    private void loadHeader() {
+        // Place player head in first slot
+        // Skipping for now since I need a way to get the player's username
+        Player player = Bukkit.getPlayer(perks.getPlayerUUID());
+        ItemStack head = Items.createPerkSkull(perks.getPlayerUUID(), player.getDisplayName(), player.getDisplayName());
+        perkInventory.setItem(0, head);
+        // Place rolling perks in top right
+        ItemStack perkRollButton = Items.createItem(Material.SUNFLOWER, "Obtain Perks", "casino", false, "Perk Points: " + perks.getPerkPoints());
+        perkInventory.setItem(8, perkRollButton);
     }
 
     private void loadActivePerks() {
@@ -116,32 +130,39 @@ public class UI implements Listener {
                 player.sendMessage("§cYou don't have that perk available");
                 return;
             }
-            // Check if the player clicks on a perk
-            for (PerkType perkType : PerkType.values()) {
-                if (Items.areItemsEqual(event.getCurrentItem(), perkType.getItem())) {
-                    // Check if the perk event is triggered by hidden item, if so make this object have hidden perks
-                    if (Items.hiddenItem(event.getCurrentItem()))
-                    {
-                        hiddenMenu = true;
+            // Check if player clicked on perk gamble
+            if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Obtain Perks")) {
+                GambleUI rollUI = new GambleUI();
+                rollUI.open(player);
+            }
+            else {
+                // Check if the player clicks on a perk
+                for (PerkType perkType : PerkType.values()) {
+                    if (Items.areItemsEqual(event.getCurrentItem(), perkType.getItem())) {
+                        // Check if the perk event is triggered by hidden item, if so make this object have hidden perks
+                        if (Items.hiddenItem(event.getCurrentItem()))
+                        {
+                            hiddenMenu = true;
 //                        player.sendMessage("You clicked on a hidden item");
-                    } else
-                        hiddenMenu = false;
-                    // Check if the player already has this perk equipped
-                    // Add or remove the perk from player's equipped perks based on the click type (left or right)'
-                    ClickType click = event.getClick();
-                    if (click == ClickType.LEFT) {
-                        if (perks.addEquippedPerk(perkType))
-                            player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 10, 2);
-                        else
-                            player.playSound(player, Sound.ENTITY_VILLAGER_NO, 10, 1);
-                        break; // Technically unneeded since itwDem is s.tatic,
-                    }
-                    else if (click == ClickType.RIGHT) {
-                        if (perks.removeEquippedPerk(perkType))
-                            player.playSound(player, Sound.UI_BUTTON_CLICK, 10, 2);
-                        else
-                            player.playSound(player, Sound.ENTITY_VILLAGER_NO, 10, 1);
-                        break; // Prevent other items from being scanned and removed
+                        } else
+                            hiddenMenu = false;
+                        // Check if the player already has this perk equipped
+                        // Add or remove the perk from player's equipped perks based on the click type (left or right)'
+                        ClickType click = event.getClick();
+                        if (click == ClickType.LEFT) {
+                            if (perks.addEquippedPerk(perkType))
+                                player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 10, 2);
+                            else
+                                player.playSound(player, Sound.ENTITY_VILLAGER_NO, 10, 1);
+                            break; // Technically unneeded since itwDem is s.tatic,
+                        }
+                        else if (click == ClickType.RIGHT) {
+                            if (perks.removeEquippedPerk(perkType))
+                                player.playSound(player, Sound.UI_BUTTON_CLICK, 10, 2);
+                            else
+                                player.playSound(player, Sound.ENTITY_VILLAGER_NO, 10, 1);
+                            break; // Prevent other items from being scanned and removed
+                        }
                     }
                 }
             }

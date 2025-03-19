@@ -5,6 +5,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 //new Perk("Sword Perk", Items.createItem(Material.DIAMOND_SWORD, "Sword Perk", false, "stuff")
 public enum PerkType {
     SWORD_PERK(new LongSwordPerk(Items.createPerkItem(Material.DIAMOND_SWORD, "Sword Perk", "SWORD_PERK", 4, "stuff"))),
@@ -44,6 +48,15 @@ public enum PerkType {
             }
         }
         return null; // Return null if no match is found
+    }
+
+    public static List<PerkType> getPerksByRarity(int rarity) {
+        List<PerkType> perks = new ArrayList<>();
+        for (PerkType type: PerkType.values()) {
+            if (Items.getRarity(type) == rarity)
+                perks.add(type);
+        }
+        return perks;
     }
 
 }
