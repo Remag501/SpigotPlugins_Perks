@@ -159,8 +159,11 @@ public class UI implements Listener {
                         else if (click == ClickType.RIGHT) {
                             if (perks.removeEquippedPerk(perkType))
                                 player.playSound(player, Sound.UI_BUTTON_CLICK, 10, 2);
-                            else
-                                player.playSound(player, Sound.ENTITY_VILLAGER_NO, 10, 1);
+                            else { // Player scraps items
+                                ScrapUI scrapUI = new ScrapUI();
+                                scrapUI.open(player, perkType);
+                            }
+//                                player.playSound(player, Sound.ENTITY_VILLAGER_NO, 10, 1); replace with confirm scrap ui
                             break; // Prevent other items from being scanned and removed
                         }
                     }

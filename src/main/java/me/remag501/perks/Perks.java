@@ -6,6 +6,7 @@ import me.remag501.perks.perkTypes.PerkType;
 import me.remag501.perks.perkTypes.PlayerPerks;
 import me.remag501.perks.utils.GambleUI;
 import me.remag501.perks.utils.PerkChangeListener;
+import me.remag501.perks.utils.ScrapUI;
 import me.remag501.perks.utils.UI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -22,9 +23,10 @@ public final class Perks extends JavaPlugin {
         getServer().getLogger().info("Perks has started up!");
         // Add commands to the plugin
         getCommand("perks").setExecutor(new PerksCommand(this));
-        Bukkit.getPluginManager().registerEvents(new UI(null, false), this);
+        getServer().getPluginManager().registerEvents(new UI(null, false), this);
         getServer().getPluginManager().registerEvents(new GambleUI(), this);
-        Bukkit.getPluginManager().registerEvents(new PerkChangeListener(), this);
+        getServer().getPluginManager().registerEvents(new PerkChangeListener(), this);
+        getServer().getPluginManager().registerEvents(new ScrapUI(), this);
         // Enable worlds for the plugin
         PerkChangeListener.enabledWorlds.add("sahara");
         PerkChangeListener.enabledWorlds.add("icycaverns");

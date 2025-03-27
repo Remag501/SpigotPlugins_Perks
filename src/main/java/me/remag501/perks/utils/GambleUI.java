@@ -60,10 +60,6 @@ public class GambleUI implements Listener {
     }
 
     private void prevUI(Player player) {
-        PlayerPerks perks = PlayerPerks.getPlayerPerks(player.getUniqueId());
-        if (perks == null) {
-            perks = new PlayerPerks(player.getUniqueId());
-        }
         UI ui = new UI(PlayerPerks.getPlayerPerks(player.getUniqueId()), false);
         Inventory perkMenu = ui.getPerkMenu();
         player.openInventory(perkMenu);

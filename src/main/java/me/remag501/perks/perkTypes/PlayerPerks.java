@@ -155,41 +155,46 @@ public class PlayerPerks {
     }
 
     public boolean addOwnedPerks(PerkType perkType) {
-        // O(n) complexity
         Player player = Bukkit.getPlayer(playerUUID);
         Perk perkInstance = ownedPerks.get(perkType);
+
         if (perkInstance != null) { // Perk already owned
-            boolean rv = perkInstance.addCount();
-            if (rv == false) {// Perk deck is full, replace to perk points
-                int perkAdd = 0;
-                switch (Items.getRarity(PerkType.getPerkType(perkInstance))) {
-                    case 0:
-                        perkAdd = 1;
-                        break;
-                    case 1:
-                        perkAdd = 2;
-                        break;
-                    case 2:
-                        perkAdd = 3;
-                        break;
-                    case 3:
-                        perkAdd = 5;
-                        break;
-                    default:
-                        break;
-                }
-                perkPoints += perkAdd;
-                player.sendMessage("You do not have enough storage for this perk so it was automatically converted to " + perkAdd + " perk points.");
+            if (!perkInstance.addCount()) { // Perk deck is full, scrap one to add later
+                int points = scrapPerks(perkType, player);
+                perkInstance.addCount(); // Add again since scrap removes a perk
+                player.sendMessage("You do not have enough storage for this perk, so it was automatically converted to " + points + " perk points.");
+                return false;
             }
-            return rv;
-        }
-        else {
-//            Bukkit.getPluginManager().getPlugin("Perks").getLogger().info("Reached, Player object is " + player.toString());
+            return true;
+        } else {
             perkInstance = perkType.getPerk().clone();
             perkInstance.setPlayer(player);
             ownedPerks.put(perkType, perkInstance);
             return true;
         }
+    }
+
+    public int scrapPerks(PerkType perkType, Player player) {
+        removeOwnedPerk(perkType);
+        int perkAdd = 0;
+        switch (Items.getRarity(perkType)) {
+            case 0:
+                perkAdd = 1;
+                break;
+            case 1:
+                perkAdd = 2;
+                break;
+            case 2:
+                perkAdd = 3;
+                break;
+            case 3:
+                perkAdd = 5;
+                break;
+            default:
+                break;
+        }
+        perkPoints += perkAdd;
+        return perkAdd;
     }
 
     public void removeOwnedPerk(PerkType perkType) {
