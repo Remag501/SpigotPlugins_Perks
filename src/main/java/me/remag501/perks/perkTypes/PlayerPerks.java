@@ -216,6 +216,10 @@ public class PlayerPerks {
         }
     }
 
+    public void addPerkPoints(int count) {
+        perkPoints += count;
+    }
+
     public int getPerkPoints() {
         return perkPoints;
     }

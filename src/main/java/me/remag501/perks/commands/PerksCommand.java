@@ -51,6 +51,16 @@ public class PerksCommand implements CommandExecutor {
                 else if (args.length > 3)
                     sender.sendMessage("Too many arguments");
                 return true;
+            case "addpoints":
+                if (args.length == 1)
+                    sender.sendMessage("Usage: /perks addpoints <player> <points>");
+                else if (args.length == 2 && isNumeric(args[1]))
+                    addPerkPoints(sender.getName(), Integer.parseInt(args[1]));
+                else if (args.length == 3 && isNumeric(args[2]))
+                    addPerkPoints(args[1], Integer.parseInt(args[2]));
+                else if (args.length > 3)
+                    sender.sendMessage("Too many arguments");
+                return true;
             case "remove":
                 if (args.length == 1)
                     printPerks(sender);
@@ -65,10 +75,19 @@ public class PerksCommand implements CommandExecutor {
                 openPerkUI(sender, true);
                 return true;
             default:
-                sender.sendMessage("Usage: reload/add/remove");
+                sender.sendMessage("Usage: reload/add/addpoints/remove");
                 return true;
         }
 
+    }
+
+    private static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
     }
 
     private void printPerks(CommandSender sender) {
@@ -78,6 +97,18 @@ public class PerksCommand implements CommandExecutor {
             rv.append(String.valueOf(type)).append(" ");
         }
         sender.sendMessage(rv.toString());
+    }
+
+    private void addPerkPoints(String playerName, int points) {
+        // Get PlayerPerks object
+        Player player = Bukkit.getPlayer(playerName);
+        if (player == null) {
+            Bukkit.getPluginManager().getPlugin("Perks").getLogger().info("Player " + playerName + " from add perk points could not be founds.");
+            return;
+        }
+        PlayerPerks playerPerks = PlayerPerks.getPlayerPerks(player.getUniqueId());
+        playerPerks.addPerkPoints(points);
+        player.sendMessage("You recieved " + points + " perk points.");
     }
 
     private void addPerk(Player player, String perkType) {
