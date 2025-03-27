@@ -39,8 +39,8 @@ public class ScrapUI implements Listener {
         cancelMeta.setDisplayName("Cancel");
         cancel.setItemMeta(cancelMeta);
 
-        scrapInventory.setItem(3, confirm);
-        scrapInventory.setItem(5, cancel);
+        scrapInventory.setItem(3, cancel);
+        scrapInventory.setItem(5, confirm);
     }
 
     public void open(Player player, PerkType perkType) {
@@ -64,8 +64,8 @@ public class ScrapUI implements Listener {
         switch (clickedItem.getType()) {
             case GREEN_WOOL: // Confirm
                 playerPerks.scrapPerks(perkType, player);
-                player.sendMessage("You have scrapped the " + perkType.name());
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
+                player.sendMessage("You have scrapped the perk " + perkType.name());
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 1.0f);
                 break;
             case RED_WOOL: // Cancel
                 player.sendMessage("Scrapping cancelled.");

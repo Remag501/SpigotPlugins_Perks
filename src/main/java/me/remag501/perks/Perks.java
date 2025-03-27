@@ -34,7 +34,7 @@ public final class Perks extends JavaPlugin {
         PerkChangeListener.enabledWorlds.add("musicland");
         PerkChangeListener.enabledWorlds.add("thundra");
         PerkChangeListener.enabledWorlds.add("test");
-
+        // Enable listerners for perks
         getServer().getPluginManager().registerEvents((Listener) PerkType.HOT_HANDS.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.BLOODIED.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.KANGAROO.getPerk(), this);

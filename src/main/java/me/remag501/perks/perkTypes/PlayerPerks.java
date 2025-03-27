@@ -29,12 +29,13 @@ public class PlayerPerks {
         ConfigUtil perkConfig = new ConfigUtil(Bukkit.getPluginManager().getPlugin("Perks"), "perks.yml");
         List<String> equippedPerks = perkConfig.getConfig().getStringList(playerID + "_equipped");
         List<String> ownedPerks = perkConfig.getConfig().getStringList(playerID + "_owned");
+        String perkPointString = ownedPerks.remove(ownedPerks.size() - 1); // Pops last item O(1) for perk points
+        this.perkPoints = Integer.parseInt(perkPointString);
         // Convert to Perk ArrayList and set this update this instance to existing perks
         for (String perk: ownedPerks) // Owned Perks have to be called first
             this.addOwnedPerks(PerkType.valueOf(perk));
         for (String perk: equippedPerks)
             this.addEquippedPerk(PerkType.valueOf(perk));
-        this.perkPoints = 0;
     }
 
     public static void savePerks() {
@@ -58,6 +59,7 @@ public class PlayerPerks {
             save = new ArrayList<>();
             for (Perk perk: playerPerk.getOwnedPerks())
                 save.add(Items.getPerkID(perk.getItem()));
+            save.add(playerPerk.perkPoints + ""); // Save perk points under owned
             perkConfig.set(playerIDString + "_owned", save);
         }
         // Save the config to the file
