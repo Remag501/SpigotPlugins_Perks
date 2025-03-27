@@ -79,6 +79,7 @@ public class PlayerPerks {
         return rv;
     }
 
+    // Should only be on player join
     public PlayerPerks(UUID playerUUID) {
         equippedPerks = new HashMap<PerkType, Perk>();
         ownedPerks = new HashMap<PerkType, Perk>();

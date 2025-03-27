@@ -4,7 +4,9 @@ import me.remag501.perks.Perks;
 import me.remag501.perks.perkTypes.PerkType;
 import me.remag501.perks.perkTypes.PlayerPerks;
 import org.bukkit.Bukkit;
+import org.bukkit.EntityEffect;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -102,6 +104,56 @@ public class GambleUI implements Listener {
         }
     }
 
+    public void triggerTotemAnimation(Player player) {
+        // Close the player's inventory
+        player.closeInventory();
+
+        // Create a custom totem with model data 123
+        ItemStack totem = new ItemStack(Material.TOTEM_OF_UNDYING);
+        ItemMeta meta = totem.getItemMeta();
+
+        if (meta != null) {
+//            meta.setDisplayName(ChatColor.GOLD + "Custom Perk Totem");
+            meta.setCustomModelData(610002); // Assign custom model data
+
+            // Add lore to the item
+//            List<String> lore = new ArrayList<>();
+//            lore.add(ChatColor.GRAY + "A rare totem infused with perk energy.");
+//            meta.setLore(lore);
+
+            // Store custom NBT data for resource pack mapping
+//            NamespacedKey key = new NamespacedKey(Bukkit.getPluginManager().getPlugin("Perks"), "perk_totem");
+//            meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, "perk_totem_data");
+
+            totem.setItemMeta(meta);
+        }
+
+        // Cache the players on hand
+        ItemStack cache = player.getInventory().getItemInMainHand();
+        int slot = player.getInventory().getHeldItemSlot();
+
+        // Add the totem to the player’s inventory
+        player.getInventory().setItem(slot, totem);
+        player.playEffect(EntityEffect.TOTEM_RESURRECT); // Trigger animation
+        player.getInventory().setItem(slot, cache);
+
+
+        // ✅ Play the totem sound
+        player.playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 1.0f, 1.0f);
+
+//        player.sendMessage(ChatColor.GREEN + "You rolled a custom perk!");
+
+        // ✅ Reopen the inventory after 3 seconds
+        Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin("Perks"), () -> {
+            // Open the perk UI after delay
+            GambleUI rollUI = new GambleUI();
+            rollUI.open(player);
+        }, 45L); // 60 ticks = 3 seconds
+    }
+
+
+
+
     private boolean rollPerk(Player player, int rarity, int cost) {
         // Charge player perks, if it fails then it won't roll
         PlayerPerks playerPerks = PlayerPerks.getPlayerPerks(player.getUniqueId());
@@ -119,6 +171,9 @@ public class GambleUI implements Listener {
         // Roll random perk and add to user
         int randomIndex = (int) (Math.random() * possiblePerks.size());
         PerkType perkType = possiblePerks.get(randomIndex);
+        // Animation for rolling perk
+        triggerTotemAnimation(player);
+        // Add perk to player
         playerPerks.addOwnedPerks(perkType);
         player.sendMessage("You obtained the perk: " + perkType.getItem().getItemMeta().getDisplayName());
         return true;

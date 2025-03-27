@@ -26,11 +26,12 @@ public final class Perks extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GambleUI(), this);
         Bukkit.getPluginManager().registerEvents(new PerkChangeListener(), this);
         // Enable worlds for the plugin
-        PerkChangeListener.enabledWorlds.add("Sahara");
-        PerkChangeListener.enabledWorlds.add("Icycaverns");
-        PerkChangeListener.enabledWorlds.add("Kuroko");
-        PerkChangeListener.enabledWorlds.add("Musicland");
-        PerkChangeListener.enabledWorlds.add("Thundra");
+        PerkChangeListener.enabledWorlds.add("sahara");
+        PerkChangeListener.enabledWorlds.add("icycaverns");
+        PerkChangeListener.enabledWorlds.add("kuroko");
+        PerkChangeListener.enabledWorlds.add("musicland");
+        PerkChangeListener.enabledWorlds.add("thundra");
+        PerkChangeListener.enabledWorlds.add("test");
 
         getServer().getPluginManager().registerEvents((Listener) PerkType.HOT_HANDS.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.BLOODIED.getPerk(), this);

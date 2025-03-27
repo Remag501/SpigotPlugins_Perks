@@ -36,9 +36,11 @@ public class PerkChangeListener implements Listener {
         // Check does not allow the world allows perks
         if (!enabledWorlds.contains(newWorld)) {
             // Disable player's perks
+//            player.sendMessage("Perks disabled");
             disablePlayerPerks(player);
         } else {
             // Re-enable player's perks
+//            player.sendMessage("Perks enabled");
             enablePlayerPerks(player);
         }
     }
@@ -46,6 +48,7 @@ public class PerkChangeListener implements Listener {
     @EventHandler
     public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
+//        player.sendMessage("Perks: reached1");
         checkAllowedWorld(player);
         // Convert perk cards into player perks
         String worldName = player.getWorld().getName();

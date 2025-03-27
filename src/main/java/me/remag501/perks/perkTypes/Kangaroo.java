@@ -97,8 +97,9 @@ public class Kangaroo extends Perk implements Listener {
     private boolean hasCooldown(Player player) {
 //        return cooldowns.containsKey(player.getUniqueId()) &&
 //                (System.currentTimeMillis() - cooldowns.get(player.getUniqueId()) < COOLDOWN_TIME);
-        if (activePerks.containsKey(player.getUniqueId())) return false;
-        return (System.currentTimeMillis() - cooldowns < COOLDOWN_TIME);
+        if (activePerks.containsKey(player.getUniqueId()))
+            return (System.currentTimeMillis() - cooldowns < COOLDOWN_TIME);
+        return false;
     }
 
     /**
