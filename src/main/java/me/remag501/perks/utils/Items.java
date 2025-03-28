@@ -397,7 +397,7 @@ public class Items {
                 if (equippedPerks.contains(perkRequired.getPerk()))
                     meetsRequirements = true;
             }
-            Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(equippedPerks.toString() + " " + requirement + " " + meetsRequirements);
+
             // Insert prefix based on whether player meets requirement
             if (meetsRequirements)
                 requirementString.insert(0,"§a + ");
@@ -410,11 +410,6 @@ public class Items {
         // Update lore
         meta.setLore(loreList);
         item.setItemMeta(meta);
-    }
-
-    public static <T> boolean checkIntersection(List<T> list1, List<T> list2) {
-        List<T> temp = new ArrayList<>(list1);
-        return temp.retainAll(list2);
     }
 
 }

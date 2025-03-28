@@ -106,42 +106,93 @@ public class PlayerPerks {
         }
 
         // Check if another perk depends on this one, now that this perk is removed
-        Set<PerkType> equippedSet = equippedPerks.keySet();
-        for (PerkType equippedPerk: equippedSet) {
+//        Set<PerkType> equippedSet = equippedPerks.keySet();
+//        for (PerkType equippedPerk: equippedSet) {
+//            List<List<PerkType>> requirements = equippedPerk.getPerk().getRequirements();
+//            if (requirements != null) {
+//                List<PerkType> equippedPerkTypes = new ArrayList<>(equippedPerks.keySet());
+//                for (List<PerkType> requirementList: requirements) {
+//                    boolean foundPerk = false;
+//                    for (PerkType requirement: requirementList) {
+//                        if (equippedPerkTypes.contains(requirement)) {
+//                            equippedPerkTypes.remove(requirement); // Prevent perk from filling two requirements
+//                            foundPerk = true;
+//                            break;
+//                        }
+//                    }
+//                    if (!foundPerk) {
+//                        Perk equippedPerkInstance = equippedPerks.get(equippedPerk);
+//                        // Check if star perk and reset stars
+//                        if (equippedPerkInstance.isStarPerk())
+//                            equippedPerkInstance.setStar(1);
+//                        // Disable the perk if the player is in world
+//                        boolean inWorld = false;
+//                        for (String world: PerkChangeListener.enabledWorlds) {
+//                            if (Bukkit.getPlayer(playerUUID).getWorld().getName().equalsIgnoreCase(world)) {
+//                                inWorld = true;
+//                                break;
+//                            }
+//                        }
+//                        if (!inWorld) {
+//                            equippedPerks.remove(equippedPerk); // Player does not have required perk
+//                            break;
+//                        }
+//                        equippedPerkInstance.onDisable();
+//                        equippedPerks.remove(equippedPerk); // Player does not have required perk
+//                        break; // Check if more than one perk depend on removed perk
+//                    }
+//                }
+//            }
+//        }
+
+        Iterator<PerkType> iterator = equippedPerks.keySet().iterator();
+        while (iterator.hasNext()) {
+            PerkType equippedPerk = iterator.next();
             List<List<PerkType>> requirements = equippedPerk.getPerk().getRequirements();
+
             if (requirements != null) {
                 List<PerkType> equippedPerkTypes = new ArrayList<>(equippedPerks.keySet());
-                for (List<PerkType> requirementList: requirements) {
+
+                for (List<PerkType> requirementList : requirements) {
                     boolean foundPerk = false;
-                    for (PerkType requirement: requirementList) {
+
+                    for (PerkType requirement : requirementList) {
                         if (equippedPerkTypes.contains(requirement)) {
                             equippedPerkTypes.remove(requirement); // Prevent perk from filling two requirements
                             foundPerk = true;
                             break;
                         }
                     }
+
                     if (!foundPerk) {
                         Perk equippedPerkInstance = equippedPerks.get(equippedPerk);
+
                         // Check if star perk and reset stars
                         if (equippedPerkInstance.isStarPerk())
                             equippedPerkInstance.setStar(1);
+
                         // Disable the perk if the player is in world
                         boolean inWorld = false;
-                        for (String world: PerkChangeListener.enabledWorlds) {
+                        for (String world : PerkChangeListener.enabledWorlds) {
                             if (Bukkit.getPlayer(playerUUID).getWorld().getName().equalsIgnoreCase(world)) {
                                 inWorld = true;
                                 break;
                             }
                         }
-                        if (!inWorld)
-                            return true;
+
+                        if (!inWorld) {
+                            iterator.remove(); // Safe removal using iterator
+                            break;
+                        }
+
                         equippedPerkInstance.onDisable();
-                        equippedPerks.remove(equippedPerk); // Player does not have required perk
-                        break;
+                        iterator.remove(); // Safe removal using iterator
+                        break; // Check if more than one perk depends on removed perk
                     }
                 }
             }
         }
+
 
 
         // Message the player
