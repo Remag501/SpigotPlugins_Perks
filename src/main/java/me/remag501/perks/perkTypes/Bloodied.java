@@ -13,6 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -27,8 +28,8 @@ public class Bloodied extends Perk implements Listener {
     private int duration;
     private int kit_amplifier;
 
-    public Bloodied(ItemStack perkItem, boolean starPerk) {
-        super(perkItem, starPerk);
+    public Bloodied(ItemStack perkItem, boolean starPerk, List<List<PerkType>> required) {
+        super(perkItem, starPerk, required);
     }
 
     @Override

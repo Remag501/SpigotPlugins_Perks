@@ -94,6 +94,7 @@ public class PlayerPerks {
     public boolean removeEquippedPerk(PerkType perkType) {
         Perk perk = equippedPerks.get(perkType); // Check if perk is equipped
         if (perk == null) return false;
+
         // If star perk with more than 1 star, just remove one star
         if (perk.getStars() > 1) {
             if (!perk.decreaseStar())
@@ -103,9 +104,50 @@ public class PlayerPerks {
             // Disable the perk before removing it
             equippedPerks.remove(perkType);
         }
+
+        // Check if another perk depends on this one, now that this perk is removed
+        Set<PerkType> equippedSet = equippedPerks.keySet();
+        for (PerkType equippedPerk: equippedSet) {
+            List<List<PerkType>> requirements = equippedPerk.getPerk().getRequirements();
+            if (requirements != null) {
+                List<PerkType> equippedPerkTypes = new ArrayList<>(equippedPerks.keySet());
+                for (List<PerkType> requirementList: requirements) {
+                    boolean foundPerk = false;
+                    for (PerkType requirement: requirementList) {
+                        if (equippedPerkTypes.contains(requirement)) {
+                            equippedPerkTypes.remove(requirement); // Prevent perk from filling two requirements
+                            foundPerk = true;
+                            break;
+                        }
+                    }
+                    if (!foundPerk) {
+                        Perk equippedPerkInstance = equippedPerks.get(equippedPerk);
+                        // Check if star perk and reset stars
+                        if (equippedPerkInstance.isStarPerk())
+                            equippedPerkInstance.setStar(1);
+                        // Disable the perk if the player is in world
+                        boolean inWorld = false;
+                        for (String world: PerkChangeListener.enabledWorlds) {
+                            if (Bukkit.getPlayer(playerUUID).getWorld().getName().equalsIgnoreCase(world)) {
+                                inWorld = true;
+                                break;
+                            }
+                        }
+                        if (!inWorld)
+                            return true;
+                        equippedPerkInstance.onDisable();
+                        equippedPerks.remove(equippedPerk); // Player does not have required perk
+                        break;
+                    }
+                }
+            }
+        }
+
+
         // Message the player
         Player player = Bukkit.getPlayer(playerUUID);
         player.sendMessage("§cYou have deequipped the perk " + perkType.getItem().getItemMeta().getDisplayName());
+
         // Check if they are in the correct world before disabling
         boolean inWorld = false;
         for (String world: PerkChangeListener.enabledWorlds) {
@@ -127,19 +169,42 @@ public class PlayerPerks {
         if (equippedPerks.size() >= 5)
             return false;
         Perk perkInstance = equippedPerks.get(perkType);
+
+        // Check if perk has requirements equipped
+        List<List<PerkType>> requirements = perkType.getPerk().getRequirements();
+        player.sendMessage("" + requirements);
+        if (requirements != null) {
+            List<PerkType> equippedPerkTypes = new ArrayList<>(equippedPerks.keySet());
+            for (List<PerkType> requirementList: requirements) {
+                boolean foundPerk = false;
+                for (PerkType requirement: requirementList) {
+                    if (equippedPerkTypes.contains(requirement)) {
+                        equippedPerkTypes.remove(requirement); // Prevent perk from filling two requirements
+                        foundPerk = true;
+                        break;
+                    }
+                }
+                if (!foundPerk)
+                    return foundPerk; // Player does not have required perk
+            }
+        }
+
         // Check if star perk
         if (perkInstance != null && perkInstance.isStarPerk() && perkInstance.getStars() < 3) {
             if (!perkInstance.increaseStar())
                 return false; // Increase star fails
         }
+
         // Check if perk is already equipped
         else if (perkInstance != null)
             return false;
+
         // Add perks to set
         perkInstance = ownedPerks.get(perkType);
         if (perkInstance == null) return false; // Just in case
         equippedPerks.put(perkType, perkInstance);
         player.sendMessage("§2You have equipped the perk " + perkType.getItem().getItemMeta().getDisplayName());
+
         // Only enables if the player is in the correct world
         boolean inWorld = false;
         for (String world: PerkChangeListener.enabledWorlds) {
@@ -151,8 +216,7 @@ public class PlayerPerks {
         if (!inWorld)
             return true; // Equipped but not enabled
         perkInstance.onEnable();
-//        player.sendMessage("Reached in the correct world! " + perkInstance.toString());
-//        player.sendMessage(equippedPerks.toString());
+
         return true;
     }
 
@@ -168,6 +232,7 @@ public class PlayerPerks {
                 return false;
             }
             return true;
+
         } else {
             perkInstance = perkType.getPerk().clone();
             perkInstance.setPlayer(player);

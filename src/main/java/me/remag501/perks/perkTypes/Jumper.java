@@ -8,6 +8,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -16,8 +17,8 @@ public class Jumper extends Perk {
     private static final Map<UUID, Jumper> activePerks = new HashMap<>();
     private BukkitTask slownessTask;
 
-    public Jumper(ItemStack perkItem) {
-        super(perkItem);
+    public Jumper(ItemStack perkItem, List<List<PerkType>> requirements) {
+        super(perkItem, requirements);
     }
 
     @Override

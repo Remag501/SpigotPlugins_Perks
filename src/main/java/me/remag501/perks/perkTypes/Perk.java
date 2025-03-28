@@ -12,11 +12,21 @@ import java.util.UUID;
 
 public abstract class Perk implements Cloneable {
     // Stores info about the perk
-    private ItemStack perkItem;
+    private final ItemStack perkItem;
     protected UUID player;
     private int quantity;
-    private boolean starPerk;
+    private final boolean starPerk;
     private int stars;
+    private final List<List<PerkType>> requirements; // On clone will shallow copy to save memory
+
+    public Perk(ItemStack perkItem, boolean starPerk, List<List<PerkType>> requirements) {
+        this.perkItem = perkItem;
+        player = null;
+        quantity = 1;
+        this.starPerk = starPerk;
+        stars = 1;
+        this.requirements = requirements;
+    }
 
     public Perk(ItemStack perkItem, boolean starPerk) {
         this.perkItem = perkItem;
@@ -24,6 +34,15 @@ public abstract class Perk implements Cloneable {
         quantity = 1;
         this.starPerk = starPerk;
         stars = 1;
+        this.requirements = null;
+    }
+
+    public Perk(ItemStack perkItem, List<List<PerkType>> requirements) {
+        this.perkItem = perkItem;
+        player = null;
+        quantity = 1;
+        this.starPerk = false;
+        this.requirements = requirements;
     }
 
     public Perk(ItemStack perkItem) {
@@ -31,6 +50,11 @@ public abstract class Perk implements Cloneable {
         player = null;
         quantity = 1;
         this.starPerk = false;
+        this.requirements = null;
+    }
+
+    public List<List<PerkType>> getRequirements() {
+        return requirements;
     }
 
     public boolean increaseStar() {
@@ -47,6 +71,10 @@ public abstract class Perk implements Cloneable {
         else
             return false;
         return true;
+    }
+
+    public void setStar(int stars) {
+        this.stars = stars;
     }
 
     public int getStars() {
