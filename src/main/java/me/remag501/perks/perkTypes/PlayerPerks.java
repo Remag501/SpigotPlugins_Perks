@@ -172,7 +172,6 @@ public class PlayerPerks {
 
         // Check if perk has requirements equipped
         List<List<PerkType>> requirements = perkType.getPerk().getRequirements();
-        player.sendMessage("" + requirements);
         if (requirements != null) {
             List<PerkType> equippedPerkTypes = new ArrayList<>(equippedPerks.keySet());
             for (List<PerkType> requirementList: requirements) {

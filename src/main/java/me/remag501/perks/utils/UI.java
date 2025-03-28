@@ -87,6 +87,7 @@ public class UI implements Listener {
                 // Display the perk item
                 Items.updateEquipStatus(item, equippedPerks);
                 Items.updateCount(item, ownedPerks); // Stars are updated with updateCount
+                Items.updateRequirements(item, equippedPerks, PerkType.values()[k-1]); // Requirements are shown
                 perkInventory.setItem(i, item);
             } else
                 perkInventory.setItem(i, Items.createItem(Material.BARRIER, "???", null, true));

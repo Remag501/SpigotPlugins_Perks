@@ -23,7 +23,7 @@ public enum PerkType {
     BLOODIED(new Bloodied(Items.createPerkItem(Material.REDSTONE, "Bloodied", "BLOODIED", 2, "Strength 1/2 while under 25%/50% HP"), true,
             List.of(List.of(PerkType.HOT_HANDS)))),
     FLASH(new Flash(Items.createPerkItem(Material.LEATHER_BOOTS, "Flash", "FLASH", 1, "Speed 1 but gain weakness every 3 minutes"))),
-    JUMPER(new Jumper(Items.createPerkItem(Material.SLIME_BALL, "Jumper", "JUMPER", 1, " Jump Boost 1 but gain slowness every 1.5 minutes"),
+    JUMPER(new Jumper(Items.createPerkItem(Material.SLIME_BALL, "Jumper", "JUMPER", 1, "Jump Boost 1 but gain slowness every 1.5 minutes"),
             List.of(List.of(PerkType.FLASH), List.of(PerkType.HOT_HANDS)))),
     RESISTANT(new Resistant(Items.createPerkItem(Material.SHIELD, "Resistant", "RESISTANT", 1, "Resistance 1 while under 25% HP"))),
     LOW_MAINTENANCE(new LowMaintenance(Items.createPerkItem(Material.GOLDEN_CARROT, "Low Maintenance", "LOW_MAINTENANCE", 0, "Saturation 1 for 15 seconds every 2 minutes"))),

@@ -378,5 +378,43 @@ public class Items {
         item.setItemMeta(meta);
     }
 
+    public static void updateRequirements(ItemStack item, List<Perk> equippedPerks, PerkType perkType) {
+        List<List<PerkType>> requirements = perkType.getPerk().getRequirements();
+        if (requirements == null)
+            return; // Perk has no requirements
+        ItemMeta meta = item.getItemMeta();
+        List<String> loreList = meta.getLore();
+
+        // Build lore for requirements
+        loreList.add("§fRequirements: ");
+        for (List<PerkType> requirement: requirements) {
+            StringBuilder requirementString = new StringBuilder();
+
+            // Check if the player has the required perk and build string
+            boolean meetsRequirements = false;
+            for (PerkType perkRequired: requirement) {
+                requirementString.append(perkRequired.getItem().getItemMeta().getDisplayName()).append(", ");
+                if (equippedPerks.contains(perkRequired.getPerk()))
+                    meetsRequirements = true;
+            }
+            Bukkit.getPluginManager().getPlugin("Perks").getLogger().info(equippedPerks.toString() + " " + requirement + " " + meetsRequirements);
+            // Insert prefix based on whether player meets requirement
+            if (meetsRequirements)
+                requirementString.insert(0,"§a + ");
+            else
+                requirementString.insert(0, "§c - ");
+            requirementString.deleteCharAt(requirementString.length()-2); // Remove second last character, the "," at the end of string
+            loreList.add(requirementString.toString());
+        }
+
+        // Update lore
+        meta.setLore(loreList);
+        item.setItemMeta(meta);
+    }
+
+    public static <T> boolean checkIntersection(List<T> list1, List<T> list2) {
+        List<T> temp = new ArrayList<>(list1);
+        return temp.retainAll(list2);
+    }
 
 }
