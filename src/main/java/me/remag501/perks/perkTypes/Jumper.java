@@ -17,8 +17,8 @@ public class Jumper extends Perk {
     private static final Map<UUID, Jumper> activePerks = new HashMap<>();
     private BukkitTask slownessTask;
 
-    public Jumper(ItemStack perkItem, List<List<PerkType>> requirements) {
-        super(perkItem, requirements);
+    public Jumper(ItemStack perkItem) {
+        super(perkItem);
     }
 
     @Override

@@ -394,7 +394,7 @@ public class Items {
             boolean meetsRequirements = false;
             for (PerkType perkRequired: requirement) {
                 requirementString.append(perkRequired.getItem().getItemMeta().getDisplayName()).append(", ");
-                if (equippedPerks.contains(perkRequired.getPerk()))
+                if (equippedPerks.remove(perkRequired.getPerk())) // Prevent double dipping requirements
                     meetsRequirements = true;
             }
 

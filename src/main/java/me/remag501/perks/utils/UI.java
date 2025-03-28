@@ -132,7 +132,7 @@ public class UI implements Listener {
                 return;
             }
             // Check if player clicked on perk gamble
-            if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Obtain Perks")) {
+            if (event.getCurrentItem() != null && event.getCurrentItem().getItemMeta().getDisplayName().equals("Obtain Perks")) {
                 GambleUI rollUI = new GambleUI();
                 rollUI.open(player);
             }

@@ -21,8 +21,8 @@ public class Kangaroo extends Perk implements Listener {
 //    private final Map<UUID, Long> cooldowns = new HashMap<>();
     private long cooldowns;
 
-    public Kangaroo(ItemStack perkItem) {
-        super(perkItem);
+    public Kangaroo(ItemStack perkItem, List<List<PerkType>> requirements) {
+        super(perkItem, requirements);
     }
 
     @Override
@@ -34,6 +34,10 @@ public class Kangaroo extends Perk implements Listener {
     @Override
     public void onDisable() {
         Player player = Bukkit.getPlayer(this.player);
+        if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
+            player.setFlying(false);
+            player.setAllowFlight(false);
+        }
         activePerks.remove(this.player);
 //        PlayerToggleFlightEvent.getHandlerList().unregister(this);
 //        PlayerMoveEvent.getHandlerList().unregister(this);

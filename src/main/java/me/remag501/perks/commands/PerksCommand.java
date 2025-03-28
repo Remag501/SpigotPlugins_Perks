@@ -4,6 +4,7 @@ import me.remag501.perks.perkTypes.LongSwordPerk;
 import me.remag501.perks.perkTypes.Perk;
 import me.remag501.perks.perkTypes.PerkType;
 import me.remag501.perks.perkTypes.PlayerPerks;
+import me.remag501.perks.utils.Items;
 import me.remag501.perks.utils.UI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -48,8 +49,7 @@ public class PerksCommand implements CommandExecutor {
                     addPerk((Player) sender, args[1]);
                 else if (args.length == 3)
                     addPerk(sender, args[1], args[2]);
-                else if (args.length > 3)
-                    sender.sendMessage("Too many arguments");
+                else sender.sendMessage("Too many arguments");
                 return true;
             case "addpoints":
                 if (args.length == 1)
@@ -61,6 +61,15 @@ public class PerksCommand implements CommandExecutor {
                 else if (args.length > 3)
                     sender.sendMessage("Too many arguments");
                 return true;
+            case "addcard":
+                if (args.length == 1)
+                    printPerks(sender);
+                else if (args.length == 2)
+                    addPerkCard(sender.getName(), args[1]);
+                else if (args.length == 3)
+                    addPerkCard(args[1], args[2]);
+                else sender.sendMessage("Too many arguments");
+                return true;
             case "remove":
                 if (args.length == 1)
                     printPerks(sender);
@@ -68,14 +77,13 @@ public class PerksCommand implements CommandExecutor {
                     removePerk(sender, sender.getName(), args[1]);
                 else if (args.length == 3)
                     removePerk(sender, args[1], args[2]);
-                else if (args.length > 3)
-                    sender.sendMessage("Too many arguments");
+                else sender.sendMessage("Too many arguments");
                 return true;
             case "hiddenui":
                 openPerkUI(sender, true);
                 return true;
             default:
-                sender.sendMessage("Usage: reload/add/addpoints/remove");
+                sender.sendMessage("Usage: reload/add/addpoints/addcard/remove");
                 return true;
         }
 
@@ -99,6 +107,29 @@ public class PerksCommand implements CommandExecutor {
         sender.sendMessage(rv.toString());
     }
 
+    private void addPerkCard(String playerName, String perkName) {
+
+        // Get PlayerPerks object
+        Player player = Bukkit.getPlayer(playerName);
+        if (player == null) {
+            Bukkit.getPluginManager().getPlugin("Perks").getLogger().info("Player " + playerName + " from add perk card could not be found.");
+            return;
+        }
+
+        // Get perk from command arguments
+        PerkType perkType;
+        try {
+            perkType = PerkType.valueOf(perkName);
+        } catch (Exception e) {
+            player.sendMessage("Invalid perk type: " + perkName);
+            return;
+        }
+
+        // Get the perk card itemstack and give to player
+        player.getInventory().addItem(Items.getPerkCard(perkType.getItem()));
+
+    }
+
     private void addPerkPoints(String playerName, int points) {
         // Get PlayerPerks object
         Player player = Bukkit.getPlayer(playerName);
@@ -111,13 +142,13 @@ public class PerksCommand implements CommandExecutor {
         player.sendMessage("You recieved " + points + " perk points.");
     }
 
-    private void addPerk(Player player, String perkType) {
+    private void addPerk(Player player, String perkName) {
         // Get perk from command arguments
         PerkType perk;
         try {
-            perk = PerkType.valueOf(perkType);
+            perk = PerkType.valueOf(perkName);
         } catch (Exception e) {
-            player.sendMessage("Invalid perk type: " + perkType);
+            player.sendMessage("Invalid perk type: " + perkName);
             return;
         }
         // Gets object of PlayerPerks from UUID
@@ -127,7 +158,7 @@ public class PerksCommand implements CommandExecutor {
 //        } Add perks should not instantinate PlayerPerks
         // Add perk to players owned perks list
         if(playerPerks.addOwnedPerks(perk))
-            player.sendMessage("Added perk: " + perkType);
+            player.sendMessage("Added perk: " + perkName);
 //        else
 //            player.sendMessage("You have cannot have more than three perk cards");
     }

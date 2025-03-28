@@ -28,8 +28,8 @@ public class Bloodied extends Perk implements Listener {
     private int duration;
     private int kit_amplifier;
 
-    public Bloodied(ItemStack perkItem, boolean starPerk, List<List<PerkType>> required) {
-        super(perkItem, starPerk, required);
+    public Bloodied(ItemStack perkItem, boolean starPerk) {
+        super(perkItem, starPerk);
     }
 
     @Override
