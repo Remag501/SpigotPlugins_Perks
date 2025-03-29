@@ -36,7 +36,7 @@ public class LowMaintenance extends Perk implements Listener {
             }.runTaskTimer(Bukkit.getPluginManager().getPlugin("Perks"), 0L, TASK_INTERVAL);
 
             activeTasks.put(this.player, task);
-            player.sendMessage("Low Maintenance Perk activated! You will periodically gain Saturation.");
+//            player.sendMessage("Low Maintenance Perk activated! You will periodically gain Saturation.");
         }
     }
 
@@ -45,7 +45,7 @@ public class LowMaintenance extends Perk implements Listener {
         if (activeTasks.containsKey(this.player)) {
             activeTasks.get(this.player).cancel();
             activeTasks.remove(this.player);
-            Bukkit.getPlayer(player).sendMessage("Low Maintenance Perk deactivated! No more periodic Saturation.");
+//            Bukkit.getPlayer(player).sendMessage("Low Maintenance Perk deactivated! No more periodic Saturation.");
         }
     }
 
