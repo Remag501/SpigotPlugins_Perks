@@ -1,11 +1,9 @@
-package me.remag501.perks.utils;
+package me.remag501.perks.listeners;
 
-import me.remag501.perks.Perks;
-import me.remag501.perks.perkTypes.Perk;
-import me.remag501.perks.perkTypes.PerkType;
-import me.remag501.perks.perkTypes.PlayerPerks;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import me.remag501.perks.core.Perk;
+import me.remag501.perks.core.PerkType;
+import me.remag501.perks.core.PlayerPerks;
+import me.remag501.perks.utils.Items;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;

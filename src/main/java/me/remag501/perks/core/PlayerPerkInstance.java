@@ -1,4 +1,4 @@
-package me.remag501.perks.perkTypes;
+package me.remag501.perks.core;
 
 import org.bukkit.entity.Player;
 

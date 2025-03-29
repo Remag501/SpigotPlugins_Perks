@@ -1,11 +1,10 @@
 package me.remag501.perks.utils;
 
-import me.remag501.perks.perkTypes.Perk;
-import me.remag501.perks.perkTypes.PerkType;
-import me.remag501.perks.perkTypes.PlayerPerks;
+import me.remag501.perks.core.Perk;
+import me.remag501.perks.core.PerkType;
+import me.remag501.perks.core.PlayerPerks;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -14,7 +13,6 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
 

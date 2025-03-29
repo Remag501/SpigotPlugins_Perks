@@ -1,13 +1,11 @@
 package me.remag501.perks.perkTypes;
 
-import org.bukkit.Bukkit;
+import me.remag501.perks.core.Perk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 public class DamageMultiplierPerk extends Perk implements Listener {
 

@@ -1,5 +1,6 @@
 package me.remag501.perks.perkTypes;
 
+import me.remag501.perks.core.Perk;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;

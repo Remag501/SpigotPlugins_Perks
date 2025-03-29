@@ -1,13 +1,11 @@
-package me.remag501.perks.perkTypes;
+package me.remag501.perks.core;
 
+import me.remag501.perks.perkTypes.*;
 import me.remag501.perks.utils.Items;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 //new Perk("Sword Perk", Items.createItem(Material.DIAMOND_SWORD, "Sword Perk", false, "stuff")
@@ -28,7 +26,8 @@ public enum PerkType {
     KANGAROO(new Kangaroo(Items.createPerkItem(Material.RABBIT_FOOT, "Kangaroo", "KANGAROO", 3, "Double jump once every thirty seconds"),
             List.of(List.of(PerkType.FLASH, PerkType.JUMPER)))),
     THE_WORLD(new TheWorldPerk(Items.createPerkSkull("http://textures.minecraft.net/texture/ff1fc6ebc549c6da4807bd30fc6e47bf4bdb516f256864891a31e6f6aa2527b0",
-            "The World", "THE_WORLD", 4, "The ultimate stando.")));
+            "The World", "THE_WORLD", 4, "The ultimate stando."))),
+    SERENDIPITY(new Serendipity(Items.createPerkItem(Material.STRING, "Serendipity", "SERENDIPITY", 2, "20% chance to take no damage from mobs.")));
     private final Perk perk;
 
     PerkType(Perk perk) {

@@ -1,8 +1,8 @@
 package me.remag501.perks.perkTypes;
 
+import me.remag501.perks.core.Perk;
 import org.bukkit.entity.Creeper;
 import org.bukkit.event.Listener;
-import org.bukkit.event.HandlerList;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.EventHandler;

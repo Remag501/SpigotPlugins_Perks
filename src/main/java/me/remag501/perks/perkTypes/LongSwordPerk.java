@@ -1,9 +1,7 @@
 package me.remag501.perks.perkTypes;
 
-import org.bukkit.entity.Player;
+import me.remag501.perks.core.Perk;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 public class LongSwordPerk extends Perk {
 

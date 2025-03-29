@@ -1,19 +1,17 @@
 package me.remag501.perks;
 
 import me.remag501.perks.commands.PerksCommand;
-import me.remag501.perks.perkTypes.Perk;
-import me.remag501.perks.perkTypes.PerkType;
-import me.remag501.perks.perkTypes.PlayerPerks;
+import me.remag501.perks.core.Perk;
+import me.remag501.perks.core.PerkType;
+import me.remag501.perks.core.PlayerPerks;
 import me.remag501.perks.utils.GambleUI;
-import me.remag501.perks.utils.PerkChangeListener;
+import me.remag501.perks.listeners.PerkChangeListener;
 import me.remag501.perks.utils.ScrapUI;
 import me.remag501.perks.utils.UI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Collections;
 
 public final class Perks extends JavaPlugin {
 
@@ -40,6 +38,7 @@ public final class Perks extends JavaPlugin {
         getServer().getPluginManager().registerEvents((Listener) PerkType.KANGAROO.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.UNYIELDING.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.THE_WORLD.getPerk(), this);
+        getServer().getPluginManager().registerEvents((Listener) PerkType.SERENDIPITY.getPerk(), this);
     }
 
     @Override

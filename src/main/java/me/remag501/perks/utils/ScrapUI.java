@@ -1,7 +1,7 @@
 package me.remag501.perks.utils;
 
-import me.remag501.perks.perkTypes.PerkType;
-import me.remag501.perks.perkTypes.PlayerPerks;
+import me.remag501.perks.core.PerkType;
+import me.remag501.perks.core.PlayerPerks;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;

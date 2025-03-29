@@ -1,16 +1,15 @@
 package me.remag501.perks.perkTypes;
 
+import me.remag501.perks.core.Perk;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 public class FlatDamagePerk extends Perk implements Listener {
     private final double extraDamage = 2.0; // Additional flat damage

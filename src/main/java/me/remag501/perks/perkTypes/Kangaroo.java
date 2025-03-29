@@ -1,5 +1,7 @@
 package me.remag501.perks.perkTypes;
 
+import me.remag501.perks.core.Perk;
+import me.remag501.perks.core.PerkType;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Particle;

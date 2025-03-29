@@ -1,23 +1,15 @@
 package me.remag501.perks.commands;
 
-import me.remag501.perks.perkTypes.LongSwordPerk;
-import me.remag501.perks.perkTypes.Perk;
-import me.remag501.perks.perkTypes.PerkType;
-import me.remag501.perks.perkTypes.PlayerPerks;
+import me.remag501.perks.core.PerkType;
+import me.remag501.perks.core.PlayerPerks;
 import me.remag501.perks.utils.Items;
 import me.remag501.perks.utils.UI;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import java.util.*;
