@@ -20,7 +20,7 @@ public enum PerkType {
     FLAT_DAMAGE(new FlatDamagePerk(Items.createPerkItem(Material.GLASS_PANE, "Flat Damage", "FLAT_DAMAGE", 4, "Deals an extra 2 flat damage"))),
     BLOODIED(new Bloodied(Items.createPerkItem(Material.REDSTONE, "Bloodied", "BLOODIED", 2, "When hp drops below 20/30/40% gain strength 1"), true)),
     FLASH(new Flash(Items.createPerkItem(Material.LEATHER_BOOTS, "Flash", "FLASH", 1, "Speed 1 but gain weakness every 3 minutes"))),
-    JUMPER(new Jumper(Items.createPerkItem(Material.SLIME_BALL, "Jumper", "JUMPER", 1, "Jump Boost 1 but gain slowness every 1.5 minutes"))),
+    JUMPER(new Jumper(Items.createPerkItem(Material.SLIME_BALL, "Pogo", "JUMPER", 1, "Jump Boost 1 but gain slowness every 1.5 minutes"))),
     UNYIELDING(new Resistant(Items.createPerkItem(Material.SHIELD, "Unyielding", "UNYIELDING", 2, "Resistance 1 when under 20/25/30% HP"), true)),
     LOW_MAINTENANCE(new LowMaintenance(Items.createPerkItem(Material.GOLDEN_CARROT, "Low Maintenance", "LOW_MAINTENANCE", 0, "Saturation 1 for 15 seconds every 2 minutes"))),
     KANGAROO(new Kangaroo(Items.createPerkItem(Material.RABBIT_FOOT, "Kangaroo", "KANGAROO", 3, "Double jump once every thirty seconds"),
@@ -28,7 +28,8 @@ public enum PerkType {
     THE_WORLD(new TheWorldPerk(Items.createPerkSkull("http://textures.minecraft.net/texture/ff1fc6ebc549c6da4807bd30fc6e47bf4bdb516f256864891a31e6f6aa2527b0",
             "The World", "THE_WORLD", 4, "The ultimate stando."))),
     SERENDIPITY(new Serendipity(Items.createPerkItem(Material.STRING, "Serendipity", "SERENDIPITY", 2, "20% chance to take no damage from mobs."))),
-    OVERDRIVE(new Overdrive(Items.createPerkItem(Material.SPLASH_POTION, "Overdrive", "OVERDRIVE", 1, "Hit mobs with instant healing 1.")));
+    OVERDRIVE(new Overdrive(Items.createPerkItem(Material.SPLASH_POTION, "Overdrive", "OVERDRIVE", 1, "Hit mobs with instant healing 1."))),
+    BERSERKER(new Berserker(Items.createPerkItem(Material.IRON_AXE, "Berserker", "BERSERKER", 3, "Axe hits are multiplied by fist damage over last 3 seconds.")));
     private final Perk perk;
 
     PerkType(Perk perk) {

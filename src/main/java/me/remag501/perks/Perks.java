@@ -40,6 +40,7 @@ public final class Perks extends JavaPlugin {
         getServer().getPluginManager().registerEvents((Listener) PerkType.THE_WORLD.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.SERENDIPITY.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.OVERDRIVE.getPerk(), this);
+        getServer().getPluginManager().registerEvents((Listener) PerkType.BERSERKER.getPerk(), this);
     }
 
     @Override
