@@ -49,16 +49,16 @@ public class Bloodied extends Perk implements Listener {
         kit_amplifier = 0;
         switch(super.getStars()) {
             case 1:
-                healthThreshold = 0.25;
+                healthThreshold = 0.2;
                 amplifier = 0;
                 break;
             case 2:
-                healthThreshold = 0.5;
+                healthThreshold = 0.3;
                 amplifier = 0;
                 break;
             case 3:
-                healthThreshold = 0.5;
-                amplifier = 1;
+                healthThreshold = 0.4;
+                amplifier = 0;
                 break;
 
         }
