@@ -41,6 +41,9 @@ public final class Perks extends JavaPlugin {
         getServer().getPluginManager().registerEvents((Listener) PerkType.SERENDIPITY.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.OVERDRIVE.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.BERSERKER.getPerk(), this);
+        getServer().getPluginManager().registerEvents((Listener) PerkType.COOKIE_CLICKER.getPerk(), this);
+        getServer().getPluginManager().registerEvents((Listener) PerkType.BOUNTY_HUNTER.getPerk(), this);
+        getServer().getPluginManager().registerEvents((Listener) PerkType.XP_FARM.getPerk(), this);
     }
 
     @Override

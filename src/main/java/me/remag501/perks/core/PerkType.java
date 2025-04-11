@@ -29,7 +29,10 @@ public enum PerkType {
             "The World", "THE_WORLD", 4, "The ultimate stando."))),
     SERENDIPITY(new Serendipity(Items.createPerkItem(Material.STRING, "Serendipity", "SERENDIPITY", 2, "20% chance to take no damage from mobs."))),
     OVERDRIVE(new Overdrive(Items.createPerkItem(Material.SPLASH_POTION, "Overdrive", "OVERDRIVE", 1, "Hit mobs with instant healing 1."))),
-    BERSERKER(new Berserker(Items.createPerkItem(Material.IRON_AXE, "Berserker", "BERSERKER", 3, "Axe hits are multiplied by fist damage over last 3 seconds.")));
+    BERSERKER(new Berserker(Items.createPerkItem(Material.IRON_AXE, "Berserker", "BERSERKER", 3, "Axe hits are multiplied by fist damage over last 3 seconds."))),
+    COOKIE_CLICKER(new CookieClicker(Items.createPerkItem(Material.COOKIE, "Cookie Clicker", "COOKIE_CLICKER", 0, "Everytime you kill a player two cookies are dropped."))),
+    BOUNTY_HUNTER(new BountyHunter(Items.createPerkItem(Material.CROSSBOW, "Bounty Hunter", "BOUNTY_HUNTER", 0, "Everytime you kill a player you gain money."))),
+    XP_FARM(new XPFarm(Items.createPerkItem(Material.EXPERIENCE_BOTTLE, "XP Farm", "XP_FARM", 0, "Everytime you kill a player you gain xp.")));
     private final Perk perk;
 
     PerkType(Perk perk) {
