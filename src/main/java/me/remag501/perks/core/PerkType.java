@@ -35,7 +35,9 @@ public enum PerkType {
     BOUNTY_HUNTER(new BountyHunter(Items.createPerkItem(Material.CROSSBOW, "Bounty Hunter", "BOUNTY_HUNTER", 0, "Everytime you kill a player you gain money."))),
     XP_FARM(new XPFarm(Items.createPerkItem(Material.EXPERIENCE_BOTTLE, "XP Farm", "XP_FARM", 0, "Everytime you kill a player you gain xp."))),
     TAI_CHI(new TaiChi(Items.createPerkItem(Material.SPIDER_EYE, "Tai Chi", "TAI_CHI", 2, "Holding out your fist for three seconds and hitting an enemy inflicts wither with blindness."))),
-    CONCUSSION(new Concussion(Items.createPerkItem(Material.BRICK, "Concussion", "CONCUSSION", 1, "Hitting a player with your fist gives them nausea.")));
+    CONCUSSION(new Concussion(Items.createPerkItem(Material.BRICK, "Concussion", "CONCUSSION", 1, "Hitting a player with your fist gives them nausea."))),
+    GHOST_FIST(new GhostFist(Items.createPerkItem(Material.GLOWSTONE_DUST, "Kumite", "GHOST_FIST", 3, "Hitting a player with your fist creates a delayed second hit."),
+            List.of(List.of(PerkType.CONCUSSION), List.of(PerkType.TAI_CHI, PerkType.HOT_HANDS))));
     private final Perk perk;
 
     PerkType(Perk perk) {
