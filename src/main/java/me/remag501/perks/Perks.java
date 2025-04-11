@@ -44,6 +44,8 @@ public final class Perks extends JavaPlugin {
         getServer().getPluginManager().registerEvents((Listener) PerkType.COOKIE_CLICKER.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.BOUNTY_HUNTER.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.XP_FARM.getPerk(), this);
+        getServer().getPluginManager().registerEvents((Listener) PerkType.TAI_CHI.getPerk(), this);
+        getServer().getPluginManager().registerEvents((Listener) PerkType.CONCUSSION.getPerk(), this);
     }
 
     @Override

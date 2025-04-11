@@ -32,7 +32,9 @@ public enum PerkType {
     BERSERKER(new Berserker(Items.createPerkItem(Material.IRON_AXE, "Berserker", "BERSERKER", 3, "Axe hits are multiplied by fist damage over last 3 seconds."))),
     COOKIE_CLICKER(new CookieClicker(Items.createPerkItem(Material.COOKIE, "Cookie Clicker", "COOKIE_CLICKER", 0, "Everytime you kill a player two cookies are dropped."))),
     BOUNTY_HUNTER(new BountyHunter(Items.createPerkItem(Material.CROSSBOW, "Bounty Hunter", "BOUNTY_HUNTER", 0, "Everytime you kill a player you gain money."))),
-    XP_FARM(new XPFarm(Items.createPerkItem(Material.EXPERIENCE_BOTTLE, "XP Farm", "XP_FARM", 0, "Everytime you kill a player you gain xp.")));
+    XP_FARM(new XPFarm(Items.createPerkItem(Material.EXPERIENCE_BOTTLE, "XP Farm", "XP_FARM", 0, "Everytime you kill a player you gain xp."))),
+    TAI_CHI(new TaiChi(Items.createPerkItem(Material.SPIDER_EYE, "Tai Chi", "TAI_CHI", 2, "Holding out your fist for three seconds and hitting an enemy inflicts wither with blindness."))),
+    CONCUSSION(new Concussion(Items.createPerkItem(Material.BRICK, "Concussion", "CONCUSSION", 1, "Hitting a player with your fist gives them nausea.")));
     private final Perk perk;
 
     PerkType(Perk perk) {
