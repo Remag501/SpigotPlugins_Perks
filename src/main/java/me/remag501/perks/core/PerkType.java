@@ -2,6 +2,7 @@ package me.remag501.perks.core;
 
 import me.remag501.perks.perkTypes.*;
 import me.remag501.perks.utils.Items;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -63,6 +64,24 @@ public enum PerkType {
         for (PerkType type: PerkType.values()) {
             if (Items.getRarity(type) == rarity)
                 perks.add(type);
+        }
+        return perks;
+    }
+
+    public static List<PerkType> perkTypesByPage(int page) {
+        List<PerkType> perks = new ArrayList<>();
+        int count = 0, passed = 0;
+        for (PerkType type: PerkType.values()) {
+            if (Items.getRarity(type) != -1) { // Item is not hidden
+
+                if (passed / 14 == page) {
+                    perks.add(type);
+                    count++;
+                } else passed++;
+
+                if (count == 14)
+                    break;
+            }
         }
         return perks;
     }

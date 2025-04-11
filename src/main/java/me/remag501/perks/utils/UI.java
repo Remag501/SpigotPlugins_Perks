@@ -35,7 +35,7 @@ public class UI implements Listener {
         loadHeader();
         loadActivePerks();
         loadAvailablePerks(0); // Default page is 0
-        loadBackNextButton();
+        loadBackNextButton(0);
 
         return perkInventory;
     }
@@ -71,17 +71,19 @@ public class UI implements Listener {
         // Load owned perks
         List<Perk> ownedPerks = perks.getOwnedPerks();
         List<Perk> equippedPerks = perks.getEquippedPerks();
-        for (int i = 19, size = PerkType.values().length, k = 0; i < 35; i++) {
+        List<PerkType> pagePerks = PerkType.perkTypesByPage(page);
+        for (int i = 19, size = pagePerks.size(), k = 0; i < 35; i++) {
             if (i % 9 == 0 || (i + 1) % 9 == 0)
                 continue;
             if (k < size) {
-                ItemStack item = PerkType.values()[k].getItem().clone(); // Prevent mutilating enum object
+//                ItemStack item = PerkType.values()[k].getItem().clone(); // Prevent mutilating enum object
+                ItemStack item = pagePerks.get(k).getItem().clone(); // Prevent mutilating enum object
                 k++;
                 // Checks if the item is hidden
-                if (Items.hiddenItem(item) && !hiddenMenu) {
-                    i--; // Don't move to next UI slot
-                    continue;
-                }
+//                if (Items.hiddenItem(item) && !hiddenMenu) { // Theoretically not needed anymore
+//                    i--; // Don't move to next UI slot
+//                    continue;
+//                }
                 // Display the perk item
                 Items.updateEquipStatus(item, equippedPerks);
                 Items.updateCount(item, ownedPerks); // Stars are updated with updateCount
@@ -99,18 +101,18 @@ public class UI implements Listener {
 //        perkInventory.setItem(19, perkItem);
     }
 
-    private void loadBackNextButton() {
-        int page = 0, totalPages = 1;
+    private void loadBackNextButton(int page) {
+        int totalPages = (hiddenMenu) ? (int) Math.ceil(PerkType.values().length / 14.0): (int) Math.ceil((PerkType.values().length - PerkType.getPerksByRarity(4).size()) / 14.0);
 //        int totalPages = Perk.perkAmount / 36;
 
         if (page == totalPages - 1) // Last page
-            perkInventory.setItem(53, Items.createItem(Material.STONE, "Last Page", null, false)); // No button needed
+            perkInventory.setItem(53, Items.createItem(Material.STONE, "Last Page", null, false, "§7" + (page + 1) + "/" + totalPages)); // No button needed
         else // Not last page
-            perkInventory.setItem(53, Items.createItem(Material.GREEN_CONCRETE, "Next", null, false)); // Add next button
+            perkInventory.setItem(53, Items.createItem(Material.GREEN_CONCRETE, "Next", null, false, "§7" + (page + 1) + "/" + totalPages)); // Add next button
         if (page == 0) // First page
-            perkInventory.setItem(45, Items.createItem(Material.STONE, "First Page", null, false)); // No button needed
+            perkInventory.setItem(45, Items.createItem(Material.STONE, "First Page", null, false, "§7" + (page + 1) + "/" + totalPages)); // No button needed
         else // Not first page
-            perkInventory.setItem(45, Items.createItem(Material.RED_CONCRETE, "Back", null, false)); // Add back button
+            perkInventory.setItem(45, Items.createItem(Material.RED_CONCRETE, "Back", null, false, "§7" + (page + 1) + "/" + totalPages)); // Add back button
 
     }
 
@@ -123,16 +125,28 @@ public class UI implements Listener {
         // Check if the clicked inventory is the perk UI
         if (event.getView().getTitle().equals("Choose Your Perk")) {
             event.setCancelled(true); // Cancel the item removal
+            if (event.getCurrentItem() == null)
+                return; // Null check
+
+            // Get page number from item lore
+            ItemStack nextPageItem = event.getInventory().getItem(53);
+            List<String> nextPageLore = nextPageItem.getItemMeta().getLore();
+            String pageDetails = nextPageLore.get(0);
+            int pageNum = Integer.parseInt(pageDetails.split("/")[0].replace("§7", "")) - 1;
+
             // Check if the player is clicks bedrock
-            if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.BEDROCK) {
+            if (event.getCurrentItem().getType() == Material.BEDROCK) {
                 player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 10, 0);
                 player.sendMessage("§cYou don't have that perk available");
                 return;
-            }
-            // Check if player clicked on perk gamble
-            if (event.getCurrentItem() != null && event.getCurrentItem().getItemMeta().getDisplayName().equals("Obtain Perks")) {
+            } // Check if player clicked on perk gamble
+             else if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Obtain Perks")) {
                 GambleUI rollUI = new GambleUI();
                 rollUI.open(player);
+            } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Next")) {
+                pageNum++;
+            } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Back")) {
+                pageNum--;
             }
             else {
                 // Check if the player clicks on a perk
@@ -170,7 +184,8 @@ public class UI implements Listener {
             }
             perkInventory = event.getInventory();
             loadActivePerks();
-            loadAvailablePerks(0);
+            loadAvailablePerks(pageNum);
+            loadBackNextButton(pageNum);
         }
     }
 
