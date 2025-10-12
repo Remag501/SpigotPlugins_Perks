@@ -36,7 +36,70 @@ public enum PerkType {
     TAI_CHI(new TaiChi(Items.createPerkItem(Material.SPIDER_EYE, "Tai Chi", "TAI_CHI", 2, "Holding out your fist for three seconds and hitting an enemy inflicts wither with blindness."))),
     CONCUSSION(new Concussion(Items.createPerkItem(Material.BRICK, "Concussion", "CONCUSSION", 1, "Hitting a player with your fist gives them nausea."))),
     GHOST_FIST(new GhostFist(Items.createPerkItem(Material.GLOWSTONE_DUST, "Kumite", "GHOST_FIST", 3, "Hitting a player with your fist creates a delayed second hit."),
-            List.of(List.of(PerkType.CONCUSSION), List.of(PerkType.TAI_CHI, PerkType.HOT_HANDS))));
+            List.of(List.of(PerkType.CONCUSSION), List.of(PerkType.TAI_CHI, PerkType.HOT_HANDS)))),
+    UNDEAD(new Undead(Items.createPerkItem(
+            Material.ZOMBIE_HEAD,
+            "Undead",
+            "UNDEAD",
+            4,
+            "Gain four absorption hearts if you kill a player with a zombie"
+    ))),
+
+    FLOWER_POWER(new FlowerPower(Items.createPerkItem(
+            Material.POPPY,
+            "Flower Power",
+            "FLOWER_POWER",
+            4,
+            "If you are near trees or flowers, you deal more damage"
+    ))),
+
+    GUERILLA_TACTICS(new GuerillaTactics(Items.createPerkItem(
+            Material.FERN,
+            "Guerilla Tactics",
+            "GUERILLA_TACTICS",
+            4,
+            "If you sneak in flowers for three seconds, you turn invisible"
+    ))),
+
+    PACK_MASTER(new PackMaster(Items.createPerkItem(
+            Material.BONE,
+            "Pack Master",
+            "PACK_MASTER",
+            4,
+            "A wolf is summoned upon killing someone. (uncommon)"
+    ))),
+
+    SNEAK_ATTACK(new SneakAttack(Items.createPerkItem(
+            Material.IRON_SWORD,
+            "Sneak Attack",
+            "SNEAK_ATTACK",
+            4,
+            "Hitting a player behind them on the first hit deals 150% damage"
+    ))),
+
+    WOLF_BOUNDED(new WolfBounded(Items.createPerkItem(
+            Material.LEAD,
+            "Wolf Bounded",
+            "WOLF_BOUNDED",
+            4,
+            "All wolves have a shared health pool"
+    ))),
+
+    FERAL(new Feral(Items.createPerkItem(
+            Material.BEEF,
+            "Feral",
+            "FERAL",
+            4,
+            "Deals 5% extra damage per wolf owned"
+    ))),
+
+    JUMPED(new Jumped(Items.createPerkItem(
+            Material.FEATHER,
+            "Jumped",
+            "JUMPED",
+            4,
+            "Wolves teleport to enemy when hitting them on first hit"
+    )));;
     private final Perk perk;
 
     PerkType(Perk perk) {
