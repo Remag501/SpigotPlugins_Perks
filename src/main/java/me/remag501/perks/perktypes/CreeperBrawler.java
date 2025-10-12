@@ -1,4 +1,4 @@
-package me.remag501.perks.perkTypes;
+package me.remag501.perks.perktypes;
 
 import me.remag501.perks.core.Perk;
 import org.bukkit.entity.Creeper;

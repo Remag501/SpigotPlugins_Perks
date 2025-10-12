@@ -1,8 +1,7 @@
 package me.remag501.perks.core;
 
-import me.remag501.perks.perkTypes.*;
+import me.remag501.perks.perktypes.*;
 import me.remag501.perks.utils.Items;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

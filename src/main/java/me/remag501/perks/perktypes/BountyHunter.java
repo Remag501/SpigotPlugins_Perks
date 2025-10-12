@@ -1,8 +1,7 @@
-package me.remag501.perks.perkTypes;
+package me.remag501.perks.perktypes;
 
 import me.remag501.perks.core.Perk;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,10 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class CookieClicker extends Perk implements Listener {
-    private static final Map<UUID, CookieClicker> perkInstances = new HashMap<>();
+public class BountyHunter extends Perk implements Listener {
+    private static final Map<UUID, BountyHunter> perkInstances = new HashMap<>();
 
-    public CookieClicker(ItemStack perkItem) {
+    public BountyHunter(ItemStack perkItem) {
         super(perkItem);
     }
 
@@ -38,11 +37,11 @@ public class CookieClicker extends Perk implements Listener {
         if (killer == null) return; // No killer, ignore
 
         UUID uuid = killer.getUniqueId();
-        CookieClicker perk = perkInstances.get(uuid);
+        BountyHunter perk = perkInstances.get(uuid);
         if (perk == null) return; // Player doesn't have the perk equipped
 
-        // Drop two cookies at the victim's location
-        World world = event.getEntity().getWorld();
-        world.dropItemNaturally(event.getEntity().getLocation(), new ItemStack(Material.COOKIE, 2));
+        // Execute command to gain money
+        killer.sendMessage("§aYou collected $5000 for neutralizing a player!");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + killer.getName() + " 5000");
     }
 }

@@ -1,4 +1,4 @@
-package me.remag501.perks.perkTypes;
+package me.remag501.perks.perktypes;
 
 import me.remag501.perks.core.Perk;
 import org.bukkit.Bukkit;
@@ -17,18 +17,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Bloodied extends Perk implements Listener {
+public class Resistant extends Perk implements Listener {
 
     private double healthThreshold; // Varies by stars acquired
     private int amplifier;
-    private static final Map<UUID, Bloodied> activePerks = new HashMap<>();
+    private static final Map<UUID, Resistant> activePerks = new HashMap<>();
 
     private BukkitTask healthCheckTask;
     private boolean isBloodied;
     private int duration;
     private int kit_amplifier;
 
-    public Bloodied(ItemStack perkItem, boolean starPerk) {
+    public Resistant(ItemStack perkItem, boolean starPerk) {
         super(perkItem, starPerk);
     }
 
@@ -49,15 +49,15 @@ public class Bloodied extends Perk implements Listener {
         kit_amplifier = 0;
         switch(super.getStars()) {
             case 1:
-                healthThreshold = 0.2;
+                healthThreshold = 0.20;
                 amplifier = 0;
                 break;
             case 2:
-                healthThreshold = 0.3;
+                healthThreshold = 0.25;
                 amplifier = 0;
                 break;
             case 3:
-                healthThreshold = 0.4;
+                healthThreshold = 0.3;
                 amplifier = 0;
                 break;
 
@@ -71,12 +71,12 @@ public class Bloodied extends Perk implements Listener {
         if (healthCheckTask != null) {
             healthCheckTask.cancel();
         }
-        PotionEffectType potion = PotionEffectType.INCREASE_DAMAGE;
+        PotionEffectType potion = PotionEffectType.DAMAGE_RESISTANCE;
 
         if (player.isOnline() && player.hasPotionEffect(potion)
                 && player.getPotionEffect(potion).getAmplifier() == amplifier
                 && player.getPotionEffect(potion).getDuration() > 500) {
-            player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+            player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
         }
 
     }
@@ -87,7 +87,7 @@ public class Bloodied extends Perk implements Listener {
 
         if (currentHealth > 0 && currentHealth / maxHealth <= healthThreshold) {
             if (!isBloodied) {
-                PotionEffect effect = player.getPotionEffect(PotionEffectType.INCREASE_DAMAGE);
+                PotionEffect effect = player.getPotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
                 duration = 0;
 
                 if (effect != null) {
@@ -98,30 +98,22 @@ public class Bloodied extends Perk implements Listener {
                 }
 
                 isBloodied = true;
-                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, amplifier)); // Strength I
-                player.sendMessage("You feel the strength of bloodied rage!");
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, amplifier)); // Strength I
+                player.sendMessage("You are resistant due to being low hp!");
             }
         } else {
             if (isBloodied) {
                 isBloodied = false;
-                PotionEffectType potion = PotionEffectType.INCREASE_DAMAGE;
+                PotionEffectType potion = PotionEffectType.DAMAGE_RESISTANCE;
 //                player.sendMessage(kit_amplifier + " " + duration);
                 if (player.getPotionEffect(potion).getAmplifier() == amplifier && player.getPotionEffect(potion).getDuration() > 500) {
-                    player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, duration, kit_amplifier));
+                    player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, duration, kit_amplifier));
                     duration = 0;
                 }
 
-                player.sendMessage("Your strength fades as you heal.");
+                player.sendMessage("Your resistance fades as you heal.");
             }
-        }
-    }
-
-    // Static method to handle external disable calls
-    public static void handlePlayerDisable(Player player) {
-        Bloodied perk = activePerks.get(player.getUniqueId());
-        if (perk != null) {
-            perk.onDisable();
         }
     }
 
@@ -154,13 +146,8 @@ public class Bloodied extends Perk implements Listener {
     public void onPlayerLoseEffect(EntityPotionEffectEvent event) {
         if (!(event.getEntity() instanceof Player player))
             return;
-
-        // Doesnt make sense, since they can gain regen and effect healing
-//        if (event.getAction() == EntityPotionEffectEvent.Action.REMOVED
-//                && event.getModifiedType() == PotionEffectType.INCREASE_DAMAGE) {
-            if (isActive(player)) {
-                activePerks.get(player.getUniqueId()).checkHealthAndApplyEffect(player);
-            }
-//        }
+        if (isActive(player)) {
+            activePerks.get(player.getUniqueId()).checkHealthAndApplyEffect(player);
+        }
     }
 }

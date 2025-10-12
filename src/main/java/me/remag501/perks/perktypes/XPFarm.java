@@ -1,9 +1,7 @@
-package me.remag501.perks.perkTypes;
+package me.remag501.perks.perktypes;
 
 import me.remag501.perks.core.Perk;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,10 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class BountyHunter extends Perk implements Listener {
-    private static final Map<UUID, BountyHunter> perkInstances = new HashMap<>();
+public class XPFarm extends Perk implements Listener {
+    private static final Map<UUID, XPFarm> perkInstances = new HashMap<>();
 
-    public BountyHunter(ItemStack perkItem) {
+    public XPFarm(ItemStack perkItem) {
         super(perkItem);
     }
 
@@ -39,11 +37,12 @@ public class BountyHunter extends Perk implements Listener {
         if (killer == null) return; // No killer, ignore
 
         UUID uuid = killer.getUniqueId();
-        BountyHunter perk = perkInstances.get(uuid);
+        XPFarm perk = perkInstances.get(uuid);
         if (perk == null) return; // Player doesn't have the perk equipped
 
-        // Execute command to gain money
-        killer.sendMessage("§aYou collected $5000 for neutralizing a player!");
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + killer.getName() + " 5000");
+        // Execute command to gain xp
+        killer.sendMessage("§aYou received 300xp for neutralizing a player!");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "clv addEXP 300 " + killer.getName());
+
     }
 }

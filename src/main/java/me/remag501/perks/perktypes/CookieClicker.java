@@ -1,7 +1,6 @@
-package me.remag501.perks.perkTypes;
+package me.remag501.perks.perktypes;
 
 import me.remag501.perks.core.Perk;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -14,10 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class XPFarm extends Perk implements Listener {
-    private static final Map<UUID, XPFarm> perkInstances = new HashMap<>();
+public class CookieClicker extends Perk implements Listener {
+    private static final Map<UUID, CookieClicker> perkInstances = new HashMap<>();
 
-    public XPFarm(ItemStack perkItem) {
+    public CookieClicker(ItemStack perkItem) {
         super(perkItem);
     }
 
@@ -39,12 +38,11 @@ public class XPFarm extends Perk implements Listener {
         if (killer == null) return; // No killer, ignore
 
         UUID uuid = killer.getUniqueId();
-        XPFarm perk = perkInstances.get(uuid);
+        CookieClicker perk = perkInstances.get(uuid);
         if (perk == null) return; // Player doesn't have the perk equipped
 
-        // Execute command to gain xp
-        killer.sendMessage("§aYou received 300xp for neutralizing a player!");
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "clv addEXP 300 " + killer.getName());
-
+        // Drop two cookies at the victim's location
+        World world = event.getEntity().getWorld();
+        world.dropItemNaturally(event.getEntity().getLocation(), new ItemStack(Material.COOKIE, 2));
     }
 }
