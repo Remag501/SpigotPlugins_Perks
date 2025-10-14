@@ -47,6 +47,7 @@ public final class Perks extends JavaPlugin {
         getServer().getPluginManager().registerEvents((Listener) PerkType.TAI_CHI.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.CONCUSSION.getPerk(), this);
         getServer().getPluginManager().registerEvents((Listener) PerkType.GHOST_FIST.getPerk(), this);
+        getServer().getPluginManager().registerEvents((Listener) PerkType.FLOWER_POWER.getPerk(), this);
     }
 
     @Override

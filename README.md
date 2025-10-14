@@ -29,3 +29,7 @@ Current Perks (Not up to date):
 ## Known Issues
 *   **Bug 1: Berserker**
     *   **Description:** Allows infinite damage stacking (3 second timer not working)
+*   **Bug 2: Hiddenui**
+    *   **Description:** Hidden ui does not work due to current display method
+*   **Improvement needed: Active Perk List**
+    *   **Description:** Every perk uses a active perk list but its not in interface
