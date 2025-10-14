@@ -41,7 +41,7 @@ public enum PerkType {
             Material.ZOMBIE_HEAD,
             "Undead",
             "UNDEAD",
-            4,
+            0,
             "Gain four absorption hearts if you kill a player with a zombie"
     ))),
 
@@ -49,7 +49,7 @@ public enum PerkType {
             Material.POPPY,
             "Flower Power",
             "FLOWER_POWER",
-            4,
+            0,
             "If you are near trees or flowers, you deal more damage"
     ))),
 
@@ -57,7 +57,7 @@ public enum PerkType {
             Material.FERN,
             "Guerilla Tactics",
             "GUERILLA_TACTICS",
-            4,
+            0,
             "If you sneak in flowers for three seconds, you turn invisible"
     ))),
 
@@ -65,7 +65,7 @@ public enum PerkType {
             Material.BONE,
             "Pack Master",
             "PACK_MASTER",
-            4,
+            0,
             "A wolf is summoned upon killing someone. (uncommon)"
     ))),
 
@@ -73,7 +73,7 @@ public enum PerkType {
             Material.IRON_SWORD,
             "Sneak Attack",
             "SNEAK_ATTACK",
-            4,
+            0,
             "Hitting a player behind them on the first hit deals 150% damage"
     ))),
 
@@ -81,7 +81,7 @@ public enum PerkType {
             Material.LEAD,
             "Wolf Bounded",
             "WOLF_BOUNDED",
-            4,
+            0,
             "All wolves have a shared health pool"
     ))),
 
@@ -89,7 +89,7 @@ public enum PerkType {
             Material.BEEF,
             "Feral",
             "FERAL",
-            4,
+            0,
             "Deals 5% extra damage per wolf owned"
     ))),
 
@@ -97,7 +97,7 @@ public enum PerkType {
             Material.FEATHER,
             "Jumped",
             "JUMPED",
-            4,
+            0,
             "Wolves teleport to enemy when hitting them on first hit"
     )));;
     private final Perk perk;
