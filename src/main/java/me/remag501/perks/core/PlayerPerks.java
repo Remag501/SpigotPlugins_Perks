@@ -184,6 +184,7 @@ public class PlayerPerks {
                             break;
                         }
 
+                        equippedPerkInstance.deactivatePlayer();
                         equippedPerkInstance.onDisable();
                         iterator.remove(); // Safe removal using iterator
                         break; // Check if more than one perk depends on removed perk
@@ -209,8 +210,11 @@ public class PlayerPerks {
         if (!inWorld)
             return true;
         perk.onDisable();
-        if (perk.isStarPerk() == true && perk.getStars() > 1)
+        perk.deactivatePlayer();
+        if (perk.isStarPerk() == true && perk.getStars() > 1) {
             perk.onEnable();
+            perk.activatePlayer();
+        }
         return true;
     }
 
@@ -265,6 +269,7 @@ public class PlayerPerks {
         if (!inWorld)
             return true; // Equipped but not enabled
         perkInstance.onEnable();
+        perkInstance.activatePlayer();
 
         return true;
     }

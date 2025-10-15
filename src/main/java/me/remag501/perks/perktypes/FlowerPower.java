@@ -18,20 +18,16 @@ import java.util.UUID;
 
 public class FlowerPower extends Perk {
 
-    private static final Map<UUID, FlowerPower> activePerks = new HashMap<>();
-
     public FlowerPower(ItemStack perkItem) {
         super(perkItem);
     }
 
     @Override
     public void onEnable() {
-        activePerks.put(this.player, this);
     }
 
     @Override
     public void onDisable() {
-        activePerks.remove(this.player, this);
     }
 
     @EventHandler
@@ -40,7 +36,7 @@ public class FlowerPower extends Perk {
         if (!(event.getEntity() instanceof LivingEntity target)) return;
 
         // Make sure this player has the FlowerPower perk active
-        FlowerPower perk = activePerks.get(player.getUniqueId());
+        FlowerPower perk = (FlowerPower) getPerk(player.getUniqueId());
         if (perk == null) return;
 
         double radius = 5.0;

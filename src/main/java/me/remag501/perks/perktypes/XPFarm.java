@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class XPFarm extends Perk {
-    private static final Map<UUID, XPFarm> perkInstances = new HashMap<>();
+//    private static final Map<UUID, XPFarm> perkInstances = new HashMap<>();
 
     public XPFarm(ItemStack perkItem) {
         super(perkItem);
@@ -21,14 +21,12 @@ public class XPFarm extends Perk {
 
     @Override
     public void onEnable() {
-        if (player != null) {
-            perkInstances.put(player, this);
-        }
+
     }
 
     @Override
     public void onDisable() {
-        perkInstances.remove(player);
+
     }
 
     @EventHandler
@@ -37,7 +35,7 @@ public class XPFarm extends Perk {
         if (killer == null) return; // No killer, ignore
 
         UUID uuid = killer.getUniqueId();
-        XPFarm perk = perkInstances.get(uuid);
+        XPFarm perk = (XPFarm) getPerk(uuid);
         if (perk == null) return; // Player doesn't have the perk equipped
 
         // Execute command to gain xp

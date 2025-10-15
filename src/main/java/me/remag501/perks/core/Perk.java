@@ -1,20 +1,56 @@
 package me.remag501.perks.core;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class Perk implements Cloneable, Listener {
     // Stores info about the perk
+    protected UUID player; // may be removed in future
+    private static final Map<PerkType,Map<UUID, Perk>> activePerks = new ConcurrentHashMap<>();
     private final ItemStack perkItem;
-    protected UUID player;
     private int quantity;
     private final boolean starPerk;
     private int stars;
     private final List<List<PerkType>> requirements; // On clone will shallow copy to save memory
+
+    public void activatePlayer() {
+        PerkType perkType = PerkType.getPerkType(this);
+        Map<UUID, Perk> perks = activePerks.get(perkType);
+        if (perks == null) {
+            perks = new ConcurrentHashMap<>();
+            activePerks.put(perkType, perks);
+        }
+        perks.put(player, this);
+        Bukkit.getPlayer(player).sendMessage("Perks are "  + perks);
+    }
+
+    public void deactivatePlayer() {
+        PerkType perkType = PerkType.getPerkType(this);
+        Map<UUID, Perk> perks = activePerks.get(perkType);
+        if (perks == null) {
+            perks = new ConcurrentHashMap<>();
+            activePerks.put(perkType, perks);
+        }
+        perks.remove(player, this);
+    }
+
+    public Perk getPerk(UUID uuid) {
+        PerkType perkType = PerkType.getPerkType(this);
+        Map<UUID, Perk> perks = activePerks.get(perkType);
+        if (perks == null) {
+            perks = new ConcurrentHashMap<>();
+            activePerks.put(perkType, perks);
+        }
+        return perks.get(uuid);
+    }
 
     public Perk(ItemStack perkItem, boolean starPerk, List<List<PerkType>> requirements) {
         this.perkItem = perkItem;
