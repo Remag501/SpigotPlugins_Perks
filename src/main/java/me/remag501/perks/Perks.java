@@ -35,22 +35,10 @@ public final class Perks extends JavaPlugin {
         PerkChangeListener.enabledWorlds.add("musicland");
         PerkChangeListener.enabledWorlds.add("thundra");
         PerkChangeListener.enabledWorlds.add("test");
-        // Enable listerners for perks
-        getServer().getPluginManager().registerEvents((Listener) PerkType.HOT_HANDS.getPerk(), this);
-        getServer().getPluginManager().registerEvents((Listener) PerkType.BLOODIED.getPerk(), this);
-        getServer().getPluginManager().registerEvents((Listener) PerkType.KANGAROO.getPerk(), this);
-        getServer().getPluginManager().registerEvents((Listener) PerkType.UNYIELDING.getPerk(), this);
-        getServer().getPluginManager().registerEvents((Listener) PerkType.THE_WORLD.getPerk(), this);
-        getServer().getPluginManager().registerEvents((Listener) PerkType.SERENDIPITY.getPerk(), this);
-        getServer().getPluginManager().registerEvents((Listener) PerkType.OVERDRIVE.getPerk(), this);
-        getServer().getPluginManager().registerEvents((Listener) PerkType.BERSERKER.getPerk(), this);
-        getServer().getPluginManager().registerEvents((Listener) PerkType.COOKIE_CLICKER.getPerk(), this);
-        getServer().getPluginManager().registerEvents((Listener) PerkType.BOUNTY_HUNTER.getPerk(), this);
-        getServer().getPluginManager().registerEvents((Listener) PerkType.XP_FARM.getPerk(), this);
-        getServer().getPluginManager().registerEvents((Listener) PerkType.TAI_CHI.getPerk(), this);
-        getServer().getPluginManager().registerEvents((Listener) PerkType.CONCUSSION.getPerk(), this);
-        getServer().getPluginManager().registerEvents((Listener) PerkType.GHOST_FIST.getPerk(), this);
-        getServer().getPluginManager().registerEvents((Listener) PerkType.FLOWER_POWER.getPerk(), this);
+//        // Enable listerners for perks
+        for (PerkType perkType: PerkType.values()) {
+            getServer().getPluginManager().registerEvents((Listener) perkType.getPerk(), this);
+        }
     }
 
     @Override
