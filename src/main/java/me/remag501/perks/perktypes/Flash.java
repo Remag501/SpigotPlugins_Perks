@@ -14,9 +14,6 @@ import java.util.UUID;
 
 public class Flash extends Perk {
 
-    // Static map to track active perks per player
-    private static final Map<UUID, Flash> activePerks = new HashMap<>();
-
     private BukkitTask weaknessTask;
 
     public Flash(ItemStack perkItem) {
@@ -27,7 +24,6 @@ public class Flash extends Perk {
     public void onEnable() {
         // Ensure only one instance per player is active
         Player player = Bukkit.getPlayer(this.player);
-        activePerks.put(this.player, this);
 
         // Apply Speed I effect when the perk is enabled
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0)); // Speed I
@@ -43,8 +39,6 @@ public class Flash extends Perk {
     @Override
     public void onDisable() {
         Player player = Bukkit.getPlayer(this.player);
-        // Remove the player from the active perks map
-        activePerks.remove(player.getUniqueId());
 
         // Remove Speed and cancel the weakness task when the perk is disabled
         player.removePotionEffect(PotionEffectType.SPEED);
@@ -54,22 +48,9 @@ public class Flash extends Perk {
         }
     }
 
-    // Static method for handling player-specific behavior
-    public static void handlePlayerDisable(Player player) {
-        Flash perk = activePerks.get(player);
-        if (perk != null) {
-            perk.onDisable();
-        }
-    }
-
-    // Static method to check if a player has the perk active
-    public static boolean isActive(Player player) {
-        return activePerks.containsKey(player);
-    }
-
     // Method to apply Weakness for 4 seconds (80 ticks)
     private void applyWeakness(Player player) {
-        if (isActive(player)) { // Ensure the perk is still active
+        if (getPerk(player.getUniqueId()) != null) { // Ensure the perk is still active
             player.sendMessage("You feel weak from running too fast!");
             player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 80, 0)); // Weakness I for 4 seconds
         }

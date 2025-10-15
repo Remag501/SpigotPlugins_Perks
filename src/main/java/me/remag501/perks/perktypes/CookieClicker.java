@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public class CookieClicker extends Perk {
-    private static final Map<UUID, CookieClicker> perkInstances = new HashMap<>();
 
     public CookieClicker(ItemStack perkItem) {
         super(perkItem);
@@ -22,14 +21,10 @@ public class CookieClicker extends Perk {
 
     @Override
     public void onEnable() {
-        if (player != null) {
-            perkInstances.put(player, this);
-        }
     }
 
     @Override
     public void onDisable() {
-        perkInstances.remove(player);
     }
 
     @EventHandler
@@ -38,7 +33,7 @@ public class CookieClicker extends Perk {
         if (killer == null) return; // No killer, ignore
 
         UUID uuid = killer.getUniqueId();
-        CookieClicker perk = perkInstances.get(uuid);
+        CookieClicker perk = (CookieClicker) getPerk(uuid);
         if (perk == null) return; // Player doesn't have the perk equipped
 
         // Drop two cookies at the victim's location

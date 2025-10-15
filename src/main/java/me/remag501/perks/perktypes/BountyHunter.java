@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public class BountyHunter extends Perk {
-    private static final Map<UUID, BountyHunter> perkInstances = new HashMap<>();
 
     public BountyHunter(ItemStack perkItem) {
         super(perkItem);
@@ -21,14 +20,10 @@ public class BountyHunter extends Perk {
 
     @Override
     public void onEnable() {
-        if (player != null) {
-            perkInstances.put(player, this);
-        }
     }
 
     @Override
     public void onDisable() {
-        perkInstances.remove(player);
     }
 
     @EventHandler
@@ -37,7 +32,7 @@ public class BountyHunter extends Perk {
         if (killer == null) return; // No killer, ignore
 
         UUID uuid = killer.getUniqueId();
-        BountyHunter perk = perkInstances.get(uuid);
+        BountyHunter perk = (BountyHunter) getPerk(uuid);
         if (perk == null) return; // Player doesn't have the perk equipped
 
         // Execute command to gain money

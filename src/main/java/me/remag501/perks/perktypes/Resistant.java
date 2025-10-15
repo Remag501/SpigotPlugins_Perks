@@ -21,7 +21,6 @@ public class Resistant extends Perk {
 
     private double healthThreshold; // Varies by stars acquired
     private int amplifier;
-    private static final Map<UUID, Resistant> activePerks = new HashMap<>();
 
     private BukkitTask healthCheckTask;
     private boolean isBloodied;
@@ -35,7 +34,6 @@ public class Resistant extends Perk {
     @Override
     public void onEnable() {
         Player player = Bukkit.getPlayer(this.player);
-        activePerks.put(this.player, this);
 
         // Schedule a repeating task to check the player's health periodically
         healthCheckTask = Bukkit.getScheduler().runTaskTimer(
@@ -67,7 +65,6 @@ public class Resistant extends Perk {
     @Override
     public void onDisable() {
         Player player = Bukkit.getPlayer(this.player);
-        activePerks.remove(this.player);
         if (healthCheckTask != null) {
             healthCheckTask.cancel();
         }
@@ -117,18 +114,15 @@ public class Resistant extends Perk {
         }
     }
 
-    public static boolean isActive(Player player) {
-        return activePerks.containsKey(player.getUniqueId());
-    }
-
     // Event Handlers
     @EventHandler
     public void onPlayerDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        if (isActive(player)) {
-            activePerks.get(player.getUniqueId()).checkHealthAndApplyEffect(player);
+        Resistant perk = (Resistant) getPerk(player.getUniqueId());
+        if (perk != null) {
+            perk.checkHealthAndApplyEffect(player);
         }
     }
 
@@ -137,8 +131,9 @@ public class Resistant extends Perk {
         if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        if (isActive(player)) {
-            activePerks.get(player.getUniqueId()).checkHealthAndApplyEffect(player);
+        Resistant perk = (Resistant) getPerk(player.getUniqueId());
+        if (perk != null) {
+            perk.checkHealthAndApplyEffect(player);
         }
     }
 
@@ -146,8 +141,9 @@ public class Resistant extends Perk {
     public void onPlayerLoseEffect(EntityPotionEffectEvent event) {
         if (!(event.getEntity() instanceof Player player))
             return;
-        if (isActive(player)) {
-            activePerks.get(player.getUniqueId()).checkHealthAndApplyEffect(player);
+        Resistant perk = (Resistant) getPerk(player.getUniqueId());
+        if (perk != null) {
+            perk.checkHealthAndApplyEffect(player);
         }
     }
 }

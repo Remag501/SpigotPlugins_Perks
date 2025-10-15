@@ -21,8 +21,6 @@ public class Bloodied extends Perk {
 
     private double healthThreshold; // Varies by stars acquired
     private int amplifier;
-    private static final Map<UUID, Bloodied> activePerks = new HashMap<>();
-
     private BukkitTask healthCheckTask;
     private boolean isBloodied;
     private int duration;
@@ -35,7 +33,6 @@ public class Bloodied extends Perk {
     @Override
     public void onEnable() {
         Player player = Bukkit.getPlayer(this.player);
-        activePerks.put(this.player, this);
 
         // Schedule a repeating task to check the player's health periodically
         healthCheckTask = Bukkit.getScheduler().runTaskTimer(
@@ -67,7 +64,6 @@ public class Bloodied extends Perk {
     @Override
     public void onDisable() {
         Player player = Bukkit.getPlayer(this.player);
-        activePerks.remove(this.player);
         if (healthCheckTask != null) {
             healthCheckTask.cancel();
         }
@@ -117,26 +113,16 @@ public class Bloodied extends Perk {
         }
     }
 
-    // Static method to handle external disable calls
-    public static void handlePlayerDisable(Player player) {
-        Bloodied perk = activePerks.get(player.getUniqueId());
-        if (perk != null) {
-            perk.onDisable();
-        }
-    }
-
-    public static boolean isActive(Player player) {
-        return activePerks.containsKey(player.getUniqueId());
-    }
-
     // Event Handlers
     @EventHandler
     public void onPlayerDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        if (isActive(player)) {
-            activePerks.get(player.getUniqueId()).checkHealthAndApplyEffect(player);
+        UUID uuid = player.getUniqueId();
+        Bloodied perk = (Bloodied) getPerk(uuid);
+        if (perk != null) {
+            perk.checkHealthAndApplyEffect(player);
         }
     }
 
@@ -145,8 +131,10 @@ public class Bloodied extends Perk {
         if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        if (isActive(player)) {
-            activePerks.get(player.getUniqueId()).checkHealthAndApplyEffect(player);
+        UUID uuid = player.getUniqueId();
+        Bloodied perk = (Bloodied) getPerk(uuid);
+        if (perk != null) {
+            perk.checkHealthAndApplyEffect(player);
         }
     }
 
@@ -156,11 +144,10 @@ public class Bloodied extends Perk {
             return;
 
         // Doesnt make sense, since they can gain regen and effect healing
-//        if (event.getAction() == EntityPotionEffectEvent.Action.REMOVED
-//                && event.getModifiedType() == PotionEffectType.INCREASE_DAMAGE) {
-            if (isActive(player)) {
-                activePerks.get(player.getUniqueId()).checkHealthAndApplyEffect(player);
-            }
-//        }
+        UUID uuid = player.getUniqueId();
+        Bloodied perk = (Bloodied) getPerk(uuid);
+        if (perk != null) {
+            perk.checkHealthAndApplyEffect(player);
+        }
     }
 }

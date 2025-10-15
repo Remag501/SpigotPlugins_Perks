@@ -18,24 +18,19 @@ import java.util.*;
 
 public class GhostFist extends Perk {
 
-    private static final Map<UUID, GhostFist> activePerks = new HashMap<>();
-
+    private static final String GHOST_FIST_META = "ghost_fist_hit";
     public GhostFist(ItemStack perkItem, List<List<PerkType>> requirements) {
         super(perkItem, requirements);
     }
 
     @Override
     public void onEnable() {
-        activePerks.put(this.player, this);
     }
 
     @Override
     public void onDisable() {
-        activePerks.remove(this.player);
     }
 
-    // Add this constant to avoid hardcoding your plugin name
-    private static final String GHOST_FIST_META = "ghost_fist_hit";
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
@@ -48,7 +43,7 @@ public class GhostFist extends Perk {
             return;
 
 
-        GhostFist perk = activePerks.get(damager.getUniqueId());
+        GhostFist perk = (GhostFist) getPerk(damager.getUniqueId());
         if (perk == null) return;
 
         // ✅ Ensure the player is using an empty hand

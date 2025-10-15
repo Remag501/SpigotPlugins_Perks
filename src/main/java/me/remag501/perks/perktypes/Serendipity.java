@@ -15,20 +15,16 @@ import org.bukkit.inventory.ItemStack;
 
 public class Serendipity extends Perk {
 
-    private static final Map<UUID, Serendipity> activePerks = new HashMap<>();
-
     public Serendipity(ItemStack item) {
         super(item);
     }
 
     @Override
     public void onEnable() {
-        activePerks.put(this.player, this);
     }
 
     @Override
     public void onDisable() {
-        activePerks.remove(this.player, this);
     }
 
     @EventHandler
@@ -38,7 +34,7 @@ public class Serendipity extends Perk {
         if (event.getDamager() instanceof Player) return; // Perk does not apply to players
 
         UUID uuid = player.getUniqueId();
-        Serendipity perk = activePerks.get(uuid);
+        Serendipity perk = (Serendipity) getPerk(uuid);
         if (perk == null) return; // Player doesn't have the perk equipped
 
         if (ThreadLocalRandom.current().nextDouble() < 0.20) {

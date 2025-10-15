@@ -58,14 +58,4 @@ public class LowMaintenance extends Perk {
             player.sendMessage("You feel well-fed thanks to Low Maintenance!");
         }
     }
-
-    /**
-     * Static method to handle cleanup when a player leaves or the perk needs to be disabled externally.
-     */
-    public static void handlePlayerDisable(Player player) {
-        if (activeTasks.containsKey(player.getUniqueId())) {
-            activeTasks.get(player.getUniqueId()).cancel();
-            activeTasks.remove(player.getUniqueId());
-        }
-    }
 }

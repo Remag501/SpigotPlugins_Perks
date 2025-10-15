@@ -14,7 +14,6 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.*;
 
 public class Overdrive extends Perk {
-    private static final Map<UUID, Overdrive> perkInstances = new HashMap<>();
 
     public Overdrive(ItemStack perkItem) {
         super(perkItem);
@@ -22,14 +21,10 @@ public class Overdrive extends Perk {
 
     @Override
     public void onEnable() {
-        if (player != null) {
-            perkInstances.put(player, this);
-        }
     }
 
     @Override
     public void onDisable() {
-        perkInstances.remove(player);
     }
 
     @EventHandler
@@ -40,7 +35,7 @@ public class Overdrive extends Perk {
         if (!(event.getEntity() instanceof LivingEntity livingEntity)) return; // Don't apply overdrive to arrows and other non living entities
 
         UUID uuid = player.getUniqueId();
-        Overdrive perk = perkInstances.get(uuid);
+        Overdrive perk = (Overdrive) getPerk(uuid);
         if (perk == null) return; // Player doesn't have Overdrive equipped
 
         livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, 0)); // Instant Heal

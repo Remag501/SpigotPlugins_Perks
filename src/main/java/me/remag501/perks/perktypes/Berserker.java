@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class Berserker extends Perk {
-    private static final Map<UUID, Berserker> perkInstances = new HashMap<>();
     private static final Map<UUID, Queue<Double>> fistDamageLog = new HashMap<>();
     private static final long TRACK_DURATION = 60; // 3 seconds
 
@@ -21,13 +20,11 @@ public class Berserker extends Perk {
 
     @Override
     public void onEnable() {
-        perkInstances.put(this.player, this);
         fistDamageLog.put(this.player, new ArrayDeque<>());
     }
 
     @Override
     public void onDisable() {
-        perkInstances.remove(player);
         fistDamageLog.remove(player);
     }
 
@@ -35,7 +32,7 @@ public class Berserker extends Perk {
     public void onEntityHit(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player player)) return;
         UUID uuid = player.getUniqueId();
-        Berserker perk = perkInstances.get(uuid);
+        Berserker perk = (Berserker) getPerk(uuid);
         if (perk == null) return; // Player doesn't have Berserker equipped
 
         ItemStack weapon = player.getInventory().getItemInMainHand();

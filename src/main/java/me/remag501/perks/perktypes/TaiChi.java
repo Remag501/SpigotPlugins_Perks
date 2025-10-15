@@ -17,9 +17,6 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.*;
 
 public class TaiChi extends Perk {
-
-    // Track players who have the perk enabled
-    private static final Map<UUID, TaiChi> activePerks = new HashMap<>();
     private static final Map<UUID, Long> fistStartTimes = new HashMap<>();
 
     public TaiChi(ItemStack perkItem) {
@@ -29,18 +26,10 @@ public class TaiChi extends Perk {
 
     @Override
     public void onEnable() {
-//        player.sendMessage("Hot Hands perk activated!");
-        // Register the perk's event listener
-        activePerks.put(this.player, this);
-//        player.getServer().getPluginManager().registerEvents(this, player.getServer().getPluginManager().getPlugin("Perks"));
     }
 
     @Override
     public void onDisable() {
-//        player.sendMessage("Hot Hands perk disabled!");
-        // Unregister the perk's event listener
-//        HandlerList.unregisterAll(this);
-        activePerks.remove(this.player);
     }
 
     // New encapsulated method to handle the perk effect
@@ -72,7 +61,7 @@ public class TaiChi extends Perk {
             if (entity instanceof ArmorStand)
                 return; // Ignore damage to armor stands
             // Check if the player has the perk enabled
-            TaiChi perk = activePerks.get(damager.getUniqueId());
+            TaiChi perk = (TaiChi) getPerk(damager.getUniqueId());
             if (perk == null) return; // Player does not have the perk enabled
 
             // Delegate behavior to the perk instance
@@ -86,7 +75,7 @@ public class TaiChi extends Perk {
         UUID uuid = player.getUniqueId();
 
         // Only care if player has this perk
-        if (!activePerks.containsKey(uuid)) return;
+        if (getPerk(uuid) == null) return;
 
         ItemStack newItem = player.getInventory().getItem(event.getNewSlot());
 
