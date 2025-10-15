@@ -30,21 +30,21 @@ public class FlatDamagePerk extends Perk {
 //        HandlerList.unregisterAll(this);
     }
 
-    @EventHandler
-    public void onPlayerHit(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player) {
-            Player player = (Player) event.getDamager();
-            // Check if the player has this perk enabled
-            double finalDamage = event.getFinalDamage(); // Get the current final damage
-            event.setDamage(finalDamage); // Don't modify the final damage here, keep it as is
-            // Apply flat damage directly to the entity
-            Entity entity = event.getEntity();
-            EntityDamageEvent damageEvent = new EntityDamageEvent(entity, EntityDamageEvent.DamageCause.CUSTOM, 2);
-            Bukkit.getPluginManager().callEvent(damageEvent);
-
-            if (!damageEvent.isCancelled()) {
-                ((LivingEntity) entity).setHealth(Math.max(0, ((LivingEntity) entity).getHealth() - damageEvent.getFinalDamage()));
-            }
-        }
-    }
+//    @EventHandler
+//    public void onPlayerHit(EntityDamageByEntityEvent event) {
+//        if (event.getDamager() instanceof Player) {
+//            Player player = (Player) event.getDamager();
+//            // Check if the player has this perk enabled
+//            double finalDamage = event.getFinalDamage(); // Get the current final damage
+//            event.setDamage(finalDamage); // Don't modify the final damage here, keep it as is
+//            // Apply flat damage directly to the entity
+//            Entity entity = event.getEntity();
+//            EntityDamageEvent damageEvent = new EntityDamageEvent(entity, EntityDamageEvent.DamageCause.CUSTOM, 2);
+//            Bukkit.getPluginManager().callEvent(damageEvent);
+//
+//            if (!damageEvent.isCancelled()) {
+//                ((LivingEntity) entity).setHealth(Math.max(0, ((LivingEntity) entity).getHealth() - damageEvent.getFinalDamage()));
+//            }
+//        }
+//    }
 }

@@ -29,7 +29,6 @@ public abstract class Perk implements Cloneable, Listener {
             activePerks.put(perkType, perks);
         }
         perks.put(player, this);
-        Bukkit.getPlayer(player).sendMessage("Perks are "  + perks);
     }
 
     public void deactivatePlayer() {

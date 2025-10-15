@@ -29,13 +29,13 @@ public class CreeperBrawler extends Perk {
     }
 
     // Example event handler for the perk
-    @EventHandler
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        // Check if the attacker is the player with the perk
-        if (event.getDamager() instanceof Player && event.getEntity() instanceof Creeper) {
-            Player player = (Player) event.getDamager();
-            // Apply 1.5x damage if the player has the perk enabled
-            event.setDamage(event.getDamage() * 15);
-        }
-    }
+//    @EventHandler
+//    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+//        // Check if the attacker is the player with the perk
+//        if (event.getDamager() instanceof Player && event.getEntity() instanceof Creeper) {
+//            Player player = (Player) event.getDamager();
+//            // Apply 1.5x damage if the player has the perk enabled
+//            event.setDamage(event.getDamage() * 15);
+//        }
+//    }
 }

@@ -25,14 +25,14 @@ public class DamageMultiplierTwoPerk extends Perk {
 //        HandlerList.unregisterAll(this);
     }
 
-    @EventHandler
-    public void onPlayerHit(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player) {
-            Player player = (Player) event.getDamager();
-            // You can check if the player has the perk enabled, then modify damage
-            // Assuming you have a method to check if the player has the perk
-            double damage = event.getDamage();
-            event.setDamage(damage * 2); // Multiply damage by 1.5
-        }
-    }
+//    @EventHandler
+//    public void onPlayerHit(EntityDamageByEntityEvent event) {
+//        if (event.getDamager() instanceof Player) {
+//            Player player = (Player) event.getDamager();
+//            // You can check if the player has the perk enabled, then modify damage
+//            // Assuming you have a method to check if the player has the perk
+//            double damage = event.getDamage();
+//            event.setDamage(damage * 2); // Multiply damage by 1.5
+//        }
+//    }
 }
