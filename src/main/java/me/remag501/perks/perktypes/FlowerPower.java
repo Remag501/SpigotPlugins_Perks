@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class FlowerPower extends Perk implements Listener {
+public class FlowerPower extends Perk {
 
     private static final Map<UUID, FlowerPower> activePerks = new HashMap<>();
 

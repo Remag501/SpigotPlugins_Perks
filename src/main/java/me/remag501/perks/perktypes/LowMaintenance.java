@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class LowMaintenance extends Perk implements Listener {
+public class LowMaintenance extends Perk {
 
     private static final int SATURATION_DURATION = 300; // 15 seconds (300 ticks)
     private static final long TASK_INTERVAL = 2400L; // 2 minutes (2400 ticks)

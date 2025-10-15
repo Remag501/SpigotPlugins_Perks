@@ -22,7 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoldenExperiencePerk extends Perk implements Listener {
+public class GoldenExperiencePerk extends Perk {
 
     public GoldenExperiencePerk(ItemStack item) {
         super(item);

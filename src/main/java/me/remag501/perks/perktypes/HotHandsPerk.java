@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class HotHandsPerk extends Perk implements Listener {
+public class HotHandsPerk extends Perk {
 
     // Track players who have the perk enabled
     private static final Map<UUID, HotHandsPerk> activePerks = new HashMap<>();

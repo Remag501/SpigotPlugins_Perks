@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class DamageMultiplierTwoPerk extends Perk implements Listener {
+public class DamageMultiplierTwoPerk extends Perk {
 
     public DamageMultiplierTwoPerk(ItemStack perkItem) {
         super(perkItem);

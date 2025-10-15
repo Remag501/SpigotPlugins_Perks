@@ -33,3 +33,5 @@ Current Perks (Not up to date):
     *   **Description:** Hidden ui does not work due to current display method
 *   **Improvement needed: Active Perk List**
     *   **Description:** Every perk uses a active perk list but its not in interface
+
+Refractor plans: Implement listener and add active perk list to perk interface.

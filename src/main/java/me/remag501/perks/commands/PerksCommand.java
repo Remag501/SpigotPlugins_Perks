@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
@@ -220,5 +221,6 @@ public class PerksCommand implements CommandExecutor {
     public PerksCommand(Plugin plugin) {
         this.plugin = plugin;
     }
+
 
 }

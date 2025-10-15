@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class BountyHunter extends Perk implements Listener {
+public class BountyHunter extends Perk {
     private static final Map<UUID, BountyHunter> perkInstances = new HashMap<>();
 
     public BountyHunter(ItemStack perkItem) {

@@ -1,6 +1,7 @@
 package me.remag501.perks;
 
 import me.remag501.perks.commands.PerksCommand;
+import me.remag501.perks.commands.PerksCompleter;
 import me.remag501.perks.core.Perk;
 import me.remag501.perks.core.PerkType;
 import me.remag501.perks.core.PlayerPerks;
@@ -21,6 +22,8 @@ public final class Perks extends JavaPlugin {
         getServer().getLogger().info("Perks has started up!");
         // Add commands to the plugin
         getCommand("perks").setExecutor(new PerksCommand(this));
+        getCommand("perks").setTabCompleter(new PerksCompleter(this));
+        // Register listeners for Perks UIs
         getServer().getPluginManager().registerEvents(new UI(null, false), this);
         getServer().getPluginManager().registerEvents(new GambleUI(), this);
         getServer().getPluginManager().registerEvents(new PerkChangeListener(), this);

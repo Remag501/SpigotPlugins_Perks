@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class Berserker extends Perk implements Listener {
+public class Berserker extends Perk {
     private static final Map<UUID, Berserker> perkInstances = new HashMap<>();
     private static final Map<UUID, Queue<Double>> fistDamageLog = new HashMap<>();
     private static final long TRACK_DURATION = 60; // 3 seconds

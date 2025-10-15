@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Resistant extends Perk implements Listener {
+public class Resistant extends Perk {
 
     private double healthThreshold; // Varies by stars acquired
     private int amplifier;

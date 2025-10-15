@@ -16,7 +16,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
-public class TaiChi extends Perk implements Listener {
+public class TaiChi extends Perk {
 
     // Track players who have the perk enabled
     private static final Map<UUID, TaiChi> activePerks = new HashMap<>();

@@ -15,7 +15,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
-public class Concussion extends Perk implements Listener {
+public class Concussion extends Perk {
 
     // Track players who have the perk enabled
     private static final Map<UUID, Concussion> activePerks = new HashMap<>();

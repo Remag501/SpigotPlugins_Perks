@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Bloodied extends Perk implements Listener {
+public class Bloodied extends Perk {
 
     private double healthThreshold; // Varies by stars acquired
     private int amplifier;

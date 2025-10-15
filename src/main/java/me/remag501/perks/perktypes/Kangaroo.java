@@ -16,7 +16,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-public class Kangaroo extends Perk implements Listener {
+public class Kangaroo extends Perk {
 
     private static final long COOLDOWN_TIME = 30 * 1000; // 30 seconds in milliseconds
     private static final Map<UUID, Kangaroo> activePerks = new HashMap<>();

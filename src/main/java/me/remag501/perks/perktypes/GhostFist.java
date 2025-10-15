@@ -16,7 +16,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-public class GhostFist extends Perk implements Listener {
+public class GhostFist extends Perk {
 
     private static final Map<UUID, GhostFist> activePerks = new HashMap<>();
 

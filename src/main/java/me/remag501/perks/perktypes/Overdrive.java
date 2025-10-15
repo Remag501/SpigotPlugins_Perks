@@ -13,7 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
-public class Overdrive extends Perk implements Listener {
+public class Overdrive extends Perk {
     private static final Map<UUID, Overdrive> perkInstances = new HashMap<>();
 
     public Overdrive(ItemStack perkItem) {

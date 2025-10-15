@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class XPFarm extends Perk implements Listener {
+public class XPFarm extends Perk {
     private static final Map<UUID, XPFarm> perkInstances = new HashMap<>();
 
     public XPFarm(ItemStack perkItem) {

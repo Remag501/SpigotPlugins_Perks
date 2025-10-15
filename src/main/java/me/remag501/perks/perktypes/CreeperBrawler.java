@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public class CreeperBrawler extends Perk implements Listener {
+public class CreeperBrawler extends Perk {
 
     public CreeperBrawler(ItemStack perkItem) {
         super(perkItem);

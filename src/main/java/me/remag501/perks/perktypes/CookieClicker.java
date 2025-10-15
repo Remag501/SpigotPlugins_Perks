@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class CookieClicker extends Perk implements Listener {
+public class CookieClicker extends Perk {
     private static final Map<UUID, CookieClicker> perkInstances = new HashMap<>();
 
     public CookieClicker(ItemStack perkItem) {

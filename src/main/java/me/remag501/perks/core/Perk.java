@@ -1,12 +1,13 @@
 package me.remag501.perks.core;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.UUID;
 
-public abstract class Perk implements Cloneable {
+public abstract class Perk implements Cloneable, Listener {
     // Stores info about the perk
     private final ItemStack perkItem;
     protected UUID player;

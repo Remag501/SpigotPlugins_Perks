@@ -26,7 +26,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-public class TheWorldPerk extends Perk implements Listener {
+public class TheWorldPerk extends Perk {
 
     private static Map<UUID, TheWorldPerk> activePerks = new HashMap<>();
 

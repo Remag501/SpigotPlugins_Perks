@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import me.remag501.perks.core.Perk;
 import org.bukkit.inventory.ItemStack;
 
-public class Serendipity extends Perk implements Listener {
+public class Serendipity extends Perk {
 
     private static final Map<UUID, Serendipity> activePerks = new HashMap<>();
 

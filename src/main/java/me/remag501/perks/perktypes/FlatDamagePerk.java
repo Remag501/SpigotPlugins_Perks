@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class FlatDamagePerk extends Perk implements Listener {
+public class FlatDamagePerk extends Perk {
     private final double extraDamage = 2.0; // Additional flat damage
 
     public FlatDamagePerk(ItemStack perkItem) {
