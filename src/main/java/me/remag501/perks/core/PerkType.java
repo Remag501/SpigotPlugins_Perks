@@ -53,7 +53,7 @@ public enum PerkType {
             "If you are near trees or flowers, you deal more damage"
     ))),
 
-    GUERILLA_TACTICS(new GuerillaTactics(Items.createPerkItem(
+    GUERILLA_TACTICS(new GuerrillaTactics(Items.createPerkItem(
             Material.FERN,
             "Guerilla Tactics",
             "GUERILLA_TACTICS",
