@@ -51,6 +51,18 @@ public abstract class Perk implements Cloneable, Listener {
         return perks.get(uuid);
     }
 
+    public static Perk getPerk(UUID uuid, PerkType type) {
+        // 1. Look up the Map<UUID, Perk> for the given PerkType.
+        Map<UUID, Perk> perks = activePerks.get(type);
+        if (perks == null) {
+            // No player has this PerkType equipped.
+            return null;
+        }
+        // 2. Look up the specific Perk instance for the player's UUID.
+        return perks.get(uuid);
+    }
+
+
     public Perk(ItemStack perkItem, boolean starPerk, List<List<PerkType>> requirements) {
         this.perkItem = perkItem;
         player = null;

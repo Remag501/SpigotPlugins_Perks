@@ -97,4 +97,8 @@ public class PackMaster extends Perk {
         // Clear the list after removal
         this.summonedWolves.clear();
     }
+
+    public List<UUID> getSummonedWolves() {
+        return summonedWolves;
+    }
 }
