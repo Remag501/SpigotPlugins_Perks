@@ -119,7 +119,7 @@ public class PerksCommand implements CommandExecutor {
         }
 
         // Get the perk card itemstack and give to player
-        player.getInventory().addItem(Items.getPerkCard(perkType.getItem()));
+        player.getInventory().addItem(Items.getPerkCard(perkType));
 
     }
 

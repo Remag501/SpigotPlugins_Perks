@@ -249,8 +249,9 @@ public class Items {
         return item;
     }
 
-    public static ItemStack getPerkCard(ItemStack item) {
+    public static ItemStack getPerkCard(PerkType perkType) {
         // Clone the original item to avoid modifying the base item
+        ItemStack item = perkType.getItem();
         ItemStack perkCard = item.clone();
         perkCard.setType(Material.PAPER);
         ItemMeta meta = perkCard.getItemMeta();
@@ -262,7 +263,8 @@ public class Items {
             char colorCode = firstLine.charAt(1);
             // Update the display name to represent the card
             meta.setDisplayName("§" + colorCode + "§l" + itemMeta.getDisplayName());
-
+//            meta.setCustomModelData(perkType.get);
+            meta.setCustomModelData(perkType.getItem().getItemMeta().getCustomModelData()); // Super ineffiecnt since nbt data should be stored in perktype
             // Add lore for clarity
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.RED + "You will obtain this perk when you extract!");

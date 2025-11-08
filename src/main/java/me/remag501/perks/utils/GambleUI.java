@@ -99,7 +99,7 @@ public class GambleUI implements Listener {
         }
     }
 
-    public void triggerTotemAnimation(Player player) {
+    public void triggerTotemAnimation(Player player, PerkType perkType) {
         // Close the player's inventory
         player.closeInventory();
 
@@ -107,9 +107,12 @@ public class GambleUI implements Listener {
         ItemStack totem = new ItemStack(Material.TOTEM_OF_UNDYING);
         ItemMeta meta = totem.getItemMeta();
 
+        // Get cmd from perktype
+        int customModelData = perkType.getItem().getItemMeta().getCustomModelData();
+
         if (meta != null) {
 //            meta.setDisplayName(ChatColor.GOLD + "Custom Perk Totem");
-            meta.setCustomModelData(610002); // Assign custom model data
+            meta.setCustomModelData(customModelData); // Assign custom model data
 
             // Add lore to the item
 //            List<String> lore = new ArrayList<>();
@@ -167,7 +170,7 @@ public class GambleUI implements Listener {
         int randomIndex = (int) (Math.random() * possiblePerks.size());
         PerkType perkType = possiblePerks.get(randomIndex);
         // Animation for rolling perk
-        triggerTotemAnimation(player);
+        triggerTotemAnimation(player, perkType);
         // Add perk to player
         playerPerks.addOwnedPerks(perkType);
         player.sendMessage("You obtained the perk: " + perkType.getItem().getItemMeta().getDisplayName());

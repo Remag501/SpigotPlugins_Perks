@@ -85,7 +85,7 @@ public class PerkChangeListener implements Listener {
             int droppedIndex = (int) (Math.random() * equippedPerks.size());
             Perk dropped = equippedPerks.get(droppedIndex);
             // Convert to item and put in itemstack
-            ItemStack perkItem = Items.getPerkCard(dropped.getItem());
+            ItemStack perkItem = Items.getPerkCard(PerkType.getPerkType(dropped));
             List<ItemStack> drops = event.getDrops();
             drops.add(perkItem);
             // Remove perk from equipped perks
