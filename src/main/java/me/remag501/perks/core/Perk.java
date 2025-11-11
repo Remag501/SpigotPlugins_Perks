@@ -15,7 +15,8 @@ public abstract class Perk implements Cloneable, Listener {
     // Stores info about the perk
     protected UUID player; // may be removed in future
     private static final Map<PerkType,Map<UUID, Perk>> activePerks = new ConcurrentHashMap<>();
-    private final ItemStack perkItem;
+//    private final ItemStack perkItem;
+    private PerkType perkType;
     private int quantity;
     private final boolean starPerk;
     private int stars;
@@ -63,8 +64,7 @@ public abstract class Perk implements Cloneable, Listener {
     }
 
 
-    public Perk(ItemStack perkItem, boolean starPerk, List<List<PerkType>> requirements) {
-        this.perkItem = perkItem;
+    public Perk(boolean starPerk, List<List<PerkType>> requirements) {
         player = null;
         quantity = 1;
         this.starPerk = starPerk;
@@ -72,8 +72,7 @@ public abstract class Perk implements Cloneable, Listener {
         this.requirements = requirements;
     }
 
-    public Perk(ItemStack perkItem, boolean starPerk) {
-        this.perkItem = perkItem;
+    public Perk(boolean starPerk) {
         player = null;
         quantity = 1;
         this.starPerk = starPerk;
@@ -81,16 +80,14 @@ public abstract class Perk implements Cloneable, Listener {
         this.requirements = null;
     }
 
-    public Perk(ItemStack perkItem, List<List<PerkType>> requirements) {
-        this.perkItem = perkItem;
+    public Perk(List<List<PerkType>> requirements) {
         player = null;
         quantity = 1;
         this.starPerk = false;
         this.requirements = requirements;
     }
 
-    public Perk(ItemStack perkItem) {
-        this.perkItem = perkItem;
+    public Perk() {
         player = null;
         quantity = 1;
         this.starPerk = false;
@@ -125,12 +122,6 @@ public abstract class Perk implements Cloneable, Listener {
         return stars;
     }
 
-//    public Perk(PerkType perkType, UUID player) {
-//        this.perkItem = perkType.getItem();
-//        this.player = player;
-//        quantity = 1;
-//    }
-
     public void setPlayer(Player player) {
         this.player = player.getUniqueId();
     }
@@ -151,10 +142,6 @@ public abstract class Perk implements Cloneable, Listener {
         return quantity;
     }
 
-    public ItemStack getItem() {
-        return perkItem;
-    }
-
     public boolean isStarPerk() {
         return starPerk;
     }
@@ -162,7 +149,8 @@ public abstract class Perk implements Cloneable, Listener {
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Perk)) return false;
-        return ((Perk) obj).perkItem == this.perkItem;
+//        return ((Perk) obj).i == this.perkItem;
+        return true;
     }
 
     @Override

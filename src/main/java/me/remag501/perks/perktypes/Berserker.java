@@ -14,8 +14,8 @@ public class Berserker extends Perk {
     private static final Map<UUID, Queue<Double>> fistDamageLog = new HashMap<>();
     private static final long TRACK_DURATION = 60; // 3 seconds
 
-    public Berserker(ItemStack perkItem) {
-        super(perkItem);
+    public Berserker() {
+        super();
     }
 
     @Override
