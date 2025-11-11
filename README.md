@@ -34,4 +34,15 @@ Current Perks (Not up to date):
 *   **Improvement needed: Active Perk List**
     *   **Description:** Every perk uses a active perk list but its not in interface
 
-Refractor plans: Implement listener and add active perk list to perk interface.
+## Refactor plans: 
+- Prevent perk instances from storing unneeded data, this started with itemstack
+- There is multiple data to be refactored (Itemstack, requirements, stars)
+- Handling of functions getPerk(), getItem(), and getPerkType() from PerkType contributes to major refactor
+- We can use information in enum to create objects. For getPerkType I have to explore different options
+- Implementation Idea: Store PerkType in Perk, and pass by constructor for every perk to define it.
+- Every perk class needs to be adjusted for this implementation
+- Every calling of perkType enums, have to be adjusted
+- Considering readdressing the implementation of activate/deactivate player
+- Implementation idea: 1. leverage PlayerPerks 2. call enable within activate (flaw: activate may not always not be to called when enabled)
+- Remove PlayerPerkInstance (no need and confusion)
+
